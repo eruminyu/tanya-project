@@ -1,0 +1,52 @@
+{
+  "SOURCE_COMMIT": "7723116655c8ca7e3c93c0b5b7a8d00e46a71e90",
+  "SOURCE_DATE": "2026-09-07",
+  "purpose": "Portfolio source snapshot; not an operational deployment source",
+  "original_history_included": false,
+  "excluded": [
+    "third-party Live2D model assets",
+    "Cubism Core runtime",
+    "private operational documentation and deploy assets",
+    "12 tests asserting excluded systemd deployment file paths"
+  ],
+  "verification": {
+    "date": "2026-09-07",
+    "environment": {
+      "os": "Windows",
+      "python": "3.12.14",
+      "node": "24.19.0",
+      "npm": "11.17.0",
+      "python_dependencies": "Existing virtual environment; cached embedding model; no fresh full requirements install"
+    },
+    "source_baseline": {
+      "brain_passed": 895,
+      "client_passed": 489,
+      "client_files": 47
+    },
+    "portfolio": {
+      "brain_passed": 883,
+      "brain_warnings": 1,
+      "brain_warning": "Starlette TestClient httpx deprecation",
+      "client_passed": 501,
+      "client_files": 49,
+      "client_build": "passed",
+      "vite_modules": 134
+    },
+    "test_scope_change": "12 operational systemd asset assertions excluded with deploy/; 12 net new Client fallback tests",
+    "browser": {
+      "no_model": "placeholder; composer and tutorial preserved; no Core or renderer request; no uncaught page errors",
+      "missing_core": "Live2D-only error; composer preserved; renderer not imported; no uncaught page errors",
+      "viewports": [
+        "desktop",
+        "390x844 mobile"
+      ]
+    },
+    "not_run": [
+      "Tauri/Rust build and native device validation",
+      "real Google OAuth/provider execution",
+      "real microphone STT/TTS and GPU benchmark",
+      "operational deployment"
+    ],
+    "secrets": "Gitleaks 8.30.1 raw result is recorded in verification documentation; no confirmed actual secret"
+  }
+}

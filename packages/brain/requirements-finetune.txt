@@ -1,0 +1,36 @@
+# 파인튜닝 전용 의존성 (requirements.txt와 분리)
+# 서버(RTX 3070 Ti 8GB)에서만 설치 필요
+#
+# 설치 방법:
+#   pip install -r requirements-finetune.txt
+#
+# 주의: CUDA 12.x + PyTorch 2.x 환경 필요
+#       CPU 환경에서는 학습 불가 (GPU 필수)
+
+# ── LLM QLoRA 학습 ───────────────────────────────────────────────────────────
+# unsloth: 최적화된 QLoRA 학습 프레임워크 (4-bit, 2배 빠른 학습)
+# 설치 전 https://github.com/unslothai/unsloth CUDA 버전 확인 필수
+unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git
+
+# Transformers + PEFT (LoRA 어댑터)
+transformers>=4.40.0
+peft>=0.10.0
+bitsandbytes>=0.43.0       # 4-bit 양자화
+
+# SFTTrainer (Supervised Fine-Tuning)
+trl>=0.8.6
+
+# 데이터셋 처리
+datasets>=2.18.0
+accelerate>=0.28.0
+
+# 평가 유틸
+evaluate>=0.4.0
+
+# ── Fish Speech 음성 자산 전처리 ─────────────────────────────────────────────
+# 오디오 처리
+pydub>=0.25.1              # 무음 분할, 볼륨 정규화 (ffmpeg 별도 필요)
+
+# ── 공통 유틸 ────────────────────────────────────────────────────────────────
+# requirements.txt에 이미 있지만 버전 명시
+tqdm>=4.66.0

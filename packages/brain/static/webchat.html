@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>타냐 WebChat</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #e0e0f0;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 720px;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── 헤더 ── */
+    #header {
+      padding: 14px 20px;
+      background: #1a1a2e;
+      border-bottom: 1px solid #2a2a4a;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #header h1 { font-size: 1.1rem; font-weight: 600; }
+
+    #settings-btn {
+      border: 1px solid #3a3a6a;
+      border-radius: 10px;
+      background: #232344;
+      color: #d8d8ee;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    #emotion-badge {
+      margin-left: auto;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      background: #2a2a5a;
+      color: #aaaaff;
+      transition: background 0.3s;
+    }
+
+    #conn-status {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #555;
+      flex-shrink: 0;
+    }
+    #conn-status.connected { background: #4caf50; }
+    #conn-status.error     { background: #f44336; }
+
+    /* ── 채팅 영역 ── */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+
+    .bubble {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      line-height: 1.5;
+      font-size: 0.92rem;
+      word-break: break-word;
+    }
+
+    .bubble.user {
+      align-self: flex-end;
+      background: #3a3a7a;
+      border-bottom-right-radius: 4px;
+    }
+
+    .bubble.tanya {
+      align-self: flex-start;
+      background: #1e2a4a;
+      border-bottom-left-radius: 4px;
+      position: relative;
+    }
+
+    .message-content { white-space: pre-wrap; }
+    .message-content pre {
+      margin-top: 8px;
+      padding: 12px;
+      overflow-x: auto;
+      border: 1px solid #354368;
+      border-radius: 10px;
+      background: #0a1020;
+      color: #e7eaff;
+      white-space: pre;
+    }
+    .message-content code {
+      font-family: 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.84rem;
+    }
+    .code-language {
+      display: block;
+      margin-bottom: 6px;
+      color: #8f9bc4;
+      font: 0.7rem 'Segoe UI', sans-serif;
+      text-transform: uppercase;
+    }
+
+    /* 좋아요/싫어요 버튼 — 마지막 타냐 말풍선에만 표시 */
+    .feedback-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .feedback-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 1rem;
+      opacity: 0.5;
+      transition: opacity 0.2s, transform 0.1s;
+      padding: 2px 4px;
+    }
+    .feedback-btn:hover { opacity: 1; transform: scale(1.2); }
+    .feedback-btn.active { opacity: 1; }
+
+    /* ── 입력 영역 ── */
+    #input-area {
+      padding: 12px 16px;
+      background: #1a1a2e;
+      border-top: 1px solid #2a2a4a;
+      display: flex;
+      gap: 10px;
+    }
+
+    #msg-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 24px;
+      border: 1px solid #3a3a6a;
+      background: #0f0f2a;
+      color: #e0e0f0;
+      font-size: 0.92rem;
+      outline: none;
+      resize: none;
+      height: 44px;
+      max-height: 120px;
+    }
+    #msg-input:focus { border-color: #6666cc; }
+
+    #send-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: #5555cc;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    #send-btn:hover { background: #7777ee; }
+    #send-btn:disabled { background: #333355; cursor: not-allowed; }
+
+    /* ── 최소 LLM 설정 모달 ── */
+    #settings-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(4, 4, 12, 0.82);
+    }
+    #settings-modal.open { display: flex; }
+    #settings-panel {
+      width: min(680px, 100%);
+      max-height: 90dvh;
+      overflow-y: auto;
+      padding: 20px;
+      border: 1px solid #393966;
+      border-radius: 16px;
+      background: #17172a;
+    }
+    #settings-panel h2 { margin-bottom: 8px; }
+    #settings-panel > p { color: #aaaac2; font-size: 0.85rem; margin-bottom: 16px; }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .profile-card {
+      padding: 14px;
+      border: 1px solid #303056;
+      border-radius: 12px;
+      background: #111122;
+    }
+    .profile-card h3 { margin-bottom: 10px; font-size: 0.95rem; }
+    .field { margin-bottom: 10px; }
+    .field label { display: block; margin-bottom: 4px; color: #bcbcd2; font-size: 0.78rem; }
+    .field input, .field select {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid #3a3a6a;
+      border-radius: 8px;
+      background: #0c0c1c;
+      color: #eeeeff;
+    }
+    #admin-token-field { margin-top: 16px; }
+    #settings-message { min-height: 20px; margin-top: 10px; color: #ffcc66; font-size: 0.82rem; }
+    #settings-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+    #settings-actions button {
+      padding: 9px 14px;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+    #settings-close { background: #33334d; color: #eeeeff; }
+    #settings-save { background: #6262d8; color: white; }
+
+    @media (max-width: 620px) {
+      .profile-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="header">
+    <div id="conn-status"></div>
+    <h1>타냐 💜</h1>
+    <button id="settings-btn" type="button">LLM 설정</button>
+    <div id="emotion-badge">연결 중...</div>
+  </div>
+
+  <div id="messages"></div>
+
+  <div id="input-area">
+    <textarea id="msg-input" placeholder="메시지를 입력하세요..." rows="1"></textarea>
+    <button id="send-btn" disabled>➤</button>
+  </div>
+</div>
+
+<div id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+  <div id="settings-panel">
+    <h2 id="settings-title">LLM 설정</h2>
+    <p>저장 후 Brain을 재시작하면 적용됩니다. API 키는 조회 화면에 다시 표시되지 않습니다.</p>
+
+    <div class="profile-grid">
+      <section class="profile-card" data-profile="casual">
+        <h3>일상 대화용</h3>
+        <div class="field"><label>Provider</label><select id="casual-provider"></select></div>
+        <div class="field"><label>모델</label><input id="casual-model" autocomplete="off" /></div>
+        <div class="field"><label>Endpoint</label><input id="casual-base-url" autocomplete="url" /></div>
+        <div class="field"><label>API Key</label><input id="casual-api-key" type="password" autocomplete="new-password" placeholder="기존 키 유지 시 비워두기" /></div>
+      </section>
+
+      <section class="profile-card" data-profile="task">
+        <h3>작업용</h3>
+        <div class="field"><label>Provider</label><select id="task-provider"></select></div>
+        <div class="field"><label>모델</label><input id="task-model" autocomplete="off" /></div>
+        <div class="field"><label>Endpoint</label><input id="task-base-url" autocomplete="url" /></div>
+        <div class="field"><label>API Key</label><input id="task-api-key" type="password" autocomplete="new-password" placeholder="기존 키 유지 시 비워두기" /></div>
+      </section>
+    </div>
+
+    <div class="field" id="admin-token-field">
+      <label>관리 토큰 (`SETTINGS_API_TOKEN`)</label>
+      <input id="admin-token" type="password" autocomplete="off" />
+    </div>
+    <div id="settings-message"></div>
+    <div id="settings-actions">
+      <button id="settings-close" type="button">닫기</button>
+      <button id="settings-save" type="button">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── 설정 ──────────────────────────────────────────────────────────────────
+  const WS_SCHEME = location.protocol === 'https:' ? 'wss' : 'ws';
+  const WS_URL  = `${WS_SCHEME}://${location.host}/ws/webchat`;
+  const API_URL = `${location.protocol}//${location.host}`;
+  const PROVIDERS = ['ollama', 'gemini', 'claude', 'openai', 'openai-compatible', 'vllm'];
+
+  // ── 상태 ──────────────────────────────────────────────────────────────────
+  let ws = null;
+  let lastConvId = -1;
+  let lastTanyaBubble = null;
+  let lastFeedbackRow = null;
+
+  // ── DOM ───────────────────────────────────────────────────────────────────
+  const messagesEl   = document.getElementById('messages');
+  const inputEl      = document.getElementById('msg-input');
+  const sendBtn      = document.getElementById('send-btn');
+  const statusDot    = document.getElementById('conn-status');
+  const emotionBadge = document.getElementById('emotion-badge');
+  const settingsModal = document.getElementById('settings-modal');
+  const settingsMessage = document.getElementById('settings-message');
+
+  for (const role of ['casual', 'task']) {
+    const select = document.getElementById(`${role}-provider`);
+    for (const provider of PROVIDERS) {
+      const option = document.createElement('option');
+      option.value = provider;
+      option.textContent = provider;
+      select.appendChild(option);
+    }
+  }
+  document.getElementById('casual-provider').value = 'ollama';
+  document.getElementById('task-provider').value = 'gemini';
+
+  // ── WebSocket ─────────────────────────────────────────────────────────────
+  function connect() {
+    ws = new WebSocket(WS_URL);
+
+    ws.onopen = () => {
+      statusDot.className = 'connected';
+      emotionBadge.textContent = 'neutral';
+      sendBtn.disabled = false;
+    };
+
+    ws.onclose = () => {
+      statusDot.className = 'error';
+      sendBtn.disabled = true;
+      // 3초 후 재연결
+      setTimeout(connect, 3000);
+    };
+
+    ws.onerror = () => {
+      statusDot.className = 'error';
+    };
+
+    ws.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        handleMessage(data);
+      } catch (_) {}
+    };
+  }
+
+  function handleMessage(data) {
+    // 레거시 응답 (type = "response")
+    if (data.type === 'response') {
+      appendTanya(data.content, data.emotion, data.conv_id);
+      return;
+    }
+
+    // V2 push event
+    if (data.type === 'event') {
+      if (data.event === 'text_stream') {
+        streamTanya(data.payload.text);
+      } else if (data.event === 'emotion_update') {
+        updateEmotion(data.payload?.emotion ?? 'neutral');
+      } else if (data.event === 'approval_required') {
+        handleApprovalRequired(data.payload);
+      } else if (data.event === 'skill_result') {
+        appendTanya('[스킬 실행 완료] ' + JSON.stringify(data.payload), null, null);
+      } else if (data.event === 'error') {
+        appendTanya('[오류] ' + (data.payload?.message ?? '알 수 없는 오류'), null, null);
+      }
+      return;
+    }
+
+    // V2 응답 (type = "res")
+    if (data.type === 'res' && data.success && data.payload?.content) {
+      appendTanya(data.payload.content, null, data.payload.conv_id);
+    }
+  }
+
+  let isStreaming = false;
+
+  // ── 메시지 렌더링 ─────────────────────────────────────────────────────────
+  function streamTanya(text_chunk) {
+    if (!isStreaming) {
+      // 스트리밍 시작 시 빈 프레임 생성
+      if (lastFeedbackRow) lastFeedbackRow.style.display = 'none';
+      const el = document.createElement('div');
+      el.className = 'bubble tanya';
+      el.dataset.rawText = '';
+      renderMessageContent(el, '');
+      messagesEl.appendChild(el);
+      lastTanyaBubble = el;
+      scrollBottom();
+      isStreaming = true;
+    }
+    lastTanyaBubble.dataset.rawText += text_chunk;
+    renderMessageContent(lastTanyaBubble, lastTanyaBubble.dataset.rawText);
+    scrollBottom();
+  }
+
+  function appendUser(text) {
+    isStreaming = false;
+    const el = document.createElement('div');
+    el.className = 'bubble user';
+    el.textContent = text;
+    messagesEl.appendChild(el);
+    scrollBottom();
+  }
+
+  function appendTanya(text, emotion, convId) {
+    let el = lastTanyaBubble;
+    if (isStreaming && el) {
+      // 스트리밍 종료 시 최종 텍스트 보정
+      el.dataset.rawText = text;
+      renderMessageContent(el, text);
+      isStreaming = false;
+    } else {
+      if (lastFeedbackRow) lastFeedbackRow.style.display = 'none';
+      el = document.createElement('div');
+      el.className = 'bubble tanya';
+      el.dataset.rawText = text;
+      renderMessageContent(el, text);
+      messagesEl.appendChild(el);
+      lastTanyaBubble = el;
+    }
+
+    let row = null;
+    if (convId && convId > 0) {
+      row = document.createElement('div');
+      row.className = 'feedback-row';
+
+      const likeBtn = makeFeedbackBtn('👍', 'up', convId, row);
+      const dislikeBtn = makeFeedbackBtn('👎', 'down', convId, row);
+      row.appendChild(likeBtn);
+      row.appendChild(dislikeBtn);
+      el.appendChild(row);
+      lastConvId = convId;
+    }
+
+    messagesEl.appendChild(el);
+    scrollBottom();
+
+    lastTanyaBubble = el;
+    lastFeedbackRow = row;
+
+    if (emotion) updateEmotion(emotion);
+  }
+
+  function renderMessageContent(bubble, text) {
+    let content = bubble.querySelector(':scope > .message-content');
+    if (!content) {
+      content = document.createElement('div');
+      content.className = 'message-content';
+      bubble.prepend(content);
+    }
+    content.replaceChildren();
+
+    const fencePattern = /```([\w+-]*)\n([\s\S]*?)```/g;
+    let cursor = 0;
+    let match;
+    while ((match = fencePattern.exec(text)) !== null) {
+      if (match.index > cursor) {
+        content.appendChild(document.createTextNode(text.slice(cursor, match.index)));
+      }
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      if (match[1]) {
+        const language = document.createElement('span');
+        language.className = 'code-language';
+        language.textContent = match[1];
+        pre.appendChild(language);
+      }
+      code.textContent = match[2];
+      pre.appendChild(code);
+      content.appendChild(pre);
+      cursor = fencePattern.lastIndex;
+    }
+    if (cursor < text.length) {
+      content.appendChild(document.createTextNode(text.slice(cursor)));
+    }
+  }
+
+  function makeFeedbackBtn(label, rating, convId, row) {
+    const btn = document.createElement('button');
+    btn.className = 'feedback-btn';
+    btn.textContent = label;
+    btn.onclick = () => {
+      const id = convId > 0 ? convId : lastConvId;
+      if (id <= 0) return;
+      sendFeedback(id, rating);
+      // 버튼 시각 피드백
+      row.querySelectorAll('.feedback-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    return btn;
+  }
+
+  function updateEmotion(emotion) {
+    emotionBadge.textContent = emotion;
+
+    const colorMap = {
+      happy:       '#ffcc44',
+      excited:     '#ff8844',
+      affectionate:'#ff66cc',
+      sad:         '#6699ff',
+      worried:     '#ffaa44',
+      annoyed:     '#ff4444',
+      neutral:     '#aaaaff',
+    };
+    emotionBadge.style.color = colorMap[emotion] ?? '#aaaaff';
+  }
+
+  // ── 승인 요청 팝업 ───────────────────────────────────────────────────────
+  function handleApprovalRequired(payload) {
+    const { skill, reason, approval_token } = payload ?? {};
+    const ok = confirm(
+      `타냐가 위험한 스킬 실행을 요청합니다.\n\n` +
+      `스킬: ${skill}\n이유: ${reason}\n\n` +
+      `승인하시겠습니까?`
+    );
+    if (ok && approval_token) {
+      ws.send(JSON.stringify({
+        id: crypto.randomUUID(),
+        type: 'req',
+        action: 'approve',
+        payload: { approval_token },
+      }));
+    }
+  }
+
+  // ── 피드백 API ────────────────────────────────────────────────────────────
+  async function sendFeedback(convId, rating) {
+    try {
+      await fetch(`${API_URL}/feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conv_id: convId, rating }),
+      });
+    } catch (e) {
+      console.warn('[타냐] 피드백 전송 실패:', e);
+    }
+  }
+
+  // ── 전송 ─────────────────────────────────────────────────────────────────
+  function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text || !ws || ws.readyState !== WebSocket.OPEN) return;
+
+    appendUser(text);
+    inputEl.value = '';
+    inputEl.style.height = '44px';
+
+    // 레거시 포맷으로 전송 (서버가 자동 판별)
+    ws.send(JSON.stringify({ type: 'text', content: text }));
+  }
+
+  sendBtn.onclick = sendMessage;
+
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // 자동 높이 조절
+  inputEl.addEventListener('input', () => {
+    inputEl.style.height = '44px';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+  });
+
+  function scrollBottom() {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  // ── LLM 설정 ─────────────────────────────────────────────────────────────
+  function profileFromForm(role) {
+    return {
+      provider: document.getElementById(`${role}-provider`).value,
+      model: document.getElementById(`${role}-model`).value.trim(),
+      base_url: document.getElementById(`${role}-base-url`).value.trim(),
+      api_key: document.getElementById(`${role}-api-key`).value.trim(),
+    };
+  }
+
+  function fillProfile(role, profile) {
+    document.getElementById(`${role}-provider`).value = profile.provider;
+    document.getElementById(`${role}-model`).value = profile.model ?? '';
+    document.getElementById(`${role}-base-url`).value = profile.base_url ?? '';
+    document.getElementById(`${role}-api-key`).value = '';
+  }
+
+  async function loadLLMSettings() {
+    const token = document.getElementById('admin-token').value.trim();
+    if (!token) return;
+    const response = await fetch(`${API_URL}/settings/llm`, {
+      headers: { 'X-Tanya-Admin-Token': token },
+    });
+    if (response.status === 404) return;
+    if (!response.ok) throw new Error((await response.json()).detail ?? '설정을 불러오지 못했습니다.');
+    const profiles = await response.json();
+    fillProfile('casual', profiles.casual);
+    fillProfile('task', profiles.task);
+  }
+
+  document.getElementById('settings-btn').onclick = async () => {
+    settingsMessage.textContent = '';
+    settingsModal.classList.add('open');
+    document.getElementById('admin-token').value = sessionStorage.getItem('tanyaAdminToken') ?? '';
+    try {
+      await loadLLMSettings();
+    } catch (error) {
+      settingsMessage.textContent = error.message;
+    }
+  };
+
+  document.getElementById('settings-close').onclick = () => settingsModal.classList.remove('open');
+
+  document.getElementById('settings-save').onclick = async () => {
+    const token = document.getElementById('admin-token').value.trim();
+    if (!token) {
+      settingsMessage.textContent = '관리 토큰을 입력하세요.';
+      return;
+    }
+    sessionStorage.setItem('tanyaAdminToken', token);
+    settingsMessage.textContent = '저장 중...';
+    try {
+      const response = await fetch(`${API_URL}/settings/llm`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Tanya-Admin-Token': token,
+        },
+        body: JSON.stringify({
+          casual: profileFromForm('casual'),
+          task: profileFromForm('task'),
+        }),
+      });
+      if (!response.ok) throw new Error((await response.json()).detail ?? '저장하지 못했습니다.');
+      settingsMessage.textContent = '저장했습니다. Brain을 재시작하면 적용됩니다.';
+    } catch (error) {
+      settingsMessage.textContent = error.message;
+    }
+  };
+
+  // ── 시작 ─────────────────────────────────────────────────────────────────
+  connect();
+</script>
+</body>
+</html>

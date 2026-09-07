@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "useDefineForClassFields": false,
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "useUnknownInCatchVariables": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "live2dcubismcore.d.ts"]
+}
