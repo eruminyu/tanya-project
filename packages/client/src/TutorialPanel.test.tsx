@@ -50,7 +50,7 @@ function withPhase(phase: NonNullable<TutorialState["snapshot"]>["phase"]): Tuto
 
 function calendarApproval(): TutorialApproval {
   const fields = {
-    title: "Tanya 해커톤 준비 점검",
+    title: "Kirian 해커톤 준비 점검",
     startAt: "2099-09-03T21:10:00+09:00",
     endAt: "2099-09-03T21:40:00+09:00",
     timeZone: "Asia/Seoul",
@@ -159,7 +159,7 @@ function activeReceipt(): TutorialReceipt {
       calendar: {
         ...receipt.google.calendar!,
         sentFields: {
-          title: "Tanya 해커톤 준비 점검",
+          title: "Kirian 해커톤 준비 점검",
           startAt: "2099-09-03T21:10:00+09:00",
           endAt: "2099-09-03T21:40:00+09:00",
           timeZone: "Asia/Seoul",
@@ -194,7 +194,7 @@ describe("단일 TutorialPanel", () => {
   it("Google 승인 전에 정확한 필드·실행 주체·자동 삭제 정책을 보이고 token은 숨긴다", () => {
     const html = renderPanel({ ...withPhase("calendar_pending"), approval: calendarApproval() });
     expect(html).toContain("아직 Google에는 변경이 없습니다");
-    expect(html).toContain("Tanya 해커톤 준비 점검");
+    expect(html).toContain("Kirian 해커톤 준비 점검");
     expect(html).toContain("Asia/Seoul");
     expect(html).toContain("공용 데모 Brain → Google 공용 데모 계정");
     expect(html).toContain("성공하면 30분 뒤 자동 삭제");
@@ -206,7 +206,7 @@ describe("단일 TutorialPanel", () => {
     expect(html).toContain("Request ID");
     // T-050: 버튼이 무엇을 승인하는지 말해야 한다.
     expect(html).toContain("이 일정 만들기");
-    expect(html).toContain("Google 캘린더 일정 «Tanya 해커톤 준비 점검»");
+    expect(html).toContain("Google 캘린더 일정 «Kirian 해커톤 준비 점검»");
     expect(html).not.toContain("must-never-be-rendered");
   });
 
@@ -252,7 +252,7 @@ describe("단일 TutorialPanel", () => {
     expect(html).toContain("Operation ID");
     expect(html).toContain("VM 기억 삭제 후 제거됨");
     expect(html).not.toContain("승인한 응답 설정");
-    expect(html).not.toContain("Tanya 해커톤 준비 점검");
+    expect(html).not.toContain("Kirian 해커톤 준비 점검");
   });
 
   it("삭제 전 영수증 상세에 실제 요청 식별자와 전송 필드를 표시한다", () => {
@@ -262,7 +262,7 @@ describe("단일 TutorialPanel", () => {
     expect(html).toContain("Google 요청·전송 상세");
     expect(html).toContain(REQUEST_ID);
     expect(html).toContain("calendar-resource-1");
-    expect(html).toContain("Tanya 해커톤 준비 점검");
+    expect(html).toContain("Kirian 해커톤 준비 점검");
     expect(html).toContain("Asia/Seoul");
     expect(html).toContain("Operation ID");
     expect(html).toContain("답변에 사용된 실제 source");
@@ -387,7 +387,7 @@ describe("T-037 내 캘린더로 복사", () => {
           providerId: "provider-abc",
           status,
           sentFields: sent
-            ? { title: "Tanya 해커톤 준비 점검", startAt: "2026-09-07T15:00:00+09:00", endAt: "2026-09-07T16:00:00+09:00", timeZone: "Asia/Seoul" }
+            ? { title: "Kirian 해커톤 준비 점검", startAt: "2026-09-07T15:00:00+09:00", endAt: "2026-09-07T16:00:00+09:00", timeZone: "Asia/Seoul" }
             : null,
           createdAt: "2026-09-07T05:00:00Z",
           cleanupDueAt: "2026-09-07T05:30:00Z",
@@ -480,3 +480,4 @@ describe("T-052 입력 도움과 선택 흐름", () => {
     expect(html).toContain("1 / 4");
   });
 });
+

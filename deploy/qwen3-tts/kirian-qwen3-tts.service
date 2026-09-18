@@ -1,0 +1,43 @@
+[Unit]
+Description=Kirian Qwen3-TTS preset voice (Sohee, loopback only)
+After=network.target
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=kirian
+Group=kirian
+WorkingDirectory=/home/kirian/tts/qwen3-tts
+EnvironmentFile=/home/kirian/tts/qwen3-tts/qwen3-tts.env
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=HF_HOME=/home/kirian/tts/qwen3-tts/hf
+Environment=HF_HUB_OFFLINE=1
+Environment=TRANSFORMERS_OFFLINE=1
+Environment=XDG_CACHE_HOME=/tmp/cache
+Environment=TRITON_CACHE_DIR=/tmp/triton
+Environment=TORCHINDUCTOR_CACHE_DIR=/tmp/torchinductor
+ExecStartPre=/bin/sh -c '/bin/mkdir -p /tmp/cache /tmp/triton /tmp/torchinductor'
+ExecStart=/home/kirian/.venvs/kirian-qwen3-tts/bin/python -X utf8 /home/kirian/tts/qwen3-tts/server.py
+ExecStartPost=/bin/sh -c 'for attempt in $(seq 1 180); do /usr/bin/kill -0 "$MAINPID" || exit 1; /usr/bin/curl --fail --silent http://127.0.0.1:19882/health >/dev/null && exit 0; /bin/sleep 1; done; exit 1'
+TimeoutStartSec=240
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=30
+KillSignal=SIGINT
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

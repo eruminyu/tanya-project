@@ -105,7 +105,7 @@ class FakeRepository:
         return [
             deepcopy(doc)
             for doc in self.docs.values()
-            if doc.get("type") == "tanya_public_memory_capsule_v1"
+            if doc.get("type") == "kirian_public_memory_capsule_v1"
             and doc.get("owner_hash") == owner_hash
         ]
 
@@ -113,7 +113,7 @@ class FakeRepository:
         return [
             deepcopy(doc)
             for doc in self.docs.values()
-            if doc.get("type") == "tanya_public_memory_capsule_v1"
+            if doc.get("type") == "kirian_public_memory_capsule_v1"
             and isinstance(doc.get("expires_at_epoch"), (int, float))
             and doc["expires_at_epoch"] <= now_epoch
         ][:limit]
@@ -309,7 +309,7 @@ async def test_malformed_or_ttl_abuse_document_is_not_indexed_or_deleted(capsule
     malicious = {
         "_id": "memory-capsule-" + "x" * 32,
         "_rev": "1-malicious",
-        "type": "tanya_public_memory_capsule_v1",
+        "type": "kirian_public_memory_capsule_v1",
         "owner_hash": owner,
         "generation": "a" * 32,
         "preparation_minutes": 20,

@@ -293,7 +293,7 @@ async def lifespan(app: FastAPI):
         _memory_store.close()
 
 
-app = FastAPI(title="Tanya Brain - AI Companion OS", lifespan=lifespan)
+app = FastAPI(title="Kirian Brain - AI Companion OS", lifespan=lifespan)
 
 _cors_origins = settings.cors_origins if settings.cors_origins else ["*"]
 app.add_middleware(
@@ -360,7 +360,7 @@ def webchat_ui():
 
 def _status_payload():
     return {
-        "status": "Tanya Brain is running",
+        "status": "Kirian Brain is running",
         "model": settings.local_llm_model,
         "llm_provider": settings.llm_provider,
         "brain_port": settings.port,

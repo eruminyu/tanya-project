@@ -15,13 +15,13 @@ import type { TutorialCalendarFields, TutorialReceiptGoogleAction } from "./tuto
  * description이 없다. 없는 서버 데이터를 추측해 채우지 않는다. 덕분에 내부 식별자가
  * 섞여 들어갈 여지도 사라진다.
  */
-export const HANDOFF_DESCRIPTION = "Tanya 공개 체험에서 만든 일정을 내 캘린더로 복사했습니다.";
+export const HANDOFF_DESCRIPTION = "Kirian 공개 체험에서 만든 일정을 내 캘린더로 복사했습니다.";
 
 /** 사용자에게 반드시 보여줘야 하는 문구. 복사본의 수명을 오해하면 안 된다. */
 export const HANDOFF_NOTICES = [
   "공용 데모 계정의 일정은 30분 뒤 자동으로 삭제됩니다.",
   "아래 선택지는 같은 내용을 내 캘린더로 복사합니다.",
-  "복사한 일정은 내 캘린더에 남습니다. Tanya가 지우지 않으니 직접 삭제해 주세요.",
+  "복사한 일정은 내 캘린더에 남습니다. Kirian이 지우지 않으니 직접 삭제해 주세요.",
   "저장과 알림은 내 캘린더 앱에서 최종 확정됩니다.",
 ] as const;
 
@@ -108,7 +108,7 @@ function createUid(): string {
   const random = typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
     ? crypto.randomUUID()
     : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-  return `${random}@tanya.local`;
+  return `${random}@kirian.local`;
 }
 
 export function buildCalendarIcs(handoff: CalendarHandoff, now = new Date()): string {
@@ -116,7 +116,7 @@ export function buildCalendarIcs(handoff: CalendarHandoff, now = new Date()): st
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Tanya//public demo handoff//KO",
+    "PRODID:-//Kirian//public demo handoff//KO",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
@@ -151,5 +151,5 @@ export function buildGoogleCalendarUrl(handoff: CalendarHandoff): string {
 
 /** 파일명. 사용자에게 보이는 값이라 식별자를 넣지 않는다. */
 export function icsFileName(): string {
-  return "tanya-demo-event.ics";
+  return "kirian-demo-event.ics";
 }

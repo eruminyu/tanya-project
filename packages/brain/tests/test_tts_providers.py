@@ -80,7 +80,7 @@ class TestFishSpeechProvider:
     async def test_generate_posts_json_and_returns_base64_audio(self):
         provider = FishSpeechProvider(
             "http://127.0.0.1:8080/v1/tts",
-            reference_id="tanya",
+            reference_id="kirian",
             timeout_seconds=12.0,
         )
         with patch("core.providers.fish_speech_provider.requests.post") as mock_post:
@@ -95,7 +95,7 @@ class TestFishSpeechProvider:
                 "text": "안녕하세요",
                 "format": "wav",
                 "streaming": False,
-                "reference_id": "tanya",
+                "reference_id": "kirian",
             },
             timeout=12.0,
         )
@@ -200,7 +200,7 @@ class TestGptSovitsProvider:
     def test_provider_name(self):
         provider = GptSovitsProvider(
             "http://127.0.0.1:9881/tts",
-            "/opt/gpt-sovits/ref_audio/ref_affection.wav",
+            "/home/kirian/tts/gpt-sovits-cpufast/ref_audio/ref_affection.wav",
             "자기야, 오늘도 진짜 수고 많았어. 푹 쉬어.",
         )
         assert provider.provider_name == "gpt-sovits-cpufast"
@@ -222,7 +222,7 @@ class TestGptSovitsProvider:
     async def test_generate_posts_korean_v2pro_payload_and_returns_base64_wav(self):
         provider = GptSovitsProvider(
             "http://127.0.0.1:9881/tts",
-            "/opt/demo/ref.wav",
+            "/home/kirian/ref.wav",
             "자기야, 푹 쉬어.",
             timeout_seconds=45.0,
             seed=12345,
@@ -238,7 +238,7 @@ class TestGptSovitsProvider:
             json={
                 "text": "오늘도 수고했어.",
                 "text_lang": "ko",
-                "ref_audio_path": "/opt/demo/ref.wav",
+                "ref_audio_path": "/home/kirian/ref.wav",
                 "prompt_text": "자기야, 푹 쉬어.",
                 "prompt_lang": "ko",
                 "text_split_method": "cut5",
@@ -281,7 +281,7 @@ class TestGptSovitsProvider:
         )
         provider = GptSovitsProvider(
             "http://127.0.0.1:9881/tts",
-            "/opt/demo/ref_audio/ref_affection.wav",
+            "/home/kirian/ref_audio/ref_affection.wav",
             "자기야, 푹 쉬어.",
             reference_metadata_path=str(metadata_path),
         )
@@ -322,7 +322,7 @@ class TestTTSManager:
             settings.tts_provider = "fish-speech"
             settings.tts_voice = "ko-KR-SunHiNeural"
             settings.fish_speech_url = "http://127.0.0.1:8080/v1/tts"
-            settings.fish_speech_reference_id = "tanya"
+            settings.fish_speech_reference_id = "kirian"
             settings.fish_speech_timeout_seconds = 30.0
             mock_settings.return_value = settings
 
@@ -353,11 +353,11 @@ class TestTTSManager:
             settings.tts_provider = "gpt-sovits-cpufast"
             settings.tts_voice = "ko-KR-SunHiNeural"
             settings.gpt_sovits_url = "http://127.0.0.1:9881/tts"
-            settings.gpt_sovits_reference_audio_path = "/opt/demo/ref.wav"
+            settings.gpt_sovits_reference_audio_path = "/home/kirian/ref.wav"
             settings.gpt_sovits_prompt_text = "자기야, 푹 쉬어."
             settings.gpt_sovits_timeout_seconds = 45.0
             settings.gpt_sovits_seed = 12345
-            settings.gpt_sovits_reference_metadata_path = "/opt/demo/meta.json"
+            settings.gpt_sovits_reference_metadata_path = "/home/kirian/meta.json"
             mock_settings.return_value = settings
 
             with patch.object(GptSovitsProvider, "is_available", return_value=True):
@@ -372,7 +372,7 @@ class TestTTSManager:
             settings.tts_provider = "fish-speech"
             settings.tts_voice = "ko-KR-SunHiNeural"
             settings.fish_speech_url = "http://127.0.0.1:8080/v1/tts"
-            settings.fish_speech_reference_id = "tanya"
+            settings.fish_speech_reference_id = "kirian"
             settings.fish_speech_timeout_seconds = 30.0
             mock_settings.return_value = settings
 
@@ -405,7 +405,7 @@ class TestGptSovitsSilentFailure:
     2026-09-06 GPU 전환 작업 중 GPT-SoVITS가 내부 예외로 실패했는데도
     HTTP 200과 함께 JSON 오류 본문 또는 전부 0인 PCM WAV를 돌려줬다.
     기존 `if not content` 검사는 둘 다 통과시켜, 오류 로그도 없이
-    타냐가 말을 하지 않는 것처럼 보였다.
+    키리안이 말을 하지 않는 것처럼 보였다.
     """
 
     @staticmethod

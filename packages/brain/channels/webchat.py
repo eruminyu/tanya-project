@@ -522,12 +522,12 @@ class WebChatChannel(Channel):
                             "event": "error",
                             "payload": {"message": str(data)},
                         }, ensure_ascii=False))
-
+                
                 if scheduler is not None:
                     scheduler.update_last_conversation(session_key=self._session_key)
 
                 # Google 승인/거절은 Agent Dock 상태만 바꾼다. 빈 대화 응답을 추가하면
-                # 브라우저에 내용 없는 타냐 메시지가 생기므로 최종 response를 보내지 않는다.
+                # 브라우저에 내용 없는 키리안 메시지가 생기므로 최종 response를 보내지 않는다.
                 if raw_data.get("action") in {
                     "google_write_approve",
                     "google_write_reject",
@@ -545,7 +545,7 @@ class WebChatChannel(Channel):
                 }
                 if conv_id is not None:
                     payload["conv_id"] = conv_id
-
+                
                 await websocket.send_text(json.dumps(payload, ensure_ascii=False))
 
         except WebSocketDisconnect:

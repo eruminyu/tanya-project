@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { calculateCanvasSize } from "./cubism-layout";
-import type { CubismStageController } from "./cubism-renderer";
-import { loadLive2DRenderer } from "./live2d-runtime";
+import { createCubismStage, type CubismStageController } from "./cubism-renderer";
 import type { Live2DEmotion } from "./live2d-emotion";
 import { INITIAL_LIVE2D_LOAD_PROGRESS, type Live2DLoadProgress } from "./live2d-loading";
-import { configuredLive2DManifest, type Live2DModelManifest } from "./live2d-model";
+import { kirianManifest, type Live2DModelManifest } from "./live2d-model";
 import { Live2DLoadingIndicator } from "./Live2DLoadingIndicator";
 import type { GazePoint } from "./gaze-tracking";
 import type { Live2DFraming } from "./live2d-framing";
@@ -20,8 +19,7 @@ interface Live2DStageProps {
   showFirstLoadGuidance?: boolean;
 }
 
-export function Live2DStage({ emotion, mouthOpen, gaze, framing, manifest = configuredLive2DManifest, showFirstLoadGuidance = false }: Live2DStageProps) {
-  const hasModel = Boolean(manifest.modelUrl.trim());
+export function Live2DStage({ emotion, mouthOpen, gaze, framing, manifest = kirianManifest, showFirstLoadGuidance = false }: Live2DStageProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controllerRef = useRef<CubismStageController | null>(null);
@@ -54,7 +52,6 @@ export function Live2DStage({ emotion, mouthOpen, gaze, framing, manifest = conf
   }, [framing]);
 
   useEffect(() => {
-    if (!hasModel) return;
     const host = hostRef.current;
     const canvas = canvasRef.current;
     if (!host || !canvas) return;
@@ -84,9 +81,7 @@ export function Live2DStage({ emotion, mouthOpen, gaze, framing, manifest = conf
 
     async function initialize() {
       try {
-        const renderer = await loadLive2DRenderer(manifest.modelUrl);
-        if (disposed || !renderer) return;
-        const initializedController = await renderer.createCubismStage(canvasElement, manifest, (nextProgress) => {
+        const initializedController = await createCubismStage(canvasElement, manifest, (nextProgress) => {
           if (!disposed) setProgress(nextProgress);
         });
         if (disposed) {
@@ -114,28 +109,21 @@ export function Live2DStage({ emotion, mouthOpen, gaze, framing, manifest = conf
       if (controllerRef.current === controller) controllerRef.current = null;
       controller?.destroy();
     };
-  }, [manifest, hasModel]);
+  }, [manifest]);
 
   return (
     <div ref={hostRef} className="live2d-stage">
-      {hasModel && <canvas ref={canvasRef} aria-label={`${manifest.displayName} Live2D 모델`} />}
-      {!hasModel && (
-        <div className="model-state" role="status">
-          <strong>Live2D 모델 미설치</strong>
-          <small>채팅·튜토리얼·승인 UI는 계속 사용할 수 있습니다.</small>
-        </div>
-      )}
-      {hasModel && state === "loading" && (showFirstLoadGuidance
+      <canvas ref={canvasRef} aria-label={`${manifest.displayName} Live2D 모델`} />
+      {state === "loading" && (showFirstLoadGuidance
         ? <Live2DLoadingIndicator progress={progress} />
         : <p className="model-state">Live2D 모델 불러오는 중…</p>)}
-      {hasModel && state === "error" && (
+      {state === "error" && (
         <div className="model-state error" role="alert">
-          <strong>Live2D 표시를 사용할 수 없습니다</strong>
-          <small>채팅·튜토리얼·승인 UI는 계속 사용할 수 있습니다.</small>
+          <strong>Live2D 모델 로딩 실패</strong>
           <small>{error}</small>
         </div>
       )}
-      {hasModel && state === "ready" && <span className="model-ready">Live2D ready</span>}
+      {state === "ready" && <span className="model-ready">Live2D ready</span>}
     </div>
   );
 }

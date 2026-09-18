@@ -33,11 +33,11 @@ describe("Brain URL 검증", () => {
   it("주소 형식이 아니면 거부한다", () => {
     expect(validateBrainUrl("hello")).toEqual({ ok: false, reason: "malformed" });
     expect(validateBrainUrl("http://")).toEqual({ ok: false, reason: "malformed" });
-    expect(validateBrainUrl("192.168.10.20:8098")).toEqual({ ok: false, reason: "malformed" });
+    expect(validateBrainUrl("<lan-host>:8098")).toEqual({ ok: false, reason: "malformed" });
   });
 
   it("http와 https가 아닌 스킴을 거부한다", () => {
-    expect(validateBrainUrl("ws://192.168.10.20:8098")).toEqual({ ok: false, reason: "unsupported-protocol" });
+    expect(validateBrainUrl("ws://<lan-host>:8098")).toEqual({ ok: false, reason: "unsupported-protocol" });
     expect(validateBrainUrl("javascript:alert(1)")).toEqual({ ok: false, reason: "unsupported-protocol" });
   });
 
@@ -46,8 +46,8 @@ describe("Brain URL 검증", () => {
   });
 
   it("유효한 주소는 정규화해서 돌려준다", () => {
-    expect(validateBrainUrl("  http://192.168.10.20:8098  ")).toEqual({ ok: true, url: "http://192.168.10.20:8098" });
-    expect(validateBrainUrl("http://192.168.10.20:8098///")).toEqual({ ok: true, url: "http://192.168.10.20:8098" });
+    expect(validateBrainUrl("  http://<lan-host>:8098  ")).toEqual({ ok: true, url: "http://<lan-host>:8098" });
+    expect(validateBrainUrl("http://<lan-host>:8098///")).toEqual({ ok: true, url: "http://<lan-host>:8098" });
     expect(validateBrainUrl("HTTP://Brain.Local:8098/")).toEqual({ ok: true, url: "http://brain.local:8098" });
   });
 
@@ -58,7 +58,7 @@ describe("Brain URL 검증", () => {
 
 describe("Brain URL 안전 복원", () => {
   it("유효한 값은 정규화한 그대로 사용한다", () => {
-    expect(resolveBrainUrl("http://192.168.10.20:8098/")).toBe("http://192.168.10.20:8098");
+    expect(resolveBrainUrl("http://<lan-host>:8098/")).toBe("http://<lan-host>:8098");
   });
 
   it("잘못된 값은 기본값으로 되돌린다", () => {
@@ -74,15 +74,15 @@ describe("Brain URL 안전 복원", () => {
 
 describe("진단 대상 주소", () => {
   it("웹 클라이언트와 충돌하지 않는 상태 API를 진단에 사용한다", () => {
-    expect(toDiagnosisUrl("http://192.168.10.20:8098")).toBe("http://192.168.10.20:8098/api/status");
-    expect(toDiagnosisUrl("http://192.168.10.20:8098/")).toBe("http://192.168.10.20:8098/api/status");
+    expect(toDiagnosisUrl("http://<lan-host>:8098")).toBe("http://<lan-host>:8098/api/status");
+    expect(toDiagnosisUrl("http://<lan-host>:8098/")).toBe("http://<lan-host>:8098/api/status");
   });
 });
 
 describe("Brain 정보 요약", () => {
   it("켜진 기능과 꺼진 기능을 한국어로 나눈다", () => {
     const summary = summarizeBrainInfo({
-      status: "Tanya Brain is running",
+      status: "Kirian Brain is running",
       model: "qwen2.5:7b",
       llm_provider: "ollama",
       features: { persona: true, memory: true, emotion: true, proactive: false, stt: true },
@@ -117,9 +117,9 @@ describe("Brain 연결 진단", () => {
   });
 
   it("정상 응답이면 Brain 요약을 담아 성공으로 본다", async () => {
-    const result = await runBrainDiagnosis("http://192.168.10.20:8098", {
+    const result = await runBrainDiagnosis("http://<lan-host>:8098", {
       fetchImpl: async (input) => {
-        expect(String(input)).toBe("http://192.168.10.20:8098/api/status");
+        expect(String(input)).toBe("http://<lan-host>:8098/api/status");
         return jsonResponse(200, { model: "qwen2.5:7b", llm_provider: "ollama", features: { memory: true } });
       },
     });
@@ -132,7 +132,7 @@ describe("Brain 연결 진단", () => {
   });
 
   it("응답 본문을 읽지 못해도 성공 판정은 유지한다", async () => {
-    const result = await runBrainDiagnosis("http://192.168.10.20:8098", {
+    const result = await runBrainDiagnosis("http://<lan-host>:8098", {
       fetchImpl: async () => ({ ok: true, status: 200, json: async () => { throw new Error("not json"); } } as unknown as Response),
     });
 
@@ -140,15 +140,15 @@ describe("Brain 연결 진단", () => {
   });
 
   it("HTTP 오류는 상태 코드와 함께 구분한다", async () => {
-    const notFound = await runBrainDiagnosis("http://192.168.10.20:8098", { fetchImpl: async () => jsonResponse(404, {}) });
-    const serverError = await runBrainDiagnosis("http://192.168.10.20:8098", { fetchImpl: async () => jsonResponse(500, {}) });
+    const notFound = await runBrainDiagnosis("http://<lan-host>:8098", { fetchImpl: async () => jsonResponse(404, {}) });
+    const serverError = await runBrainDiagnosis("http://<lan-host>:8098", { fetchImpl: async () => jsonResponse(500, {}) });
 
     expect(notFound).toEqual({ kind: "http-error", status: 404 });
     expect(serverError).toEqual({ kind: "http-error", status: 500 });
   });
 
   it("연결 자체가 실패하면 네트워크 오류로 구분한다", async () => {
-    const result = await runBrainDiagnosis("http://192.168.10.20:8098", {
+    const result = await runBrainDiagnosis("http://<lan-host>:8098", {
       fetchImpl: async () => { throw new TypeError("Failed to fetch"); },
     });
 
@@ -156,7 +156,7 @@ describe("Brain 연결 진단", () => {
   });
 
   it("응답이 오지 않으면 타임아웃으로 구분한다", async () => {
-    const result = await runBrainDiagnosis("http://192.168.10.20:8098", {
+    const result = await runBrainDiagnosis("http://<lan-host>:8098", {
       timeoutMs: 5_000,
       fetchImpl: async () => { throw abortError(); },
     });
@@ -166,7 +166,7 @@ describe("Brain 연결 진단", () => {
 
   it("중단 신호를 fetch에 전달한다", async () => {
     let received: AbortSignal | undefined;
-    await runBrainDiagnosis("http://192.168.10.20:8098", {
+    await runBrainDiagnosis("http://<lan-host>:8098", {
       fetchImpl: async (_input, init) => { received = init?.signal ?? undefined; return jsonResponse(200, {}); },
     });
 

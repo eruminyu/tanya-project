@@ -2,15 +2,15 @@ import type { LlmRoute } from "./brain";
 
 export interface ConversationMessage {
   id: string;
-  role: "user" | "tanya";
+  role: "user" | "kirian";
   text: string;
   route?: LlmRoute;
 }
 
 export type WhisperSide = "left" | "right";
 
-export function latestTanyaMessage(messages: readonly ConversationMessage[]): ConversationMessage | undefined {
-  return [...messages].reverse().find((message) => message.role === "tanya");
+export function latestKirianMessage(messages: readonly ConversationMessage[]): ConversationMessage | undefined {
+  return [...messages].reverse().find((message) => message.role === "kirian");
 }
 
 export function shouldCollapseWhisper(text: string, limit = 240): boolean {

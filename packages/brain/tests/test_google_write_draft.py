@@ -90,7 +90,7 @@ async def test_draft_extraction_never_takes_the_classified_route():
 
 def test_draft_prompt_would_be_classified_as_task():
     """왜 고정이 필요한지 — 이 프롬프트는 분류기가 TASK로 보낸다."""
-    from core.mode import ModeClassifier, TanyaMode
+    from core.mode import ModeClassifier, KirianMode
 
     llm = FakeLlm("")
     extractor = GoogleWriteDraftExtractor(llm)
@@ -99,4 +99,4 @@ def test_draft_prompt_would_be_classified_as_task():
     )
 
     assert len(prompt) > 100, "길이만으로도 TASK 임계값을 넘는다"
-    assert ModeClassifier().classify(prompt) is TanyaMode.TASK
+    assert ModeClassifier().classify(prompt) is KirianMode.TASK

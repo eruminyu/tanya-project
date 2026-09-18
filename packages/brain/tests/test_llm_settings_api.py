@@ -65,7 +65,7 @@ class TestLLMSettingsAPI:
 
         response = client.put(
             "/settings/llm",
-            headers={"X-Tanya-Admin-Token": "anything"},
+            headers={"X-Kirian-Admin-Token": "anything"},
             json=_profiles().model_dump(),
         )
 
@@ -77,7 +77,7 @@ class TestLLMSettingsAPI:
 
         response = client.put(
             "/settings/llm",
-            headers={"X-Tanya-Admin-Token": "admin-token"},
+            headers={"X-Kirian-Admin-Token": "admin-token"},
             json=_profiles().model_dump(),
         )
 
@@ -90,7 +90,7 @@ class TestLLMSettingsAPI:
 
         response = client.put(
             "/settings/llm",
-            headers={"X-Tanya-Admin-Token": "admin-token"},
+            headers={"X-Kirian-Admin-Token": "admin-token"},
             json=_profiles().model_dump(),
         )
 
@@ -106,7 +106,7 @@ class TestLLMSettingsAPI:
 
         response = client.get(
             "/settings/llm",
-            headers={"X-Tanya-Admin-Token": "admin-token"},
+            headers={"X-Kirian-Admin-Token": "admin-token"},
         )
 
         assert response.status_code == 200
@@ -124,7 +124,7 @@ class TestLLMSettingsAPI:
 
         response = client.put(
             "/settings/llm",
-            headers={"X-Tanya-Admin-Token": "admin-token"},
+            headers={"X-Kirian-Admin-Token": "admin-token"},
             json=updated.model_dump(),
         )
 

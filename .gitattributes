@@ -20,3 +20,10 @@
 *.ttf binary
 *.woff binary
 *.woff2 binary
+
+# Live2D runtime exports are verified and vendored by exact source hash.
+*.moc3 binary
+*.model3.json binary
+*.physics3.json binary
+*.cdi3.json binary
+*.motion3.json binary

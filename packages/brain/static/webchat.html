@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>타냐 WebChat</title>
+  <title>키리안 WebChat</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -91,7 +91,7 @@
       border-bottom-right-radius: 4px;
     }
 
-    .bubble.tanya {
+    .bubble.kirian {
       align-self: flex-start;
       background: #1e2a4a;
       border-bottom-left-radius: 4px;
@@ -121,7 +121,7 @@
       text-transform: uppercase;
     }
 
-    /* 좋아요/싫어요 버튼 — 마지막 타냐 말풍선에만 표시 */
+    /* 좋아요/싫어요 버튼 — 마지막 키리안 말풍선에만 표시 */
     .feedback-row {
       display: flex;
       gap: 6px;
@@ -244,7 +244,7 @@
 <div id="app">
   <div id="header">
     <div id="conn-status"></div>
-    <h1>타냐 💜</h1>
+    <h1>키리안 💜</h1>
     <button id="settings-btn" type="button">LLM 설정</button>
     <div id="emotion-badge">연결 중...</div>
   </div>
@@ -302,7 +302,7 @@
   // ── 상태 ──────────────────────────────────────────────────────────────────
   let ws = null;
   let lastConvId = -1;
-  let lastTanyaBubble = null;
+  let lastKirianBubble = null;
   let lastFeedbackRow = null;
 
   // ── DOM ───────────────────────────────────────────────────────────────────
@@ -358,50 +358,50 @@
   function handleMessage(data) {
     // 레거시 응답 (type = "response")
     if (data.type === 'response') {
-      appendTanya(data.content, data.emotion, data.conv_id);
+      appendKirian(data.content, data.emotion, data.conv_id);
       return;
     }
 
     // V2 push event
     if (data.type === 'event') {
       if (data.event === 'text_stream') {
-        streamTanya(data.payload.text);
+        streamKirian(data.payload.text);
       } else if (data.event === 'emotion_update') {
         updateEmotion(data.payload?.emotion ?? 'neutral');
       } else if (data.event === 'approval_required') {
         handleApprovalRequired(data.payload);
       } else if (data.event === 'skill_result') {
-        appendTanya('[스킬 실행 완료] ' + JSON.stringify(data.payload), null, null);
+        appendKirian('[스킬 실행 완료] ' + JSON.stringify(data.payload), null, null);
       } else if (data.event === 'error') {
-        appendTanya('[오류] ' + (data.payload?.message ?? '알 수 없는 오류'), null, null);
+        appendKirian('[오류] ' + (data.payload?.message ?? '알 수 없는 오류'), null, null);
       }
       return;
     }
 
     // V2 응답 (type = "res")
     if (data.type === 'res' && data.success && data.payload?.content) {
-      appendTanya(data.payload.content, null, data.payload.conv_id);
+      appendKirian(data.payload.content, null, data.payload.conv_id);
     }
   }
 
   let isStreaming = false;
 
   // ── 메시지 렌더링 ─────────────────────────────────────────────────────────
-  function streamTanya(text_chunk) {
+  function streamKirian(text_chunk) {
     if (!isStreaming) {
       // 스트리밍 시작 시 빈 프레임 생성
       if (lastFeedbackRow) lastFeedbackRow.style.display = 'none';
       const el = document.createElement('div');
-      el.className = 'bubble tanya';
+      el.className = 'bubble kirian';
       el.dataset.rawText = '';
       renderMessageContent(el, '');
       messagesEl.appendChild(el);
-      lastTanyaBubble = el;
+      lastKirianBubble = el;
       scrollBottom();
       isStreaming = true;
     }
-    lastTanyaBubble.dataset.rawText += text_chunk;
-    renderMessageContent(lastTanyaBubble, lastTanyaBubble.dataset.rawText);
+    lastKirianBubble.dataset.rawText += text_chunk;
+    renderMessageContent(lastKirianBubble, lastKirianBubble.dataset.rawText);
     scrollBottom();
   }
 
@@ -414,8 +414,8 @@
     scrollBottom();
   }
 
-  function appendTanya(text, emotion, convId) {
-    let el = lastTanyaBubble;
+  function appendKirian(text, emotion, convId) {
+    let el = lastKirianBubble;
     if (isStreaming && el) {
       // 스트리밍 종료 시 최종 텍스트 보정
       el.dataset.rawText = text;
@@ -424,11 +424,11 @@
     } else {
       if (lastFeedbackRow) lastFeedbackRow.style.display = 'none';
       el = document.createElement('div');
-      el.className = 'bubble tanya';
+      el.className = 'bubble kirian';
       el.dataset.rawText = text;
       renderMessageContent(el, text);
       messagesEl.appendChild(el);
-      lastTanyaBubble = el;
+      lastKirianBubble = el;
     }
 
     let row = null;
@@ -447,7 +447,7 @@
     messagesEl.appendChild(el);
     scrollBottom();
 
-    lastTanyaBubble = el;
+    lastKirianBubble = el;
     lastFeedbackRow = row;
 
     if (emotion) updateEmotion(emotion);
@@ -521,7 +521,7 @@
   function handleApprovalRequired(payload) {
     const { skill, reason, approval_token } = payload ?? {};
     const ok = confirm(
-      `타냐가 위험한 스킬 실행을 요청합니다.\n\n` +
+      `키리안이 위험한 스킬 실행을 요청합니다.\n\n` +
       `스킬: ${skill}\n이유: ${reason}\n\n` +
       `승인하시겠습니까?`
     );
@@ -544,7 +544,7 @@
         body: JSON.stringify({ conv_id: convId, rating }),
       });
     } catch (e) {
-      console.warn('[타냐] 피드백 전송 실패:', e);
+      console.warn('[키리안] 피드백 전송 실패:', e);
     }
   }
 
@@ -601,7 +601,7 @@
     const token = document.getElementById('admin-token').value.trim();
     if (!token) return;
     const response = await fetch(`${API_URL}/settings/llm`, {
-      headers: { 'X-Tanya-Admin-Token': token },
+      headers: { 'X-Kirian-Admin-Token': token },
     });
     if (response.status === 404) return;
     if (!response.ok) throw new Error((await response.json()).detail ?? '설정을 불러오지 못했습니다.');
@@ -613,7 +613,7 @@
   document.getElementById('settings-btn').onclick = async () => {
     settingsMessage.textContent = '';
     settingsModal.classList.add('open');
-    document.getElementById('admin-token').value = sessionStorage.getItem('tanyaAdminToken') ?? '';
+    document.getElementById('admin-token').value = sessionStorage.getItem('kirianAdminToken') ?? '';
     try {
       await loadLLMSettings();
     } catch (error) {
@@ -629,14 +629,14 @@
       settingsMessage.textContent = '관리 토큰을 입력하세요.';
       return;
     }
-    sessionStorage.setItem('tanyaAdminToken', token);
+    sessionStorage.setItem('kirianAdminToken', token);
     settingsMessage.textContent = '저장 중...';
     try {
       const response = await fetch(`${API_URL}/settings/llm`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-Tanya-Admin-Token': token,
+          'X-Kirian-Admin-Token': token,
         },
         body: JSON.stringify({
           casual: profileFromForm('casual'),

@@ -1,4 +1,4 @@
-"""Phase 9-A: ProactiveTriggerScheduler 단위 테스트."""
+﻿"""Phase 9-A: ProactiveTriggerScheduler 단위 테스트."""
 
 import asyncio
 from datetime import datetime, timedelta
@@ -118,11 +118,11 @@ class TestTriggerRuleABC:
 def _make_scheduler(rules=None, max_daily=5, quiet_start=2, quiet_end=7):
     mock_llm = AsyncMock()
     # ADR-0007: 선제 발화는 일상 모드 고정 경로로 나간다.
-    mock_llm.chat_casual = AsyncMock(return_value="안녕 사용자!")
+    mock_llm.chat_casual = AsyncMock(return_value="안녕 민성!")
     return ProactiveTriggerScheduler(
         rules=rules or [AlwaysFireRule()],
         llm=mock_llm,
-        persona_prompt="타냐 페르소나",
+        persona_prompt="키리안 페르소나",
         max_daily_fires=max_daily,
         quiet_start_hour=quiet_start,
         quiet_end_hour=quiet_end,
@@ -295,7 +295,7 @@ class TestSchedulerPolicies:
         fired = await scheduler._evaluate(ctx)
         assert fired
         # T-015: 발화와 함께 규칙의 문맥(offer_meta)이 넘어간다. 기본 규칙은 빈 dict.
-        send_fn.assert_called_once_with("안녕 사용자!", {})
+        send_fn.assert_called_once_with("안녕 민성!", {})
 
     @pytest.mark.asyncio
     async def test_cooldown_recorded_after_fire(self):

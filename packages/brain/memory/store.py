@@ -14,7 +14,7 @@ import sqlite_vec
 
 class MemoryStore:
     def __init__(
-        self, db_path: str = "tanya_memory.db", *, enable_capsule_tables: bool = False
+        self, db_path: str = "kirian_memory.db", *, enable_capsule_tables: bool = False
     ):
         self._db_path = db_path
         self._capsule_enabled = enable_capsule_tables
@@ -542,5 +542,5 @@ class MemoryStore:
 class MemoryCapsuleIndexStore(MemoryStore):
     """공개 캡슐 전용 SQLite 파일/connection을 명시적으로 여는 저장소."""
 
-    def __init__(self, db_path: str = "tanya_public_memory_capsules.db") -> None:
+    def __init__(self, db_path: str = "kirian_public_memory_capsules.db") -> None:
         super().__init__(db_path, enable_capsule_tables=True)

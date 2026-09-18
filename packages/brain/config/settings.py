@@ -56,40 +56,51 @@ class Settings(BaseSettings):
     # TTS - Voice
     tts_voice: str = Field(default="ko-KR-SunHiNeural")
     fish_speech_url: str = Field(default="http://127.0.0.1:8080/v1/tts")
+    # Existing external voice reference; changing the product name does not rename server assets.
     fish_speech_reference_id: str = Field(default="tanya")
     fish_speech_timeout_seconds: float = Field(default=30.0)
     aivis_speech_url: str = Field(default="http://127.0.0.1:10101")
     aivis_speech_style_id: int = Field(default=1878365379)
     aivis_speech_timeout_seconds: float = Field(default=30.0)
     gpt_sovits_url: str = Field(default="http://127.0.0.1:9881/tts")
-    gpt_sovits_reference_audio_path: str = Field(default="")
+    gpt_sovits_reference_audio_path: str = Field(
+        default=(
+            "/home/kirian/tts/gpt-sovits-cpufast/"
+            "ref_audio/ref_affection.wav"
+        )
+    )
     gpt_sovits_prompt_text: str = Field(
-        default=""
+        default="자기야, 오늘도 진짜 수고 많았어. 푹 쉬어."
     )
     gpt_sovits_timeout_seconds: float = Field(default=45.0)
     gpt_sovits_seed: int = Field(default=12345)
-    gpt_sovits_reference_metadata_path: str = Field(default="")
+    gpt_sovits_reference_metadata_path: str = Field(
+        default=(
+            "/home/kirian/tts/gpt-sovits-cpufast/"
+            "ref_audio/ref_audio_meta.json"
+        )
+    )
     tts_target_language: str = Field(default="")
 
     # Memory
     memory_short_term_max_turns: int = Field(default=20)
-    memory_db_path: str = Field(default="tanya_memory.db")
+    memory_db_path: str = Field(default="kirian_memory.db")
     enable_obsidian_sync: bool = Field(default=False)
-    couchdb_url: str = Field(default="http://127.0.0.1:5984")
+    couchdb_url: str = Field(default="http://<lan-host>:5984")
     couchdb_user: str = Field(default="")
     couchdb_password: str = Field(default="")
-    couchdb_db_name: str = Field(default="demo_notes")
+    couchdb_db_name: str = Field(default="obsidian_sync_db")
 
     # 공개 기억 캡슐. 개인 Obsidian CouchDB와 DB·SQLite 파일을 공유하지 않는다.
     enable_memory_capsule: bool = Field(default=False)
     memory_capsule_index_db_path: str = Field(
-        default="tanya_public_memory_capsules.db"
+        default="kirian_public_memory_capsules.db"
     )
     memory_capsule_couchdb_url: str = Field(default="")
     memory_capsule_couchdb_user: str = Field(default="")
     memory_capsule_couchdb_password: str = Field(default="")
     memory_capsule_couchdb_db_name: str = Field(
-        default="tanya_public_memory_capsules"
+        default="kirian_public_memory_capsules"
     )
     memory_capsule_ttl_seconds: int = Field(default=1800, ge=60, le=86400)
     memory_capsule_approval_ttl_seconds: int = Field(default=120, ge=15, le=600)
@@ -116,7 +127,7 @@ class Settings(BaseSettings):
     enable_security: bool = Field(default=False)
 
     # Security
-    security_secret_key: str = Field(default="tanya-default-secret-change-in-production")
+    security_secret_key: str = Field(default="kirian-default-secret-change-in-production")
     security_token_expires: int = Field(default=3600)  # 초
     enable_long_term_memory: bool = Field(default=False)
     enable_compaction: bool = Field(default=False)
@@ -163,18 +174,9 @@ class Settings(BaseSettings):
     # 없는 말을 지어내는 hallucination을 줄이고 처리량도 준다. 잘못 잡으면
     # 작게 시작하는 발화의 첫 음절이 잘릴 수 있어 기본값은 측정 뒤 정한다.
     stt_vad_filter: bool = Field(default=False)
-    # 공개 튜토리얼은 어휘가 고정돼 있다. 그 문장들을 decoding 힌트로 주면 인식률이
-    # 크게 오른다. 2026-09-06 실측(합성음 5문장): 힌트 없음 1/5 -> 힌트 있음 4/5.
-    # `이 1점으로 등록해줘` -> `이 일정으로 등록해줘`, `지금이자죠` -> `지금 잊어줘`가
-    # 이 힌트로 교정됐다. 일반 대화에 쓰려면 빈 값으로 두면 된다.
-    stt_initial_prompt: str = Field(
-        default=(
-            "체험 시작할게. 기본으로. 설정 미리보기. 이대로 저장해줘. "
-            "캘린더 해볼게. 건너뛸게. 이 일정으로 등록해줘. 등록하지 마. "
-            "할일도 만들어줘. 답변 보여줘. 실행 결과 보여줘. 지금 잊어줘. "
-            "알림은 10분 전. 정보는 구체적으로."
-        )
-    )
+    # 일반 대화에는 고정 문장을 기본 힌트로 넣지 않는다. 특정 어휘가 필요한
+    # 환경에서는 STT_INITIAL_PROMPT로 명시하며, 빈 값은 힌트 없음으로 전달한다.
+    stt_initial_prompt: str = Field(default="")
 
     # 웹 체험판 전용 Google 데모 계정. 개인 OAuth 토큰과 완전히 분리한다.
     enable_google_demo: bool = Field(default=False)
@@ -234,7 +236,7 @@ class Settings(BaseSettings):
                 )
         if (
             self.enable_security
-            and self.security_secret_key == "tanya-default-secret-change-in-production"
+            and self.security_secret_key == "kirian-default-secret-change-in-production"
         ):
             logger.warning(
                 "보안이 활성화되었지만 기본 시크릿 키를 사용 중입니다. "

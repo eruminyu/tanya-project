@@ -1,0 +1,65 @@
+import {test,expect,_electron as electron,type ElectronApplication} from '@playwright/test';
+import {createServer} from 'node:http';
+import {mkdir,mkdtemp,writeFile,readFile} from 'node:fs/promises';
+import {join} from 'node:path';
+import {desktopRoot,output} from './brain-fixture.js';
+
+test('설치본 내장 Brain: 독립 실행·대화·설정 검증/복원·재시작·데이터 보존·소유 종료',async()=>{
+ test.skip(!process.env.KIRIAN_PACKAGED_EXE,'내장 Python을 포함한 패키지에서만 검증');test.setTimeout(150000);
+ await mkdir(output,{recursive:true});const root=await mkdtemp(join(output,'install-runtime-')),profile=join(root,'profile');await mkdir(join(profile,'runtime'),{recursive:true});
+ const upstream=createServer(async(req,res)=>{let raw='';for await(const chunk of req)raw+=chunk;const query=JSON.parse(raw);res.setHeader('content-type','application/x-ndjson');res.end(JSON.stringify({model:query.model,message:{content:'[검증 표본] 설치본 대화 성공'},done:true})+'\n');});
+ await new Promise<void>(resolve=>upstream.listen(0,'127.0.0.1',resolve));const url='http://127.0.0.1:'+(upstream.address()as{port:number}).port;
+ const host={identity:{instance_id:'personal-v1',mode:'personal',principal_id:'owner'},bindings:[{model:{provider_id:'ollama',model_id:'fixture',endpoint_id:'local'},label:'설치 검증',kind:'ollama',url,boundary:'local'}]};
+ await writeFile(join(profile,'runtime','settings.json'),JSON.stringify({schemaVersion:1,host}));await writeFile(join(profile,'retained-marker'),'retained');
+ const nextPath=join(root,'next.json'),badPath=join(root,'bad.json');await writeFile(nextPath,JSON.stringify({...host,bindings:[{...host.bindings[0],label:'변경된 모델'}]}));await writeFile(badPath,JSON.stringify({...host,data_dir:'C:/forbidden'}));
+ async function launch(){const env={...process.env,KIRIAN_DESKTOP_TEST:'1',KIRIAN_TEST_PROFILE:profile,KIRIAN_TEST_MANAGED_BRAIN:'1',KIRIAN_PYTHON:'C:/absent/python.exe',PYTHONHOME:'C:/absent-python'};for(const key of ['ELECTRON_RUN_AS_NODE','KIRIAN_BRAIN_URL','KIRIAN_BRAIN_TOKEN','KIRIAN_RENDERER_URL'])delete env[key];
+  return electron.launch({cwd:root,args:[],executablePath:process.env.KIRIAN_PACKAGED_EXE,env,chromiumSandbox:true});}
+ const refused=async(endpoint:string)=>{try{await fetch(new URL('v1/config',endpoint),{signal:AbortSignal.timeout(500)});return false;}catch{return true;}};
+ let app:ElectronApplication|undefined,lastUrl='';
+ try{
+  app=await launch();let page=await app.firstWindow();await expect(page.getByTestId('connection-status')).toHaveText('연결됨',{timeout:30000});
+  await expect.poll(()=>page.evaluate(async()=>(await window.kirianDesktop!.getRuntime()).phase)).toBe('ready');
+  lastUrl=(await page.evaluate(()=>window.kirianDesktop!.getSnapshot())).brain.url;expect((await fetch(new URL('v1/config',lastUrl))).status).toBe(401);
+  expect(JSON.stringify(await page.evaluate(()=>window.kirianDesktop!.getRuntime()))).not.toContain('token');
+  expect(await page.evaluate(()=>window.kirianDesktop!.connectBrain({url:'http://127.0.0.1:1',token:'invalid'}))).toEqual({ok:false,code:'invalid_request'});
+  expect((await page.evaluate(()=>window.kirianDesktop!.getRuntime())).phase).toBe('ready');
+  await page.getByTestId('chat-input').fill('설치본 확인');await page.getByTestId('chat-send').click();await expect(page.getByTestId('messages')).toContainText('설치본 대화 성공');
+  await expect.poll(()=>page.evaluate(async()=>(await window.kirianDesktop!.getSnapshot()).library.available)).toBe(true);
+  expect(await page.evaluate(()=>window.kirianDesktop!.createSource({title:'보존 기억',text:'업데이트 이후에도 보존',boundary:'local'}))).toEqual({ok:true});
+  await page.getByTestId('runtime-panel').locator('summary').click();
+  await app.evaluate(({dialog},path)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[path]});dialog.showMessageBox=async()=>({response:1,checkboxChecked:false});},badPath);
+  await page.getByTestId('runtime-import').click();await expect(page.getByTestId('runtime-notice')).toContainText('설정 파일을 사용할 수 없어요');
+  expect((await page.evaluate(()=>window.kirianDesktop!.getSnapshot())).brain.url).toBe(lastUrl);
+  await app.evaluate(({dialog},path)=>{dialog.showOpenDialog=async()=>({canceled:false,filePaths:[path]});},nextPath);
+  await page.getByTestId('runtime-import').click();await expect(page.getByTestId('model-select')).toContainText('변경된 모델',{timeout:30000});
+  await expect.poll(()=>refused(lastUrl)).toBe(true);lastUrl=(await page.evaluate(()=>window.kirianDesktop!.getSnapshot())).brain.url;
+  await page.getByTestId('runtime-restore').click();await expect(page.getByTestId('model-select')).toContainText('설치 검증',{timeout:30000});
+  await expect.poll(()=>page.evaluate(async()=>(await window.kirianDesktop!.getSnapshot()).library.sources.some(s=>s.title==='보존 기억'))).toBe(true);
+  await page.getByTestId('runtime-start').click();await expect.poll(()=>refused(lastUrl)).toBe(true);await expect(page.getByTestId('runtime-status')).toHaveText('실행 중',{timeout:30000});
+  lastUrl=(await page.evaluate(()=>window.kirianDesktop!.getSnapshot())).brain.url;
+  await app.close();app=undefined;await expect.poll(()=>refused(lastUrl)).toBe(true);
+  app=await launch();page=await app.firstWindow();await expect(page.getByTestId('connection-status')).toHaveText('연결됨',{timeout:30000});
+  await expect.poll(()=>page.evaluate(async()=>(await window.kirianDesktop!.getSnapshot()).library.sources.some(s=>s.title==='보존 기억'))).toBe(true);
+  expect(await readFile(join(profile,'retained-marker'),'utf8')).toBe('retained');
+  expect((await page.evaluate(()=>window.kirianDesktop!.getProactive())).running).toBe(false);expect((await page.evaluate(()=>window.kirianDesktop!.getAutoScreen())).running).toBe(false);
+  lastUrl=(await page.evaluate(()=>window.kirianDesktop!.getSnapshot())).brain.url;
+  await page.getByTestId('runtime-panel').locator('summary').click();
+  await expect(page.getByTestId('runtime-status')).toBeVisible();
+  await page.evaluate(()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
+  await app.evaluate(async({BrowserWindow})=>{const image=await BrowserWindow.getAllWindows()[0].capturePage(undefined,{stayHidden:true,stayAwake:true});return image.toPNG().toString('base64');}).then(png=>writeFile(join(root,'runtime-panel.png'),Buffer.from(png,'base64')));
+  const applicationProcess=app.process();
+  const actualPid=await app.evaluate(()=>process.pid);
+  expect(actualPid).toBeGreaterThan(0);expect(process.kill(actualPid,'SIGKILL')).toBe(true);
+  await expect.poll(()=>refused(lastUrl),{timeout:15000}).toBe(true);
+  if(applicationProcess.exitCode===null)applicationProcess.kill('SIGKILL');app=undefined;
+  await writeFile(join(profile,'runtime','settings.json'),'damaged-original');
+  app=await launch();page=await app.firstWindow();await page.getByTestId('runtime-panel').locator('summary').click();
+  await expect(page.getByTestId('runtime-status')).toHaveText('복구 필요');
+  expect(await readFile(join(profile,'runtime','settings.json'),'utf8')).toBe('damaged-original');
+  await app.evaluate(({dialog})=>{dialog.showMessageBox=async()=>({response:1,checkboxChecked:false});});
+  await page.getByTestId('runtime-restore').click();await expect(page.getByTestId('connection-status')).toHaveText('연결됨',{timeout:30000});
+  await expect.poll(()=>page.evaluate(async()=>(await window.kirianDesktop!.getSnapshot()).library.sources.some(s=>s.title==='보존 기억'))).toBe(true);
+  lastUrl=(await page.evaluate(()=>window.kirianDesktop!.getSnapshot())).brain.url;
+ }finally{await app?.close();await new Promise<void>(resolve=>upstream.close(()=>resolve()));}
+ await expect.poll(()=>refused(lastUrl)).toBe(true);
+});

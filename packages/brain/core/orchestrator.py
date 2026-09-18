@@ -11,7 +11,7 @@ from core.llm import LLMManager
 from core.audio import generate_tts_base64, TTSManager
 from core.tts_text_preprocessor import TTS_SENTENCE_END_PATTERN, prepare_tts_text
 from core.tts_text_translation import TtsTextTranslationError, TtsTextTranslator
-from core.schemas import UserMessage, TanyaResponse, EmotionState, EmotionType
+from core.schemas import UserMessage, KirianResponse, EmotionState, EmotionType
 from core.vision import VisionAnalysis, VisionUnavailableError
 from core.approval import ApprovalStore
 from action.intent import IntentClassifier
@@ -44,7 +44,7 @@ def _is_public_llm_route(route: Any) -> bool:
 
 
 class Orchestrator:
-    """타냐의 중앙 파이프라인 코디네이터.
+    """키리안의 중앙 파이프라인 코디네이터.
 
     모든 요청은 이 클래스를 통해 처리된다.
     Feature Flag에 따라 각 시스템(페르소나, 메모리, 감정 등)을 활성화/비활성화한다.
@@ -127,7 +127,7 @@ class Orchestrator:
             return ""
 
         parts = []
-        parts.append(f"# {persona.get('name', 'Tanya')}")
+        parts.append(f"# {persona.get('name', 'Kirian')}")
         parts.append("")
 
         if identity := persona.get("identity"):
@@ -159,14 +159,14 @@ class Orchestrator:
 
         return "\n".join(parts)
 
-    async def handle_message(self, raw_data: dict) -> TanyaResponse | None:
+    async def handle_message(self, raw_data: dict) -> KirianResponse | None:
         """수신된 메시지를 처리하고 응답을 생성한다.
 
         Args:
             raw_data: 클라이언트로부터 받은 JSON 데이터
 
         Returns:
-            TanyaResponse 또는 None (vision 메시지는 응답 없음)
+            KirianResponse 또는 None (vision 메시지는 응답 없음)
         """
         msg = self._parse_message(raw_data)
 
@@ -424,20 +424,20 @@ class Orchestrator:
                         end_idx = match.end()
                         sentence = state["response_buffer"][:end_idx].strip()
                         state["response_buffer"] = state["response_buffer"][end_idx:]
-
+                        
                         if sentence:
                             out_queue.put_nowait(("text", sentence))
                             if include_audio:
                                 tts_queue.put_nowait((chunk_idx, sentence))
                             chunk_idx += 1
-
+                            
                 if state["response_buffer"].strip():
                     sentence = state["response_buffer"].strip()
                     out_queue.put_nowait(("text", sentence))
                     if include_audio:
                         tts_queue.put_nowait((chunk_idx, sentence))
                     chunk_idx += 1
-
+                
                 if include_audio:
                     tts_queue.put_nowait(("DONE", None))
                 out_queue.put_nowait(("llm_worker_done", None))
@@ -459,7 +459,7 @@ class Orchestrator:
                     item = await tts_queue.get()
                     if item[0] == "DONE":
                         break
-
+                    
                     c_idx, c_sentence = item
 
                     prepared_tts = prepare_tts_text(c_sentence)
@@ -507,7 +507,7 @@ class Orchestrator:
                         out_queue.put_nowait(
                             ("tts_chunk", (c_idx, pending_audio_chunk, True))
                         )
-
+                        
                 out_queue.put_nowait(("tts_chunk", (9999, b"", True)))
                 out_queue.put_nowait(("tts_worker_done", None))
             except Exception:
@@ -560,7 +560,7 @@ class Orchestrator:
                     self._store.update_finetune_candidate([conv_id])
             yield ("conv_id", conv_id)
 
-    async def _handle_text(self, user_text: str) -> TanyaResponse:
+    async def _handle_text(self, user_text: str) -> KirianResponse:
         """텍스트 메시지에 대한 응답을 생성한다."""
         # 1. 감정 엔진: 사용자 메시지 분석 (enable_emotion이 True일 때만)
         emotion_result = None
@@ -609,7 +609,7 @@ class Orchestrator:
                 mood_type = emotion_result["current_mood"].type.value
                 audio_base64 = await generate_tts_base64(
                     tts_text,
-                    rate=tts_params["rate"],
+                    rate=tts_params["rate"], 
                     pitch=tts_params["pitch"],
                     voice=mood_type
                 )
@@ -656,7 +656,7 @@ class Orchestrator:
             emotion = EmotionState(type=EmotionType.NEUTRAL, intensity=0.5)
             animation_intent = "idle"
 
-        return TanyaResponse(
+        return KirianResponse(
             type="response",
             content=response_text,
             audio=audio_base64,
@@ -734,7 +734,7 @@ class Orchestrator:
         """LLM 반환값이 Gemini의 JSON이나 객체 리스트 구조일 경우 순수 텍스트만 추출한다."""
         if not response:
             return ""
-
+            
         # 이미 문자열인 경우 - 문자열로 직렬화된 JSON 리스트 구조를 의심해 파싱 시도
         if isinstance(response, str):
             res_str_stripped = response.strip()
@@ -746,20 +746,20 @@ class Orchestrator:
                 except Exception:
                     pass  # 파싱 실패 시 원본 리턴
             return response
-
+            
         # 파싱된 List 구조 순회
         if isinstance(response, list):
             chunks = []
             for item in response:
                 chunks.append(self._extract_pure_text(item))
             return " ".join(chunk for chunk in chunks if chunk)
-
+            
         # Dictionary 내에서 content나 text 필드 추출
         if isinstance(response, dict):
             # 'text'나 'content' 키를 찾음
             ext_text = response.get('text') or response.get('content') or ""
             return str(ext_text)
-
+            
         return str(response)
 
     @property

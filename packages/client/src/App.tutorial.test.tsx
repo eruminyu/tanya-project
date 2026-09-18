@@ -254,3 +254,4 @@ describe("STT 변이 제안 수락 경계", () => {
     expect(harness.send).not.toHaveBeenCalled();
   });
 });
+

@@ -1,0 +1,2958 @@
+[
+  {
+    "name": "valid session.ready",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-0",
+      "request_id": "request-0",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "session.ready",
+      "turn_id": null,
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "client_kind": "electron",
+        "resume": "new_session",
+        "capabilities": [
+          "text",
+          "audio_output"
+        ]
+      }
+    }
+  },
+  {
+    "name": "valid input.finished",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-1",
+      "request_id": "request-1",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "input.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "input_id": "input-1",
+        "kind": "audio",
+        "text": ""
+      }
+    }
+  },
+  {
+    "name": "valid input.transcript",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-2",
+      "request_id": "request-2",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "input.transcript",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "input_id": "input-1",
+        "text": "안녕",
+        "final": true
+      }
+    }
+  },
+  {
+    "name": "valid turn.start",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": []
+      }
+    }
+  },
+  {
+    "name": "valid response.delta",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "valid response.completed",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-5",
+      "request_id": "request-5",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.completed",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "valid speech.request",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-6",
+      "request_id": "request-6",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.request",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "text": "안녕하세요",
+        "model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "valid speech.chunk",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-7",
+      "request_id": "request-7",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.chunk",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "codec": "wav",
+        "sample_rate_hz": 24000,
+        "audio_base64": "AA==",
+        "final": true
+      }
+    }
+  },
+  {
+    "name": "valid playback.state",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-8",
+      "request_id": "request-8",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "playback.state",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "state": "playing"
+      }
+    }
+  },
+  {
+    "name": "valid turn.cancel",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-9",
+      "request_id": "request-9",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.cancel",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "reason": "barge_in"
+      }
+    }
+  },
+  {
+    "name": "valid turn.ended",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "completed"
+      }
+    }
+  },
+  {
+    "name": "valid session.closed",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-11",
+      "request_id": "request-11",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "session.closed",
+      "turn_id": null,
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "reason": "disconnect"
+      }
+    }
+  },
+  {
+    "name": "valid model.default_changed",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-12",
+      "request_id": "request-12",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "model.default_changed",
+      "turn_id": null,
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        },
+        "revision": 1
+      }
+    }
+  },
+  {
+    "name": "valid action.draft",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-13",
+      "request_id": "request-13",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.draft",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "draft": {
+          "draft_id": "draft-1",
+          "revision": 1,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "action": {
+            "tool_id": "calendar",
+            "operation": "create",
+            "account_id": "account-1",
+            "target": "primary",
+            "arguments_json": "{\"title\":\"키리안 테스트\"}"
+          },
+          "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "expires_at_ms": 5000
+        }
+      }
+    }
+  },
+  {
+    "name": "valid action.approve",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-14",
+      "request_id": "request-14",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.approve",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "approval": {
+          "approval_id": "approval-1",
+          "draft_id": "draft-1",
+          "draft_revision": 1,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "execution_id": "execution-1",
+          "expires_at_ms": 5000
+        }
+      }
+    }
+  },
+  {
+    "name": "valid action.receipt",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-15",
+      "request_id": "request-15",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.receipt",
+      "turn_id": null,
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "receipt": {
+          "execution_id": "execution-1",
+          "draft_id": "draft-1",
+          "draft_revision": 1,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "succeeded",
+          "provider_id": "calendar",
+          "provider_operation_id": "event-1",
+          "error_code": null,
+          "recorded_at_ms": 3000
+        }
+      }
+    }
+  },
+  {
+    "name": "valid context.invalidated",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-16",
+      "request_id": "request-16",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "context.invalidated",
+      "turn_id": null,
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "source_id": "note-1",
+        "revision": 2,
+        "reason": "deleted"
+      }
+    }
+  },
+  {
+    "name": "unknown protocol",
+    "valid": false,
+    "message": {
+      "protocol": "2",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": []
+      }
+    }
+  },
+  {
+    "name": "unknown kind",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "legacy.event",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": []
+      }
+    }
+  },
+  {
+    "name": "missing scope",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": []
+      }
+    }
+  },
+  {
+    "name": "extra secret field",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": []
+      },
+      "auth_token": "must-not-travel"
+    }
+  },
+  {
+    "name": "extra payload",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        },
+        "surprise": true
+      }
+    }
+  },
+  {
+    "name": "empty model",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "negative sequence",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": -1,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "fraction sequence",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0.5,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "string sequence",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": "0",
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "boolean sequence",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": true,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "unsafe sequence",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 9007199254740992,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "unknown mode",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "private",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "missing turn",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-7",
+      "request_id": "request-7",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.chunk",
+      "turn_id": null,
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "codec": "wav",
+        "sample_rate_hz": 24000,
+        "audio_base64": "AA==",
+        "final": true
+      }
+    }
+  },
+  {
+    "name": "invalid audio encoding",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-7",
+      "request_id": "request-7",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.chunk",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "codec": "wav",
+        "sample_rate_hz": 24000,
+        "audio_base64": "!bad!",
+        "final": true
+      }
+    }
+  },
+  {
+    "name": "empty audio chunk",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-7",
+      "request_id": "request-7",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.chunk",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "codec": "wav",
+        "sample_rate_hz": 24000,
+        "audio_base64": "",
+        "final": true
+      }
+    }
+  },
+  {
+    "name": "unsupported codec",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-7",
+      "request_id": "request-7",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.chunk",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "codec": "unknown",
+        "sample_rate_hz": 24000,
+        "audio_base64": "AA==",
+        "final": true
+      }
+    }
+  },
+  {
+    "name": "fraction sample rate",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-7",
+      "request_id": "request-7",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.chunk",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "codec": "wav",
+        "sample_rate_hz": 24000.5,
+        "audio_base64": "AA==",
+        "final": true
+      }
+    }
+  },
+  {
+    "name": "string final flag",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-7",
+      "request_id": "request-7",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.chunk",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "codec": "wav",
+        "sample_rate_hz": 24000,
+        "audio_base64": "AA==",
+        "final": "true"
+      }
+    }
+  },
+  {
+    "name": "success without evidence",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-15",
+      "request_id": "request-15",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.receipt",
+      "turn_id": null,
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "receipt": {
+          "execution_id": "execution-1",
+          "draft_id": "draft-1",
+          "draft_revision": 1,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "succeeded",
+          "provider_id": "calendar",
+          "provider_operation_id": null,
+          "error_code": null,
+          "recorded_at_ms": 3000
+        }
+      }
+    }
+  },
+  {
+    "name": "success with error",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-15",
+      "request_id": "request-15",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.receipt",
+      "turn_id": null,
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "receipt": {
+          "execution_id": "execution-1",
+          "draft_id": "draft-1",
+          "draft_revision": 1,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "succeeded",
+          "provider_id": "calendar",
+          "provider_operation_id": "event-1",
+          "error_code": "timeout",
+          "recorded_at_ms": 3000
+        }
+      }
+    }
+  },
+  {
+    "name": "receipt tied to turn",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-15",
+      "request_id": "request-15",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.receipt",
+      "turn_id": "turn-1",
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "receipt": {
+          "execution_id": "execution-1",
+          "draft_id": "draft-1",
+          "draft_revision": 1,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "succeeded",
+          "provider_id": "calendar",
+          "provider_operation_id": "event-1",
+          "error_code": null,
+          "recorded_at_ms": 3000
+        }
+      }
+    }
+  },
+  {
+    "name": "bad approval digest",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-14",
+      "request_id": "request-14",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.approve",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "approval": {
+          "approval_id": "approval-1",
+          "draft_id": "draft-1",
+          "draft_revision": 1,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "payload_sha256": "not-a-digest",
+          "execution_id": "execution-1",
+          "expires_at_ms": 5000
+        }
+      }
+    }
+  },
+  {
+    "name": "fraction draft revision",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-13",
+      "request_id": "request-13",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.draft",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "draft": {
+          "draft_id": "draft-1",
+          "revision": 1.5,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "action": {
+            "tool_id": "calendar",
+            "operation": "create",
+            "account_id": "account-1",
+            "target": "primary",
+            "arguments_json": "{\"title\":\"키리안 테스트\"}"
+          },
+          "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "expires_at_ms": 5000
+        }
+      }
+    }
+  },
+  {
+    "name": "cloud route label supplied by caller",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1",
+            "boundary": "local"
+          },
+          "source": "initial_local"
+        },
+        "context": []
+      }
+    }
+  },
+  {
+    "name": "trailing newline id",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance\n",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": []
+      }
+    }
+  },
+  {
+    "name": "trailing newline digest",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-14",
+      "request_id": "request-14",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "action.approve",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "approval": {
+          "approval_id": "approval-1",
+          "draft_id": "draft-1",
+          "draft_revision": 1,
+          "identity": {
+            "instance_id": "personal-instance",
+            "mode": "personal",
+            "principal_id": "user-1"
+          },
+          "executor_id": "pc-1",
+          "payload_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
+          "execution_id": "execution-1",
+          "expires_at_ms": 5000
+        }
+      }
+    }
+  },
+  {
+    "name": "trailing newline audio",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-7",
+      "request_id": "request-7",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.chunk",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_id": "sentence-1",
+        "sentence_index": 0,
+        "codec": "wav",
+        "sample_rate_hz": 24000,
+        "audio_base64": "AA==\n",
+        "final": true
+      }
+    }
+  },
+  {
+    "name": "failed turn error code provider_unavailable",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "provider_unavailable"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code provider_error",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "provider_error"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code model_mismatch",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "model_mismatch"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code incomplete_response",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "incomplete_response"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code empty_response",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "empty_response"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code response_limit",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "response_limit"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code model_not_allowed",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "model_not_allowed"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code context_blocked",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "context_blocked"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code invalid_request",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "invalid_request"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code session_limit",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "session_limit"
+      }
+    }
+  },
+  {
+    "name": "failed turn error code turn_timeout",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "turn_timeout"
+      }
+    }
+  },
+  {
+    "name": "failed turn without error code stays valid",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed"
+      }
+    }
+  },
+  {
+    "name": "completed turn rejects error code",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "completed",
+        "error_code": "provider_error"
+      }
+    }
+  },
+  {
+    "name": "cancelled turn rejects error code",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "cancelled",
+        "error_code": "provider_error"
+      }
+    }
+  },
+  {
+    "name": "failed turn rejects unknown error code",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "unknown_failure"
+      }
+    }
+  },
+  {
+    "name": "failed turn rejects null error code",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": null
+      }
+    }
+  },
+  {
+    "name": "valid turn.start speech true",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-60",
+      "request_id": "speech-handshake-request-60",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": [],
+        "speech": true
+      }
+    }
+  },
+  {
+    "name": "valid turn.start speech false",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-61",
+      "request_id": "speech-handshake-request-61",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": [],
+        "speech": false
+      }
+    }
+  },
+  {
+    "name": "invalid turn.start nonboolean speech 'true'",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-62",
+      "request_id": "speech-handshake-request-62",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": [],
+        "speech": "true"
+      }
+    }
+  },
+  {
+    "name": "invalid turn.start nonboolean speech 1",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-63",
+      "request_id": "speech-handshake-request-63",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": [],
+        "speech": 1
+      }
+    }
+  },
+  {
+    "name": "invalid turn.start nonboolean speech None",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-64",
+      "request_id": "speech-handshake-request-64",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": [],
+        "speech": null
+      }
+    }
+  },
+  {
+    "name": "valid speech.finished count 0",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-65",
+      "request_id": "speech-handshake-request-65",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": 0
+      }
+    }
+  },
+  {
+    "name": "valid speech.finished count 1",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-66",
+      "request_id": "speech-handshake-request-66",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": 1
+      }
+    }
+  },
+  {
+    "name": "valid speech.finished count 128",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-67",
+      "request_id": "speech-handshake-request-67",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": 128
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished count -1",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-68",
+      "request_id": "speech-handshake-request-68",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": -1
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished count 129",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-69",
+      "request_id": "speech-handshake-request-69",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": 129
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished count 0.5",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-70",
+      "request_id": "speech-handshake-request-70",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": 0.5
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished count True",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-71",
+      "request_id": "speech-handshake-request-71",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": true
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished count '1'",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-72",
+      "request_id": "speech-handshake-request-72",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": "1"
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished count None",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-73",
+      "request_id": "speech-handshake-request-73",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": null
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished turn_id",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-74",
+      "request_id": "speech-handshake-request-74",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": null,
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": 0
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished intent_id",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-75",
+      "request_id": "speech-handshake-request-75",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": null,
+      "sequence": 0,
+      "payload": {
+        "sentence_count": 0
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished sequence",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-76",
+      "request_id": "speech-handshake-request-76",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 1,
+      "payload": {
+        "sentence_count": 0
+      }
+    }
+  },
+  {
+    "name": "invalid speech.finished payload {}",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-77",
+      "request_id": "speech-handshake-request-77",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {}
+    }
+  },
+  {
+    "name": "invalid speech.finished payload {'sentence_count': 0, 'extra': True}",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-78",
+      "request_id": "speech-handshake-request-78",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "speech.finished",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "sentence_count": 0,
+        "extra": true
+      }
+    }
+  },
+  {
+    "name": "valid turn.ended speech_unavailable",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-79",
+      "request_id": "speech-handshake-request-79",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "speech_unavailable"
+      }
+    }
+  },
+  {
+    "name": "invalid completed turn.ended speech_unavailable",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-80",
+      "request_id": "speech-handshake-request-80",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "completed",
+        "error_code": "speech_unavailable"
+      }
+    }
+  },
+  {
+    "name": "valid turn.ended speech_error",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-81",
+      "request_id": "speech-handshake-request-81",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "speech_error"
+      }
+    }
+  },
+  {
+    "name": "invalid completed turn.ended speech_error",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-82",
+      "request_id": "speech-handshake-request-82",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "completed",
+        "error_code": "speech_error"
+      }
+    }
+  },
+  {
+    "name": "valid turn.ended playback_failed",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-83",
+      "request_id": "speech-handshake-request-83",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "playback_failed"
+      }
+    }
+  },
+  {
+    "name": "invalid completed turn.ended playback_failed",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "speech-handshake-84",
+      "request_id": "speech-handshake-request-84",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "completed",
+        "error_code": "playback_failed"
+      }
+    }
+  },
+  {
+    "name": "valid persistent failure storage_unavailable",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "storage_unavailable"
+      }
+    }
+  },
+  {
+    "name": "invalid persistent failure storage_unavailable",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "storage_unavailable\n"
+      }
+    }
+  },
+  {
+    "name": "valid persistent failure source_changed",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "source_changed"
+      }
+    }
+  },
+  {
+    "name": "invalid persistent failure source_changed",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-10",
+      "request_id": "request-10",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.ended",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "status": "failed",
+        "error_code": "source_changed\n"
+      }
+    }
+  },
+  {
+    "name": "routing candidates one",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": [],
+        "routing_candidates": [
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "routing candidates empty",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": [],
+        "routing_candidates": []
+      }
+    }
+  },
+  {
+    "name": "routing candidates oversized",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-3",
+      "request_id": "request-3",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "turn.start",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "selection": {
+          "model": {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          "source": "initial_local"
+        },
+        "context": [],
+        "routing_candidates": [
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          },
+          {
+            "provider_id": "ollama",
+            "model_id": "local-model",
+            "endpoint_id": "local-1"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "response.delta routing reason automatic_budget",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        },
+        "routing_reason": "automatic_budget"
+      }
+    }
+  },
+  {
+    "name": "response.delta routing reason request_fixed",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        },
+        "routing_reason": "request_fixed"
+      }
+    }
+  },
+  {
+    "name": "response.delta routing reason forged",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-4",
+      "request_id": "request-4",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.delta",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "text": "안녕하세요",
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        },
+        "routing_reason": "forged"
+      }
+    }
+  },
+  {
+    "name": "response.completed routing reason automatic_budget",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-5",
+      "request_id": "request-5",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.completed",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        },
+        "routing_reason": "automatic_budget"
+      }
+    }
+  },
+  {
+    "name": "response.completed routing reason request_fixed",
+    "valid": true,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-5",
+      "request_id": "request-5",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.completed",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        },
+        "routing_reason": "request_fixed"
+      }
+    }
+  },
+  {
+    "name": "response.completed routing reason forged",
+    "valid": false,
+    "message": {
+      "protocol": "kirian.rearchitecture.v1",
+      "message_id": "message-5",
+      "request_id": "request-5",
+      "scope": {
+        "instance_id": "personal-instance",
+        "mode": "personal",
+        "principal_id": "user-1",
+        "session_id": "session-1",
+        "connection_id": "socket-1",
+        "connection_epoch": 1
+      },
+      "kind": "response.completed",
+      "turn_id": "turn-1",
+      "intent_id": "intent-1",
+      "sequence": 0,
+      "payload": {
+        "actual_model": {
+          "provider_id": "ollama",
+          "model_id": "local-model",
+          "endpoint_id": "local-1"
+        },
+        "routing_reason": "forged"
+      }
+    }
+  }
+]

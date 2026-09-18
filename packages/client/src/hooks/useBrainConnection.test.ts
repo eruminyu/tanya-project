@@ -292,7 +292,7 @@ describe("Brain 연결 전송 가능 상태", () => {
 
   it("Web Crypto 없는 local 세션에서는 일반 대화만 허용하고 기억 action은 차단한다", () => {
     const insecureStorage = new MockSessionStorage();
-    insecureStorage.setItem("tanya.webchatSessionId", "local-16-80000000800000008000000080000000");
+    insecureStorage.setItem("kirian.webchatSessionId", "local-16-80000000800000008000000080000000");
     vi.stubGlobal("sessionStorage", insecureStorage);
     let result = renderHook();
     const socket = MockWebSocket.instances[0];
@@ -410,7 +410,7 @@ describe("Brain 연결 전송 가능 상태", () => {
     expect(renderHook().messages).toEqual([]);
   });
 
-  it("LLM 경로를 바로 뒤 타냐 답변에 묶는다", () => {
+  it("LLM 경로를 바로 뒤 키리안 답변에 묶는다", () => {
     renderHook();
     const socket = MockWebSocket.instances[0];
 
@@ -428,7 +428,7 @@ describe("Brain 연결 전송 가능 상태", () => {
     const result = renderHook();
     expect(result.messages).toEqual([{
       id: expect.any(String),
-      role: "tanya",
+      role: "kirian",
       text: "반가워요.",
       route: { mode: "casual", provider: "ollama", execution: "local", fallback: false },
     }]);
@@ -462,7 +462,7 @@ describe("Brain 연결 전송 가능 상태", () => {
     const result = renderHook();
     expect(result.messages).toEqual([{
       id: expect.any(String),
-      role: "tanya",
+      role: "kirian",
       text: "답변을 생성하고 있어요.",
       route: { mode: "task", provider: "ollama", execution: "local", fallback: true },
     }]);

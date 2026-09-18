@@ -7,7 +7,7 @@ describe("듣는 중 표시", () => {
     const html = renderToStaticMarkup(<VoiceListeningIndicator />);
 
     expect(html).toContain('role="status"');
-    expect(html).toContain('aria-label="타냐가 듣고 있어요"');
+    expect(html).toContain('aria-label="키리안이 듣고 있어요"');
     expect(html).toContain("듣고 있어");
     expect(html.match(/<i><\/i>/g)).toHaveLength(5);
   });

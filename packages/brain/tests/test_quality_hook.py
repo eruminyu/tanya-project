@@ -25,7 +25,7 @@ class TestEstimateQuality:
 
     def test_good_user_msg_length_adds_score(self):
         """5~100자 user_msg → +0.1."""
-        user = "안녕 데모 사용자, 오늘 날씨 어때요?"    # ~17자
+        user = "안녕 세리안, 오늘 날씨 어때요?"    # ~17자
         assistant = "y" * 600                       # 범위 밖
         score = self.orc._estimate_quality(user, assistant)
         assert score == pytest.approx(0.6, abs=0.01)
@@ -33,23 +33,23 @@ class TestEstimateQuality:
     def test_good_assistant_msg_length_adds_score(self):
         """20~500자 assistant_msg → +0.2."""
         user = "x" * 200                            # 범위 밖
-        assistant = "타냐의 응답입니다. " * 5        # 적당한 길이
+        assistant = "키리안의 응답입니다. " * 5        # 적당한 길이
         score = self.orc._estimate_quality(user, assistant)
         assert score == pytest.approx(0.7, abs=0.01)
 
     def test_both_good_lengths(self):
         """둘 다 좋은 길이 → 0.5 + 0.1 + 0.2 = 0.8."""
-        user = "안녕 데모 사용자, 오늘 날씨 어때요?"
-        assistant = "오늘 날씨는 맑고 화창해! 기분 좋은 날이야. 데모 사용자도 기분 좋지?"
+        user = "안녕 세리안, 오늘 날씨 어때요?"
+        assistant = "오늘 날씨는 맑고 화창해! 기분 좋은 날이야. 세리안도 기분 좋지?"
         score = self.orc._estimate_quality(user, assistant)
         assert score == pytest.approx(0.8, abs=0.01)
 
     def test_fallback_message_reduces_score(self):
         """fallback 메시지 → -0.5."""
-        user = "안녕하세요 타냐야"
+        user = "안녕하세요 키리안아"
         assistant = "잠깐, 생각을 정리 중이야... 조금만 기다려줘. ❤️"
         score = self.orc._estimate_quality(user, assistant)
-        # user 길이 9자(5~100 통과 +0.1), asst 길이 30자(20~500 통과 +0.2), fallback(-0.5)
+        # user 길이 10자(5~100 통과 +0.1), asst 길이 30자(20~500 통과 +0.2), fallback(-0.5)
         # → 0.5 + 0.1 + 0.2 - 0.5 = 0.3
         assert score == pytest.approx(0.3, abs=0.02)
 
@@ -63,8 +63,8 @@ class TestEstimateQuality:
 
     def test_score_clamp_maximum(self):
         """점수 최대값은 1.0."""
-        user = "안녕 데모 사용자, 좋은 아침이야!"
-        assistant = "좋은 아침이야 데모 사용자! 오늘도 화이팅! " * 5
+        user = "안녕 세리안, 좋은 아침이야!"
+        assistant = "좋은 아침이야 세리안! 오늘도 화이팅! " * 5
         score = self.orc._estimate_quality(user, assistant)
         assert score <= 1.0
 
@@ -118,7 +118,7 @@ class TestQualityHookIntegration:
 
         # LLM mock
         orc._llm = MagicMock()
-        orc._llm.chat = AsyncMock(return_value="안녕 데모 사용자, 잘 지냈어? 오늘도 화이팅!")
+        orc._llm.chat = AsyncMock(return_value="안녕 세리안, 잘 지냈어? 오늘도 화이팅!")
 
         # TTS mock
         monkeypatch.setattr(
@@ -144,7 +144,7 @@ class TestQualityHookIntegration:
 
         orc._store = FakeStore()
 
-        response = await orc._handle_text("안녕하세요 타냐야, 잘 지내고 있어?")
+        response = await orc._handle_text("안녕하세요 키리안아, 잘 지내고 있어?")
 
         assert response is not None
         assert 42 in saved_scores
@@ -168,7 +168,7 @@ class TestQualityHookIntegration:
 
         orc._llm = MagicMock()
         orc._llm.chat = AsyncMock(
-            return_value="안녕 데모 사용자! 오늘도 잘 부탁해. 무슨 일 있어?"
+            return_value="안녕 세리안! 오늘도 잘 부탁해. 무슨 일 있어?"
         )
 
         monkeypatch.setattr(
@@ -191,7 +191,7 @@ class TestQualityHookIntegration:
 
         orc._store = FakeStore()
 
-        await orc._handle_text("안녕 타냐, 오늘 날씨 어때?")
+        await orc._handle_text("안녕 키리안, 오늘 날씨 어때?")
 
         assert 99 in marked_ids
 
@@ -211,7 +211,7 @@ class TestQualityHookIntegration:
         orc._long_term = None
 
         orc._llm = MagicMock()
-        orc._llm.chat = AsyncMock(return_value="응답이에요 데모 사용자!")
+        orc._llm.chat = AsyncMock(return_value="응답이에요 세리안!")
 
         monkeypatch.setattr(
             "core.orchestrator.generate_tts_base64",
@@ -234,7 +234,7 @@ class TestQualityHookIntegration:
 
         orc._store = FakeStore()
 
-        await orc._handle_text("안녕 타냐야!")
+        await orc._handle_text("안녕 키리안아!")
 
         assert "quality" not in store_called
         assert "candidate" not in store_called

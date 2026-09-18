@@ -190,7 +190,7 @@ input:focus { border-color: #76afd7; box-shadow: 0 0 0 3px #92c5e533; }
 .memory-capsule-error-actions button { min-width: 0; }
 .bubble { max-width: 88%; padding: 10px 12px; border-radius: 15px; white-space: pre-wrap; line-height: 1.5; font-size: 13px; }
 .bubble.user { align-self: flex-end; color: #fff; background: #6e9fc5; }
-.bubble.tanya { align-self: flex-start; color: #385269; background: #e5f1f8; }
+.bubble.kirian { align-self: flex-start; color: #385269; background: #e5f1f8; }
 .llm-route-badge { width: fit-content; margin: 0 0 6px; padding: 3px 6px; display: block; color: #466b84; border: 1px solid #bfd7e5; border-radius: 999px; background: #f4fafc; white-space: normal; line-height: 1.2; font-size: 10px; }
 .latest-answer { max-width: 100%; }
 .latest-answer.collapsed { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 5; }

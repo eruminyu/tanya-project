@@ -20,7 +20,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from channels.live2d_channel import Live2DChannel
-from core.schemas import EmotionState, EmotionType, TanyaResponse
+from core.schemas import EmotionState, EmotionType, KirianResponse
 
 
 # ---------------------------------------------------------------------------
@@ -61,7 +61,7 @@ def _make_orchestrator(
     audio_b64: str = "",
 ) -> AsyncMock:
     orch = MagicMock()
-    response = TanyaResponse(
+    response = KirianResponse(
         content=content,
         emotion=EmotionState(type=EmotionType(emotion), intensity=0.8),
         animation_intent="nod",
@@ -198,7 +198,7 @@ class TestLive2DChannelTextInput:
         msg = audio_msgs[0]
         assert msg["audio"] == audio_b64
         assert "display_text" in msg
-        assert msg["display_text"]["name"] == "Tanya"
+        assert msg["display_text"]["name"] == "Kirian"
         assert msg["display_text"]["text"] == "테스트"
         assert "actions" in msg
         assert "expressions" in msg["actions"]

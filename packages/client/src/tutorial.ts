@@ -1,4 +1,4 @@
-export const TUTORIAL_FLOW_STORAGE_KEY = "tanya.tutorial.flow-id";
+export const TUTORIAL_FLOW_STORAGE_KEY = "kirian.tutorial.flow-id";
 export const TUTORIAL_OPERATION_TIMEOUT_MS = 35_000;
 export const TUTORIAL_ANSWER_TIMEOUT_MS = 190_000;
 export const TUTORIAL_SCENARIO_ID = "hackathon_demo_v1" as const;

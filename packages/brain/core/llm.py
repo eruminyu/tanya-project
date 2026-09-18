@@ -14,7 +14,7 @@ from core.providers.gemini import GeminiProvider
 from core.providers.openai_provider import OpenAIProvider
 from core.providers.claude import ClaudeProvider
 from core.providers.ollama import OllamaProvider
-from core.mode import ModeClassifier, TanyaMode
+from core.mode import ModeClassifier, KirianMode
 from core.vision import VisionAnalysis, VisionUnavailableError
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ class LLMManager:
     }
     _LOCAL_PROVIDERS = frozenset({"ollama", "vllm"})
     _CLOUD_PROVIDERS = frozenset({"gemini", "openai", "claude"})
-    _ROUTE_PROVIDER_ATTR = "_tanya_route_provider"
+    _ROUTE_PROVIDER_ATTR = "_kirian_route_provider"
 
     def __init__(self):
         settings = get_settings()
@@ -87,7 +87,7 @@ class LLMManager:
                 task_profile, settings, "task_llm_api_key"
             ),
         )
-        self._current_mode: TanyaMode = TanyaMode.CASUAL
+        self._current_mode: KirianMode = KirianMode.CASUAL
         self._auto_detect: bool = bool(getattr(settings, "mode_auto_detect", True))
         self._mode_classifier = ModeClassifier()
 
@@ -247,7 +247,7 @@ class LLMManager:
     def _resolve_conversation_route(
         self,
         user_input: str,
-    ) -> tuple[TanyaMode, LLMProvider, bool]:
+    ) -> tuple[KirianMode, LLMProvider, bool]:
         """모드와 실제 호출할 provider를 한 번에 결정한다."""
         mode = (
             self._mode_classifier.classify(user_input)
@@ -285,7 +285,7 @@ class LLMManager:
     @classmethod
     def _describe_resolved_route(
         cls,
-        mode: TanyaMode,
+        mode: KirianMode,
         provider: LLMProvider,
         fallback: bool,
     ) -> dict[str, object]:
@@ -459,21 +459,21 @@ class LLMManager:
     # Phase 3.7: 모드 기반 Provider 선택
     # ------------------------------------------------------------------
 
-    def select_provider(self, mode: TanyaMode) -> LLMProvider:
+    def select_provider(self, mode: KirianMode) -> LLMProvider:
         """모드에 맞는 Provider를 반환한다."""
-        if mode == TanyaMode.CASUAL and self._casual_provider:
+        if mode == KirianMode.CASUAL and self._casual_provider:
             return self._casual_provider
-        if mode == TanyaMode.TASK and self._task_provider:
+        if mode == KirianMode.TASK and self._task_provider:
             return self._task_provider
         return self._get_active_provider()
 
-    def set_mode(self, mode: TanyaMode) -> None:
+    def set_mode(self, mode: KirianMode) -> None:
         """수동으로 모드를 전환하고 auto_detect를 비활성화한다."""
         self._current_mode = mode
         self._auto_detect = False
 
     @property
-    def current_mode(self) -> TanyaMode:
+    def current_mode(self) -> KirianMode:
         return self._current_mode
 
     @property

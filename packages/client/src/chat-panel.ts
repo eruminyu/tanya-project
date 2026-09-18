@@ -1,5 +1,5 @@
-export const TOGGLE_CHAT_PANEL_EVENT = "tanya://toggle-chat-panel";
-export const VOICE_PTT_EVENT = "tanya://voice-ptt";
+export const TOGGLE_CHAT_PANEL_EVENT = "kirian://toggle-chat-panel";
+export const VOICE_PTT_EVENT = "kirian://voice-ptt";
 
 export interface ShortcutStatus { available: boolean; accelerator: string; error?: string }
 

@@ -8,8 +8,8 @@ AutoFineTuneScheduler가 JSONL을 저장한 뒤 이 스크립트를 subprocess�
 
 사용 예:
     python -m finetune.llm.train \\
-        --jsonl finetune_data/tanya_20260319.jsonl \\
-        --output_dir finetune_data/adapters/tanya_20260319
+        --jsonl finetune_data/kirian_20260319.jsonl \\
+        --output_dir finetune_data/adapters/kirian_20260319
 """
 from __future__ import annotations
 
@@ -173,7 +173,7 @@ class LLMFineTuner:
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="타냐 LLM QLoRA 파인튜닝")
+    parser = argparse.ArgumentParser(description="키리안 LLM QLoRA 파인튜닝")
     parser.add_argument("--jsonl", required=True, help="학습 데이터 JSONL 경로")
     parser.add_argument("--output_dir", required=True, help="어댑터 출력 디렉토리")
     parser.add_argument("--model", default="qwen2.5:7b", help="베이스 모델")

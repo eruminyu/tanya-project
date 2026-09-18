@@ -10,8 +10,8 @@ import {
 
 describe("음성 입력 전송", () => {
   it("Brain 주소를 STT 변환 주소로 바꾼다", () => {
-    expect(toTranscriptionUrl("http://192.168.10.20:8098/"))
-      .toBe("http://192.168.10.20:8098/stt/transcriptions?language=ko");
+    expect(toTranscriptionUrl("http://<lan-host>:8098/"))
+      .toBe("http://<lan-host>:8098/stt/transcriptions?language=ko");
   });
 
   it("WebM Opus를 우선하고 지원 형식이 없으면 브라우저 기본값을 쓴다", () => {
@@ -23,8 +23,8 @@ describe("음성 입력 전송", () => {
 
 describe("인식 결과와 입력창 내용 병합", () => {
   it("입력창이 비어 있으면 인식 결과만 남긴다", () => {
-    expect(mergeVoiceTranscript("", "안녕 타냐")).toBe("안녕 타냐");
-    expect(mergeVoiceTranscript("   ", "안녕 타냐")).toBe("안녕 타냐");
+    expect(mergeVoiceTranscript("", "안녕 키리안")).toBe("안녕 키리안");
+    expect(mergeVoiceTranscript("   ", "안녕 키리안")).toBe("안녕 키리안");
   });
 
   it("입력창에 쓰던 내용이 있으면 뒤에 이어붙인다", () => {

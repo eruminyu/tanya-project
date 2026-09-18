@@ -431,7 +431,7 @@ def test_expired_google_approval_is_reissued_for_same_pending_action(
         action_request,
         {
             "kind": "calendar",
-            "draft": {"title": "Tanya 해커톤 준비 점검"},
+            "draft": {"title": "Kirian 해커톤 준비 점검"},
             "preview": {"kind": "calendar"},
         },
     )
@@ -605,7 +605,7 @@ def test_google_approval_reissue_requires_action_to_still_be_pending(
             **(
                 {
                     "provider_id": "calendar-provider-1",
-                    "sent_fields": {"title": "Tanya 해커톤 준비 점검"},
+                    "sent_fields": {"title": "Kirian 해커톤 준비 점검"},
                 }
                 if action_status is GoogleActionStatus.SUCCEEDED
                 else {}

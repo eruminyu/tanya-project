@@ -103,7 +103,7 @@ export function MemoryCapsulePanel({
 
       {(state.phase === "saved" || state.phase === "recalled") && record && <div className="memory-capsule-result">
         <div className="memory-capsule-step"><span>{state.phase === "saved" ? "3" : "4"}</span><div>
-          <strong>{state.phase === "saved" ? "저장과 검색 동기화 완료" : "타냐가 기억을 다시 찾았어요"}</strong>
+          <strong>{state.phase === "saved" ? "저장과 검색 동기화 완료" : "키리안이 기억을 다시 찾았어요"}</strong>
           <p>{record.capsule.content}</p>
         </div></div>
         {state.phase === "saved" && <div className="memory-storage-proof" aria-label="저장 동기화 결과">

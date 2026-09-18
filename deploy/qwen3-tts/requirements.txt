@@ -1,0 +1,12 @@
+# Pinned runtime for deploy/qwen3-tts (verified 2026-09-17 on Python 3.12, torch cu128).
+# Install torch first from the CUDA 12.8 index, then this file (see install.sh).
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.11.0
+torchaudio==2.11.0
+qwen-tts==0.1.1
+transformers==4.57.3
+accelerate==1.12.0
+numpy==2.5.3
+soundfile==0.14.0
+librosa==1.0.0
+huggingface_hub>=0.34

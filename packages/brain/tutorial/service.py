@@ -863,13 +863,13 @@ class TutorialService:
             start = local_now + timedelta(minutes=saved.preparation_minutes)
             end = start + timedelta(minutes=30)
             return {
-                "title": "Tanya 해커톤 준비 점검",
+                "title": "Kirian 해커톤 준비 점검",
                 "startAt": start.isoformat(timespec="seconds"),
                 "endAt": end.isoformat(timespec="seconds"),
                 "timeZone": timezone_name,
             }
         return {
-            "title": "Tanya 해커톤 발표 준비",
+            "title": "Kirian 해커톤 발표 준비",
             "due": (local_now.date() + timedelta(days=1)).isoformat(),
         }
 

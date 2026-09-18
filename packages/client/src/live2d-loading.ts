@@ -15,7 +15,7 @@ export const MODEL_DATA_LOAD_PROGRESS: Live2DLoadProgress = {
 
 export const FINALIZING_LIVE2D_LOAD_PROGRESS: Live2DLoadProgress = {
   percent: 98,
-  message: "화면에 타냐를 준비하는 중",
+  message: "화면에 키리안을 준비하는 중",
 };
 
 function normalizedCompleted(completed: number, total: number): number {

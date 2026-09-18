@@ -1,6 +1,6 @@
 """Phase 3.7: 일상/작업 모드 정의 + 규칙 기반 분류기.
 
-TanyaMode:
+KirianMode:
 - CASUAL: 일상 대화 → 로컬 LLM (Ollama) 우선
 - TASK:   복잡한 작업 → API LLM (Gemini/Claude/OpenAI) 우선
 
@@ -33,7 +33,7 @@ _TASK_KEYWORDS = [
 _TASK_LENGTH_THRESHOLD = 100
 
 
-class TanyaMode(str, Enum):
+class KirianMode(str, Enum):
     CASUAL = "casual"
     TASK = "task"
 
@@ -46,11 +46,11 @@ class ModeClassifier:
     3. 그 외 → CASUAL
     """
 
-    def classify(self, text: str) -> TanyaMode:
+    def classify(self, text: str) -> KirianMode:
         lower = text.lower()
         for kw in _TASK_KEYWORDS:
             if kw in lower:
-                return TanyaMode.TASK
+                return KirianMode.TASK
         if len(text) > _TASK_LENGTH_THRESHOLD:
-            return TanyaMode.TASK
-        return TanyaMode.CASUAL
+            return KirianMode.TASK
+        return KirianMode.CASUAL

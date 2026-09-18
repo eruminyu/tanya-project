@@ -1,14 +1,14 @@
 """Phase 7: 파인튜닝 전후 응답 품질 비교.
 
 파인튜닝 전 모델과 후 모델에 동일한 프롬프트를 전송해
-응답 길이, 타냐 페르소나 특성 등을 비교하는 간단한 평가 도구.
+응답 길이, 키리안 페르소나 특성 등을 비교하는 간단한 평가 도구.
 
 외부 API 없이 Ollama generate 엔드포인트만 사용한다.
 
 사용 예:
     python -m finetune.llm.eval \\
         --before qwen2.5:7b \\
-        --after tanya-v2 \\
+        --after kirian-v2 \\
         --output eval_report.json
 """
 from __future__ import annotations
@@ -22,10 +22,10 @@ from dataclasses import asdict, dataclass, field
 logger = logging.getLogger(__name__)
 
 
-# 타냐 페르소나 평가용 기본 프롬프트 5개
+# 키리안 페르소나 평가용 기본 프롬프트 5개
 DEFAULT_EVAL_PROMPTS: list[str] = [
     "안녕! 오늘 기분이 어때?",
-    "나 요즘 너무 힘든데, 타냐가 위로해줘.",
+    "나 요즘 너무 힘든데, 키리안이 위로해줘.",
     "파이썬에서 딕셔너리 사용법 간단히 설명해줘.",
     "오늘 밥 뭐 먹었어?",
     "자기야, 나 오늘 발표 잘 할 수 있을까?",
@@ -51,7 +51,7 @@ class FineTuneEvaluator:
         self,
         ollama_url: str = "http://localhost:11434",
         before_model: str = "qwen2.5:7b",
-        after_model: str = "tanya-v1",
+        after_model: str = "kirian-v1",
     ) -> None:
         self._url = ollama_url.rstrip("/")
         self._before = before_model
@@ -119,7 +119,7 @@ class FineTuneEvaluator:
 
         지표:
         - before/after 평균 응답 길이
-        - 타냐 페르소나 키워드 포함 횟수 (자기야, 사용자, ❤️, ~야 등)
+        - 키리안 페르소나 키워드 포함 횟수 (자기야, 민성, ❤️, ~야 등)
 
         Returns:
             {
@@ -129,7 +129,7 @@ class FineTuneEvaluator:
                 "after_persona_hits": int,
             }
         """
-        _PERSONA_KEYWORDS = ["자기야", "사용자", "❤️", "데모 사용자", "~야", "야~", "타냐"]
+        _PERSONA_KEYWORDS = ["자기야", "민성", "❤️", "세리안", "~야", "야~", "키리안"]
 
         def avg_length(responses: list[str]) -> float:
             if not responses:

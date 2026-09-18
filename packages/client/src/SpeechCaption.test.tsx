@@ -6,7 +6,7 @@ const visibleCaption = {
   captionsEnabled: true,
   chatPanelOpen: false,
   speaking: true,
-  text: "타냐가 말하는 내용",
+  text: "키리안이 말하는 내용",
 };
 
 describe("발화 자막", () => {
@@ -17,7 +17,7 @@ describe("발화 자막", () => {
     expect(html).toContain('role="status"');
     expect(html).toContain('aria-live="polite"');
     expect(html).toContain('style="pointer-events:none"');
-    expect(html).toContain("타냐가 말하는 내용");
+    expect(html).toContain("키리안이 말하는 내용");
   });
 
   it("텍스트는 클램프를 담당하는 안쪽 요소에 담긴다 (T-009)", () => {
@@ -25,7 +25,7 @@ describe("발화 자막", () => {
 
     // 바깥 요소가 padding을, 안쪽 요소가 line-clamp·overflow를 가져야
     // 넘친 3번째 줄이 padding 영역에 잘린 채 노출되지 않는다.
-    expect(html).toContain('<span class="speech-caption-text">타냐가 말하는 내용</span>');
+    expect(html).toContain('<span class="speech-caption-text">키리안이 말하는 내용</span>');
   });
 
   it("표시 조건을 만족하지 않으면 아무것도 렌더하지 않는다", () => {

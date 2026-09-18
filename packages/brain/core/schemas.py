@@ -22,12 +22,12 @@ class UserMessage(BaseModel):
 
 
 class EmotionState(BaseModel):
-    """타냐의 현재 감정 상태"""
+    """키리안의 현재 감정 상태"""
     type: EmotionType = Field(default=EmotionType.NEUTRAL)
     intensity: float = Field(default=0.5, ge=0.0, le=1.0)
 
 
-class TanyaResponse(BaseModel):
+class KirianResponse(BaseModel):
     """서버에서 클라이언트로 보내는 응답"""
     type: str = Field(default="response")
     content: str = Field(description="텍스트 응답")
@@ -38,7 +38,7 @@ class TanyaResponse(BaseModel):
 
 
 class ConversationTurn(BaseModel):
-    """대화 한 턴 (사용자 입력 + 타냐 응답)"""
+    """대화 한 턴 (사용자 입력 + 키리안 응답)"""
     user_message: str
     assistant_message: str
     emotion: EmotionState = Field(default_factory=EmotionState)

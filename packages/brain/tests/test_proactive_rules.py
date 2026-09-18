@@ -19,8 +19,8 @@ from core.proactive_rules import (
 
 
 _PRIVATE_RELATIONSHIP_TERMS = (
-    "테스트사용자",
-    "예시별명",
+    "민성",
+    "세리안",
     "자기야",
     "여보야",
     "연인",

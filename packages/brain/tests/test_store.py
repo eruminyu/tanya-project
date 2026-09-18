@@ -1,4 +1,4 @@
-"""Phase 3.0: MemoryStore 테스트"""
+﻿"""Phase 3.0: MemoryStore 테스트"""
 import pytest
 import sqlite3
 from memory.store import MemoryStore
@@ -69,13 +69,13 @@ class TestConversations:
 class TestMemories:
     def test_save_and_get_memory(self, store):
         mem_id = store.save_memory(
-            content="사용자는 게임을 좋아한다",
+            content="민성은 게임을 좋아한다",
             category="preference",
             importance=0.7,
         )
         mem = store.get_memory(mem_id)
         assert mem is not None
-        assert mem["content"] == "사용자는 게임을 좋아한다"
+        assert mem["content"] == "민성은 게임을 좋아한다"
         assert mem["category"] == "preference"
 
     def test_fts_row_created(self, store):
@@ -88,13 +88,13 @@ class TestMemories:
 
 class TestUserProfile:
     def test_set_and_get(self, store):
-        store.set_profile("name", "사용자")
-        assert store.get_profile("name") == "사용자"
+        store.set_profile("name", "민성")
+        assert store.get_profile("name") == "민성"
 
     def test_update_existing(self, store):
-        store.set_profile("name", "사용자")
-        store.set_profile("name", "데모 사용자")
-        assert store.get_profile("name") == "데모 사용자"
+        store.set_profile("name", "민성")
+        store.set_profile("name", "세리안")
+        assert store.get_profile("name") == "세리안"
 
     def test_get_missing_returns_none(self, store):
         assert store.get_profile("nonexistent") is None

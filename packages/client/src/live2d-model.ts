@@ -4,7 +4,7 @@ export interface Live2DModelManifest {
   id: string;
   displayName: string;
   modelUrl: string;
-  expressions: Partial<Record<Live2DEmotion, string>>;
+  expressions: Record<Live2DEmotion, string>;
   parameters: {
     mouthOpen: string;
     eyeLeftOpen: string;
@@ -17,24 +17,27 @@ export interface Live2DModelManifest {
   layout: { defaultScale: number; defaultOffsetX: number; defaultOffsetY: number };
 }
 
-export function createLive2DManifest(modelUrl: string | undefined): Live2DModelManifest {
-  return {
-    id: "user-provided",
-    displayName: "타냐",
-    modelUrl: modelUrl?.trim() ?? "",
-    expressions: {},
-    parameters: {
-      mouthOpen: "ParamMouthOpenY",
-      eyeLeftOpen: "ParamEyeLOpen",
-      eyeRightOpen: "ParamEyeROpen",
-      eyeBallX: "ParamEyeBallX",
-      eyeBallY: "ParamEyeBallY",
-      angleX: "ParamAngleX",
-      angleY: "ParamAngleY",
-    },
-    layout: { defaultScale: 1, defaultOffsetX: 0, defaultOffsetY: 0 },
-  };
-}
-
-// Models are supplied locally by users under terms that permit their intended use.
-export const configuredLive2DManifest = createLive2DManifest(import.meta.env.VITE_LIVE2D_MODEL_URL);
+export const kirianManifest: Live2DModelManifest = {
+  id: "kirian-upperbody-v001",
+  displayName: "키리안",
+  modelUrl: "/live2d/kirian/Kirian_UpperBody_Rig_v001.model3.json",
+  expressions: {
+    neutral: "/live2d/kirian/emotions/neutral.exp3.json",
+    happy: "/live2d/kirian/emotions/happy.exp3.json",
+    sad: "/live2d/kirian/emotions/sad.exp3.json",
+    excited: "/live2d/kirian/emotions/excited.exp3.json",
+    worried: "/live2d/kirian/emotions/worried.exp3.json",
+    annoyed: "/live2d/kirian/emotions/annoyed.exp3.json",
+    affectionate: "/live2d/kirian/emotions/affectionate.exp3.json",
+  },
+  parameters: {
+    mouthOpen: "ParamMouthOpenY",
+    eyeLeftOpen: "ParamEyeLOpen",
+    eyeRightOpen: "ParamEyeROpen",
+    eyeBallX: "ParamEyeBallX",
+    eyeBallY: "ParamEyeBallY",
+    angleX: "ParamAngleX",
+    angleY: "ParamAngleY",
+  },
+  layout: { defaultScale: 0.55, defaultOffsetX: 0, defaultOffsetY: 1.2 },
+};

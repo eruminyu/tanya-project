@@ -38,7 +38,7 @@ class LongIdleRule(TriggerRule):
         if ctx.last_conversation_at is None:
             return (
                 f"지금 시각은 {ctx.now.strftime('%H시 %M분')}이야. "
-                "사용자가 처음 접속했어. 타냐로서 부담스럽지 않게 먼저 인사하고, "
+                "사용자가 처음 접속했어. 키리안으로서 부담스럽지 않게 먼저 인사하고, "
                 "지금 필요한 도움이 있는지 한 번만 물어봐. 부드러운 존댓말로 2문장 이내로 말해."
             )
         elapsed_h = int((ctx.now - ctx.last_conversation_at).total_seconds() // 3600)
@@ -46,7 +46,7 @@ class LongIdleRule(TriggerRule):
         return (
             f"지금 시각은 {ctx.now.strftime('%H시 %M분')}이야. "
             f"사용자가 {idle_desc} 대화하지 않았어. "
-            "타냐로서 자연스럽게 먼저 말을 걸어봐. "
+            "키리안으로서 자연스럽게 먼저 말을 걸어봐. "
             "재촉하지 말고 부드러운 존댓말로 3문장 이내로 말해."
         )
 
@@ -69,7 +69,7 @@ class MorningGreetingRule(TriggerRule):
     def get_prompt(self, ctx: TriggerContext) -> str:
         return (
             f"지금 오전 {ctx.hour_of_day}시야. 사용자가 방금 접속했어. "
-            "타냐로서 밝고 다정하게 아침 인사를 건네봐. "
+            "키리안으로서 밝고 다정하게 아침 인사를 건네봐. "
             "밥 먹었는지, 잘 잤는지 같은 자연스러운 안부도 포함해서. "
             "부드러운 존댓말로 3문장 이내로 말해."
         )
@@ -95,7 +95,7 @@ class RandomThoughtRule(TriggerRule):
 
     def get_prompt(self, ctx: TriggerContext) -> str:
         return (
-            "타냐로서 사용자에게 가벼운 대화를 먼저 건네고 싶어졌어. "
+            "키리안으로서 사용자에게 가벼운 대화를 먼저 건네고 싶어졌어. "
             "현재 맥락 없이 아는 척하거나 기존 관계를 가정하지 말고, "
             "부담 없이 답할 수 있는 짧은 안부나 질문을 부드러운 존댓말로 2문장 이내로 말해."
         )
@@ -116,7 +116,7 @@ class NightCheckRule(TriggerRule):
     def get_prompt(self, ctx: TriggerContext) -> str:
         return (
             f"지금 {ctx.now.strftime('%H시 %M분')}이야. 사용자가 아직 활동 중이야. "
-            "타냐로서 휴식을 제안하되 생활 패턴을 단정하거나 잔소리하지 마. "
+            "키리안으로서 휴식을 제안하되 생활 패턴을 단정하거나 잔소리하지 마. "
             "부드러운 존댓말로 2문장 이내로 말해."
         )
 
@@ -136,7 +136,7 @@ class LongSessionRule(TriggerRule):
         elapsed_h = int((ctx.now - ctx.session_start_at).total_seconds() // 3600)
         return (
             f"사용자가 {elapsed_h}시간째 세션을 이어가고 있어. "
-            "타냐로서 잠깐 눈을 쉬고 물을 마시는 짧은 휴식을 제안해. "
+            "키리안으로서 잠깐 눈을 쉬고 물을 마시는 짧은 휴식을 제안해. "
             "재촉하지 말고 부드러운 존댓말로 2문장 이내로 말해."
         )
 
@@ -158,7 +158,7 @@ class WorkReminderRule(TriggerRule):
     def get_prompt(self, ctx: TriggerContext) -> str:
         return (
             f"지금 오전 {self._target_hour}시이고 평일이야. 사용자가 오늘 할 일을 "
-            "확인하면 좋을 시간이야. 타냐로서 할 일 확인을 가볍게 제안해. "
+            "확인하면 좋을 시간이야. 키리안으로서 할 일 확인을 가볍게 제안해. "
             "부드러운 존댓말로 2문장 이내로 말해."
         )
 
@@ -188,7 +188,7 @@ class StreakBreakRule(TriggerRule):
         elapsed_desc = f"약 {elapsed_h}시간" if elapsed_h < 48 else f"약 {elapsed_h // 24}일"
         return (
             f"사용자가 {elapsed_desc} 만에 다시 접속했어. "
-            "타냐로서 반갑게 맞이하되 부재 이유나 관계를 추측하지 마. "
+            "키리안으로서 반갑게 맞이하되 부재 이유나 관계를 추측하지 마. "
             "가볍게 안부를 묻고 필요한 도움이 있는지 부드러운 존댓말로 3문장 이내로 말해."
         )
 
@@ -221,7 +221,7 @@ class AchievementRule(TriggerRule):
     def get_prompt(self, ctx: TriggerContext) -> str:
         milestone = self._nearest_milestone(ctx.total_conversations) or ctx.total_conversations
         return (
-            f"사용자와 타냐가 나눈 대화가 {milestone}번을 넘었어. "
+            f"사용자와 키리안이 나눈 대화가 {milestone}번을 넘었어. "
             "과도한 친밀감이나 관계를 가정하지 말고, 꾸준히 사용해 준 것에 감사하며 "
             "이 기록을 밝고 간결하게 축하해. 부드러운 존댓말로 2문장 이내로 말해."
         )
@@ -281,7 +281,7 @@ class UpcomingEventRule(TriggerRule):
         minutes = self._minutes_until(ctx, event)
         return (
             f"사용자의 일정에 '{event.title}'이(가) {minutes}분 뒤에 시작해. "
-            "타냐로서 그 일정을 언급하며 먼저 말을 걸어봐. "
+            "키리안으로서 그 일정을 언급하며 먼저 말을 걸어봐. "
             "한 문장으로 짧게 알려주고, 지금 하면 도움이 될 구체적인 행동을 하나만 제안해. "
             "부드러운 존댓말로 말하고 2문장을 넘기지 마."
         )

@@ -2,24 +2,24 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from core.mode import ModeClassifier, TanyaMode
+from core.mode import ModeClassifier, KirianMode
 from core.llm import LLMManager
 from config.settings import Settings
 from config.llm_profiles import LLMProfile, LLMProfiles, LLMProfileStore
 
 
 # ---------------------------------------------------------------------------
-# TanyaMode
+# KirianMode
 # ---------------------------------------------------------------------------
 
-class TestTanyaMode:
+class TestKirianMode:
     def test_modes_exist(self):
-        assert TanyaMode.CASUAL is not None
-        assert TanyaMode.TASK is not None
+        assert KirianMode.CASUAL is not None
+        assert KirianMode.TASK is not None
 
     def test_mode_values(self):
-        assert TanyaMode.CASUAL.value == "casual"
-        assert TanyaMode.TASK.value == "task"
+        assert KirianMode.CASUAL.value == "casual"
+        assert KirianMode.TASK.value == "task"
 
 
 # ---------------------------------------------------------------------------
@@ -32,36 +32,36 @@ class TestModeClassifier:
 
     # 일상 모드 분류
     def test_short_greeting_is_casual(self):
-        assert self.clf.classify("안녕!") == TanyaMode.CASUAL
+        assert self.clf.classify("안녕!") == KirianMode.CASUAL
 
     def test_short_chit_chat_is_casual(self):
-        assert self.clf.classify("오늘 뭐 먹었어?") == TanyaMode.CASUAL
+        assert self.clf.classify("오늘 뭐 먹었어?") == KirianMode.CASUAL
 
     # 작업 모드 키워드
     def test_code_keyword_is_task(self):
-        assert self.clf.classify("이 코드 좀 고쳐줘") == TanyaMode.TASK
+        assert self.clf.classify("이 코드 좀 고쳐줘") == KirianMode.TASK
 
     def test_analyze_keyword_is_task(self):
-        assert self.clf.classify("이 데이터 분석해줘") == TanyaMode.TASK
+        assert self.clf.classify("이 데이터 분석해줘") == KirianMode.TASK
 
     def test_implement_keyword_is_task(self):
-        assert self.clf.classify("로그인 기능 구현해줘") == TanyaMode.TASK
+        assert self.clf.classify("로그인 기능 구현해줘") == KirianMode.TASK
 
     def test_error_keyword_is_task(self):
-        assert self.clf.classify("에러 왜 나는 거야?") == TanyaMode.TASK
+        assert self.clf.classify("에러 왜 나는 거야?") == KirianMode.TASK
 
     def test_explain_keyword_is_task(self):
-        assert self.clf.classify("이 알고리즘 설명해줘") == TanyaMode.TASK
+        assert self.clf.classify("이 알고리즘 설명해줘") == KirianMode.TASK
 
     # 길이 기반 (100자 초과 → task)
     def test_long_text_is_task(self):
         long_text = "안녕 " * 40  # 120자 이상
-        assert self.clf.classify(long_text) == TanyaMode.TASK
+        assert self.clf.classify(long_text) == KirianMode.TASK
 
     def test_short_text_under_threshold_is_casual(self):
         short_text = "안녕하세요!"  # 100자 미만
         # 키워드 없으면 casual
-        assert self.clf.classify(short_text) == TanyaMode.CASUAL
+        assert self.clf.classify(short_text) == KirianMode.CASUAL
 
 
 # ---------------------------------------------------------------------------
@@ -181,7 +181,7 @@ class TestLLMModeSelection:
             mock_gs.return_value = settings
 
             manager = LLMManager()
-            provider = manager.select_provider(TanyaMode.CASUAL)
+            provider = manager.select_provider(KirianMode.CASUAL)
 
             assert provider._model_name == "llama3.3:70b"
             assert provider._base_url == "http://local-llm:11434"
@@ -200,7 +200,7 @@ class TestLLMModeSelection:
             mock_gs.return_value = settings
 
             manager = LLMManager()
-            manager.select_provider(TanyaMode.TASK)
+            manager.select_provider(KirianMode.TASK)
 
             mock_gemini.assert_any_call(
                 api_key="task-key",
@@ -222,7 +222,7 @@ class TestLLMModeSelection:
             mock_gs.return_value = settings
 
             manager = LLMManager()
-            provider = manager.select_provider(TanyaMode.TASK)
+            provider = manager.select_provider(KirianMode.TASK)
 
             assert provider is mock_openai.return_value
             mock_openai.assert_any_call(
@@ -259,8 +259,8 @@ class TestLLMModeSelection:
             )
 
             manager = LLMManager()
-            casual = manager.select_provider(TanyaMode.CASUAL)
-            task = manager.select_provider(TanyaMode.TASK)
+            casual = manager.select_provider(KirianMode.CASUAL)
+            task = manager.select_provider(KirianMode.TASK)
 
             assert casual._model_name == "saved-casual-model"
             assert casual._base_url == "http://saved-ollama:11434"
@@ -290,7 +290,7 @@ class TestLLMModeSelection:
             mock_gs.return_value = settings
 
             manager = LLMManager()
-            provider = manager.select_provider(TanyaMode.CASUAL)
+            provider = manager.select_provider(KirianMode.CASUAL)
             assert provider is not None
             assert "ollama" in provider.provider_name.lower()
 
@@ -313,7 +313,7 @@ class TestLLMModeSelection:
             mock_gs.return_value = settings
 
             manager = LLMManager()
-            provider = manager.select_provider(TanyaMode.TASK)
+            provider = manager.select_provider(KirianMode.TASK)
             assert provider is not None
             assert "gemini" in provider.provider_name.lower()
 
@@ -465,7 +465,7 @@ class TestLLMModeSelection:
             task.chat = AsyncMock(return_value="작업 응답")
             manager._casual_provider = casual
             manager._task_provider = task
-            manager.set_mode(TanyaMode.TASK)
+            manager.set_mode(KirianMode.TASK)
 
             result = await manager.chat("안녕")
 
@@ -496,8 +496,8 @@ class TestManualModeSwitch:
             mock_gs.return_value = settings
 
             manager = LLMManager()
-            manager.set_mode(TanyaMode.CASUAL)
-            assert manager.current_mode == TanyaMode.CASUAL
+            manager.set_mode(KirianMode.CASUAL)
+            assert manager.current_mode == KirianMode.CASUAL
 
     def test_set_mode_task(self):
         with patch("core.llm.get_settings") as mock_gs:
@@ -517,8 +517,8 @@ class TestManualModeSwitch:
             mock_gs.return_value = settings
 
             manager = LLMManager()
-            manager.set_mode(TanyaMode.TASK)
-            assert manager.current_mode == TanyaMode.TASK
+            manager.set_mode(KirianMode.TASK)
+            assert manager.current_mode == KirianMode.TASK
 
     def test_set_mode_disables_auto_detect(self):
         """수동으로 모드 설정 시 auto_detect가 비활성화된다."""
@@ -539,5 +539,5 @@ class TestManualModeSwitch:
             mock_gs.return_value = settings
 
             manager = LLMManager()
-            manager.set_mode(TanyaMode.TASK)
+            manager.set_mode(KirianMode.TASK)
             assert manager.auto_detect is False

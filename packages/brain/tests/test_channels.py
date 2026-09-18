@@ -30,10 +30,10 @@ def _make_mock_websocket(messages: list[dict]) -> MagicMock:
 
 def _make_mock_orchestrator(response_text: str = "안녕!") -> MagicMock:
     """테스트용 Orchestrator mock."""
-    from core.schemas import TanyaResponse, EmotionState, EmotionType
+    from core.schemas import KirianResponse, EmotionState, EmotionType
 
     orch = MagicMock()
-    mock_response = TanyaResponse(
+    mock_response = KirianResponse(
         type="response",
         content=response_text,
         audio="dGVzdA==",

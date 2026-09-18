@@ -64,9 +64,9 @@ def _response(profiles: LLMProfiles) -> LLMProfilesResponse:
 @router.get("", response_model=LLMProfilesResponse)
 async def get_llm_profiles(
     request: Request,
-    x_tanya_admin_token: str = Header(default=""),
+    x_kirian_admin_token: str = Header(default=""),
 ):
-    _authorize(request, x_tanya_admin_token)
+    _authorize(request, x_kirian_admin_token)
     profiles = _store(request).load()
     if profiles is None:
         raise HTTPException(status_code=404, detail="LLM profiles not configured")
@@ -77,9 +77,9 @@ async def get_llm_profiles(
 async def put_llm_profiles(
     request: Request,
     body: LLMProfiles,
-    x_tanya_admin_token: str = Header(default=""),
+    x_kirian_admin_token: str = Header(default=""),
 ):
-    _authorize(request, x_tanya_admin_token)
+    _authorize(request, x_kirian_admin_token)
     store = _store(request)
     saved = store.load()
     if saved is not None:

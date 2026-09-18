@@ -20,7 +20,7 @@ class TestUpdateFinetuneCandidateMethod:
         conv_id = store.save_conversation(
             session_key="test",
             user_msg="안녕하세요",
-            assistant_msg="안녕하세요! 저는 타냐예요.",
+            assistant_msg="안녕하세요! 저는 키리안이에요.",
         )
 
         updated = store.update_finetune_candidate([conv_id], value=1)
@@ -39,7 +39,7 @@ class TestUpdateFinetuneCandidateMethod:
         conv_id = store.save_conversation(
             session_key="test",
             user_msg="안녕하세요",
-            assistant_msg="안녕하세요! 저는 타냐예요.",
+            assistant_msg="안녕하세요! 저는 키리안이에요.",
         )
         store.update_finetune_candidate([conv_id], value=1)
 

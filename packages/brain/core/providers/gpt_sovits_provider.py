@@ -29,7 +29,7 @@ def ensure_audible_wav(content: bytes) -> bytes:
     2. RIFF 헤더는 멀쩡하고 PCM이 전부 0x00인 무음 WAV
 
     둘 다 본문이 비어 있지 않아 기존의 `if not content` 검사를 통과했다.
-    그 결과 오류 로그도 없이 타냐가 말을 하지 않는 것처럼 보였다.
+    그 결과 오류 로그도 없이 키리안이 말을 하지 않는 것처럼 보였다.
 
     무음 판정은 **완전한 디지털 무음일 때만** 실패로 본다. 조용한 발화를 잘못
     실패시키지 않기 위해 진폭 임계값을 쓰지 않는다.
@@ -63,7 +63,7 @@ def ensure_audible_wav(content: bytes) -> bytes:
 
 
 class GptSovitsProvider(TTSProvider):
-    """한국어 타냐 V2Pro 체크포인트를 사용하는 CPUFast Provider."""
+    """한국어 키리안 V2Pro 체크포인트를 사용하는 CPUFast Provider."""
 
     def __init__(
         self,

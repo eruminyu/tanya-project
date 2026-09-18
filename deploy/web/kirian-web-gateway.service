@@ -1,0 +1,33 @@
+[Unit]
+Description=Kirian public web gateway (static web + visitor sessions)
+After=network.target kirian-public-brain.service
+Wants=kirian-public-brain.service
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=kirian
+Group=kirian
+WorkingDirectory=/home/kirian/kirian-web/current
+EnvironmentFile=/home/kirian/kirian-web/gateway.env
+ExecStart=/home/kirian/.local/node/bin/node /home/kirian/kirian-web/current/gateway/gateway.mjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+KillSignal=SIGTERM
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

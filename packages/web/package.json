@@ -1,0 +1,23 @@
+{
+  "name": "@kirian/web",
+  "version": "0.1.0",
+  "description": "Kirian public web demo: the desktop renderer's chat, voice and Live2D reused behind the public gateway",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build:cubism": "tsc -p ../client/vendor/cubism-framework/tsconfig.json",
+    "build": "npm run build:cubism && vue-tsc -p tsconfig.json --noEmit && vite build && node scripts/prepare-assets.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "6.0.8",
+    "typescript": "5.9.2",
+    "vite": "8.2.2",
+    "vue": "3.5.42",
+    "vue-tsc": "3.3.11"
+  }
+}

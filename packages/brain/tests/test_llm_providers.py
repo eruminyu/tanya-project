@@ -169,7 +169,7 @@ class TestOllamaProvider:
 
         with patch("core.providers.ollama.requests.post", return_value=response) as post:
             provider = OllamaProvider(
-                base_url="http://192.168.10.20:11434",
+                base_url="http://<lan-host>:11434",
                 model_name="llava:7b",
             )
             result = await provider.analyze_image("sensitive-base64")
@@ -398,7 +398,7 @@ class TestVisionSettings:
         values = {
             "enable_vision": True,
             "vision_provider": "ollama",
-            "vision_base_url": "http://192.168.10.20:11434",
+            "vision_base_url": "http://<lan-host>:11434",
             "vision_model": "llava:7b",
         }
         values[missing] = ""
@@ -411,7 +411,7 @@ class TestVisionSettings:
             _env_file=None,
             enable_vision=True,
             vision_provider="ollama",
-            vision_base_url="http://192.168.10.20:11434",
+            vision_base_url="http://<lan-host>:11434",
             vision_model="llava:7b",
         )
 
@@ -424,7 +424,7 @@ class TestCasualPinnedCall:
     @pytest.mark.asyncio
     async def test_chat_casual_skips_classification(self):
         from core.llm import LLMManager
-        from core.mode import TanyaMode
+        from core.mode import KirianMode
 
         manager = LLMManager.__new__(LLMManager)
         casual = MagicMock()

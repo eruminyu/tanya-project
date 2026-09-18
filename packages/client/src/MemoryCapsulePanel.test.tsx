@@ -126,7 +126,7 @@ describe("1분 기억 체험 패널", () => {
         expiresAt: "2026-09-02T12:30:00Z",
       },
     });
-    expect(html).toContain("타냐가 기억을 다시 찾았어요");
+    expect(html).toContain("키리안이 기억을 다시 찾았어요");
     expect(html).toContain("준비 시간 선택");
     expect(html).toContain("검색 관련도 92%");
     expect(html).toContain("지금 잊기");

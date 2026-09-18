@@ -72,7 +72,7 @@ function createTexture(
   return texture;
 }
 
-class TanyaCubismModel extends CubismUserModel {
+class KirianCubismModel extends CubismUserModel {
   private readonly textures: WebGLTexture[] = [];
   private readonly expressions = new Map<Live2DEmotion, ACubismMotion>();
   private activeEmotion: Live2DEmotion | null = null;
@@ -278,7 +278,7 @@ export async function createCubismStage(
   const gl = canvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true });
   if (!gl) throw new Error("WebGL2를 초기화할 수 없습니다.");
 
-  const model = new TanyaCubismModel();
+  const model = new KirianCubismModel();
   await model.load(gl, manifest, canvas.width, canvas.height, onProgress);
 
   let destroyed = false;

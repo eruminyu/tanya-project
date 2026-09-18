@@ -1,4 +1,4 @@
-"""Phase 7-A: FineTuneFilter + FineTuneFormatter TDD 테스트."""
+﻿"""Phase 7-A: FineTuneFilter + FineTuneFormatter TDD 테스트."""
 import json
 import os
 import tempfile
@@ -12,7 +12,7 @@ from finetune.formatter import FineTuneFormatter
 # 헬퍼
 # ──────────────────────────────────────────────
 
-def make_conv(user_msg="안녕하세요 타냐, 오늘 날씨 어때?", assistant_msg="안녕 데모 사용자, 오늘도 잘 부탁해요!",
+def make_conv(user_msg="안녕하세요 키리안, 오늘 날씨 어때?", assistant_msg="안녕 세리안, 오늘도 잘 부탁해요!",
               quality_score=0.7):
     return {
         "id": 1,
@@ -84,7 +84,7 @@ class TestFineTuneFilterApply:
     def test_filters_multiple(self):
         f = FineTuneFilter()
         convs = [
-            make_conv(user_msg="안녕하세요 타냐야!", quality_score=0.8),   # 통과
+            make_conv(user_msg="안녕하세요 키리안아!", quality_score=0.8),   # 통과
             make_conv(user_msg="ok", quality_score=0.8),                  # 제외 (짧음)
             make_conv(quality_score=0.1),                                  # 제외 (낮은 품질)
             make_conv(assistant_msg="잠깐, 생각을 정리 중이야 ❤️"),         # 제외 (fallback)

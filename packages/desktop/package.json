@@ -1,0 +1,84 @@
+{
+  "name": "@kirian/desktop",
+  "version": "0.1.0",
+  "description": "Kirian Electron desktop application",
+  "private": true,
+  "type": "module",
+  "main": "dist-electron/main.cjs",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm --prefix ../contracts run build && npm run build:cubism && vue-tsc -p tsconfig.json --noEmit && tsc -p tsconfig.electron.json && node scripts/bundle.mjs && vite build && node scripts/prepare-live2d.mjs && node scripts/prepare-voice-notices.mjs",
+    "start": "electron .",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:electron": "playwright test -c playwright.config.ts",
+    "build:brain": "node scripts/build-brain.mjs",
+    "package:win": "npm run build && npm run build:brain && electron-builder --win --x64 --dir --publish never",
+    "installer:win": "npm run build && npm run build:brain && electron-builder --win nsis --x64 --publish never",
+    "verify:installer": "node scripts/verify-installer.mjs",
+    "start:local": "npm run build && node scripts/start-local.mjs",
+    "build:cubism": "tsc -p ../client/vendor/cubism-framework/tsconfig.json"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@kirian/contracts": "file:../contracts",
+    "@types/node": "26.5.0",
+    "@types/ws": "8.18.1",
+    "@vitejs/plugin-vue": "6.0.8",
+    "electron": "44.2.0",
+    "electron-builder": "26.15.3",
+    "esbuild": "0.28.2",
+    "typescript": "5.9.2",
+    "vite": "8.2.2",
+    "vue": "3.5.42",
+    "vue-tsc": "3.3.11",
+    "ws": "8.21.3"
+  },
+  "build": {
+    "appId": "com.kirian.desktop",
+    "productName": "Kirian",
+    "directories": {
+      "output": "release"
+    },
+    "asar": true,
+    "publish": null,
+    "extraResources": [
+      {
+        "from": "../../.cache/brain-bundle/kirian-brain",
+        "to": "brain",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "files": [
+      "dist/**",
+      "dist-electron/main.cjs",
+      "dist-electron/preload/index.cjs",
+      "dist-electron/THIRD_PARTY_LICENSES.txt",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "signExecutable": false,
+      "icon": "../client/src-tauri/icons/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": false,
+      "deleteAppDataOnUninstall": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": false,
+      "packElevateHelper": false,
+      "differentialPackage": false,
+      "include": "packaging/installer.nsh",
+      "artifactName": "Kirian-Setup-${version}-${arch}.${ext}"
+    },
+    "npmRebuild": false
+  }
+}

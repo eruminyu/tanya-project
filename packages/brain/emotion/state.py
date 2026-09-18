@@ -5,7 +5,7 @@ from core.schemas import EmotionState, EmotionType
 
 class MoodStateMachine:
     """
-    타냐의 내부 감정 상태를 관리하는 상태 머신.
+    키리안의 내부 감정 상태를 관리하는 상태 머신.
 
     감정 전환을 부드럽게 스무딩하여 급격한 변화를 방지하고,
     자연스러운 감정 흐름을 만든다.

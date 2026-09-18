@@ -8,7 +8,7 @@ class TestMemoryEngine:
         self.engine = MemoryEngine()
 
     def test_add_turn_and_count(self):
-        self.engine.add_turn("안녕!", "안녕 사용자~ ❤️")
+        self.engine.add_turn("안녕!", "안녕 민성~ ❤️")
         assert self.engine.turn_count == 1
 
     def test_get_history_format(self):

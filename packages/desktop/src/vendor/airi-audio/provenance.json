@@ -1,0 +1,52 @@
+{
+  "project": "Project AIRI",
+  "repository": "https://github.com/moeru-ai/airi",
+  "commit": "9a4e1da5a17c98af1bc7e1bebed2c4ab5022e1af",
+  "commit_time_utc": "2026-09-07T18:35:35Z",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2024-PRESENT Neko Ayaka",
+  "scope": "Sentence segmentation and playback scheduling code only. No voice, speaker preset, model, audio recording, or lip-sync profile is included.",
+  "runtime_dependencies": [],
+  "files": [
+    {
+      "file": "playback-manager.ts",
+      "upstream_path": "packages/pipelines-audio/src/managers/playback-manager.ts",
+      "upstream_url": "https://github.com/moeru-ai/airi/blob/9a4e1da5a17c98af1bc7e1bebed2c4ab5022e1af/packages/pipelines-audio/src/managers/playback-manager.ts",
+      "upstream_sha256": "649d5bd8f024f5db823efdaef7b5ee5c52e0db8b60ce3473277bd80175ae38b8",
+      "changes": [
+        "Changed the relative type import to ./types.js.",
+        "Replaced @moeru/std errorMessageFrom with a standalone Error.message-only helper; queue, priority, events, and cancellation logic are preserved."
+      ]
+    },
+    {
+      "file": "types.ts",
+      "upstream_path": "packages/pipelines-audio/src/types.ts",
+      "upstream_url": "https://github.com/moeru-ai/airi/blob/9a4e1da5a17c98af1bc7e1bebed2c4ab5022e1af/packages/pipelines-audio/src/types.ts",
+      "upstream_sha256": "c0546e0c80de5e3649843c4867a0b59f4fa2cce1e651fb0ad48d761109edce99",
+      "changes": [
+        "Copied without modification."
+      ]
+    },
+    {
+      "file": "tts-chunker.ts",
+      "upstream_path": "packages/pipelines-audio/src/processors/tts-chunker.ts",
+      "upstream_url": "https://github.com/moeru-ai/airi/blob/9a4e1da5a17c98af1bc7e1bebed2c4ab5022e1af/packages/pipelines-audio/src/processors/tts-chunker.ts",
+      "upstream_sha256": "64aef3b3307bf3446ac4b87c8f3299285d63ad2caa9c74c200a2d05782d04839",
+      "changes": [
+        "Adapted the punctuation, decimal separators, first-two-chunk latency boost, minimum 4/maximum 12 word targets, and Intl.Segmenter word counting to a synchronous push/finish interface.",
+        "Preserves exact text including whitespace, code, narrative, control characters, and original ellipsis spelling. No trim, narrative filtering, special-control execution, or source character replacement.",
+        "Replaced clustr and async streams with Intl.Segmenter grapheme segmentation and retained the unstable final grapheme across pushes.",
+        "Added a default 300 UTF-16-code-unit flush threshold; an indivisible grapheme may exceed it. Normal numeric runs move to the next chunk instead of splitting decimals or grouped numbers. Numeric runs longer than the threshold retain bounded grapheme splitting."
+      ]
+    },
+    {
+      "file": "LICENSE",
+      "upstream_path": "LICENSE",
+      "upstream_url": "https://github.com/moeru-ai/airi/blob/9a4e1da5a17c98af1bc7e1bebed2c4ab5022e1af/LICENSE",
+      "upstream_sha256": "f334260edf0508041280b534ca9d0abd5a02a9626c1d2e20a556ac4eb72b07f9",
+      "changes": [
+        "Copied without modification."
+      ]
+    }
+  ]
+}

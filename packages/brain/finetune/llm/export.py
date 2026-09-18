@@ -9,9 +9,9 @@ llama.cpp의 convert_lora_to_gguf.py 스크립트를 사용해
 
 사용 예:
     python -m finetune.llm.export \\
-        --adapter_dir finetune_data/adapters/tanya_20260319 \\
+        --adapter_dir finetune_data/adapters/kirian_20260319 \\
         --base_model qwen2.5:7b \\
-        --output_path finetune_data/gguf/tanya_20260319.gguf \\
+        --output_path finetune_data/gguf/kirian_20260319.gguf \\
         --llama_cpp_dir /opt/llama.cpp
 """
 from __future__ import annotations

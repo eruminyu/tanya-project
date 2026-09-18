@@ -187,7 +187,7 @@ export function useBrainConnection(options: {
         if (proactiveSuggestion) {
           setMessages((current) => [
             ...current,
-            { id: createMessageId(), role: "tanya", text: proactiveSuggestion },
+            { id: createMessageId(), role: "kirian", text: proactiveSuggestion },
           ]);
           callbacksRef.current.onProactiveSuggestion();
           return;
@@ -228,7 +228,7 @@ export function useBrainConnection(options: {
             const found = current.some((message) => message.id === id);
             return found
               ? current.map((message) => message.id === id ? { ...message, text: message.text + text } : message)
-              : [...current, { id, role: "tanya", text, route }];
+              : [...current, { id, role: "kirian", text, route }];
           });
         } else {
           const id = streamIdRef.current ?? createMessageId();
@@ -238,7 +238,7 @@ export function useBrainConnection(options: {
             const found = current.some((message) => message.id === id);
             return found
               ? current.map((message) => message.id === id ? { ...message, text } : message)
-              : [...current, { id, role: "tanya", text, route }];
+              : [...current, { id, role: "kirian", text, route }];
           });
           pendingRouteRef.current = undefined;
         }

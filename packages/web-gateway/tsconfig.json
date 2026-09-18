@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "rootDir": "..",
+    "outDir": "dist",
+    "types": ["node"],
+    "noUncheckedIndexedAccess": true,
+    "sourceMap": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "../desktop/src/main/session-controller.ts",
+    "../desktop/src/main/speech-coordinator.ts",
+    "../desktop/src/shared/bridge.ts",
+    "../desktop/src/vendor/airi-audio/tts-chunker.ts"
+  ]
+}

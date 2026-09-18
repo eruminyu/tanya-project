@@ -6,7 +6,7 @@ from core.schemas import ConversationTurn, EmotionState
 
 
 class MemoryEngine:
-    """타냐의 기억 시스템.
+    """키리안의 기억 시스템.
 
     Phase 1: Short-term memory (in-memory deque)
     Phase 3: + Episodic (SQLite), User Profile (SQLite)

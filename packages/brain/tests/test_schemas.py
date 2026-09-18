@@ -1,7 +1,7 @@
 import pytest
 from core.schemas import (
     UserMessage,
-    TanyaResponse,
+    KirianResponse,
     EmotionState,
     EmotionType,
     ConversationTurn,
@@ -38,10 +38,10 @@ class TestEmotionState:
             EmotionState(intensity=-0.1)
 
 
-class TestTanyaResponse:
+class TestKirianResponse:
     def test_serialization(self):
-        resp = TanyaResponse(
-            content="안녕 사용자!",
+        resp = KirianResponse(
+            content="안녕 민성!",
             audio="base64audio",
             emotion=EmotionState(type=EmotionType.AFFECTIONATE, intensity=0.8),
             animation_intent="smile",
@@ -49,19 +49,19 @@ class TestTanyaResponse:
         data = resp.model_dump()
 
         assert data["type"] == "response"
-        assert data["content"] == "안녕 사용자!"
+        assert data["content"] == "안녕 민성!"
         assert data["emotion"]["type"] == "affectionate"
         assert data["animation_intent"] == "smile"
 
     def test_json_serialization(self):
-        resp = TanyaResponse(content="테스트", audio="")
+        resp = KirianResponse(content="테스트", audio="")
         json_str = resp.model_dump_json()
         assert "테스트" in json_str
         assert "emotion" in json_str
 
     def test_backward_compatible_fields(self):
         """기존 Unity 클라이언트가 파싱하는 필드가 있는지 확인."""
-        resp = TanyaResponse(content="응답", audio="audio_data")
+        resp = KirianResponse(content="응답", audio="audio_data")
         data = resp.model_dump()
         assert "type" in data
         assert "content" in data

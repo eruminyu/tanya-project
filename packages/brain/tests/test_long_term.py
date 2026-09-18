@@ -82,7 +82,7 @@ class TestMemoryRecordSchema:
 class TestSaveMemory:
     @pytest.mark.asyncio
     async def test_save_returns_id(self, ltm):
-        mem_id = await ltm.save_memory("사용자는 게임을 좋아한다")
+        mem_id = await ltm.save_memory("민성은 게임을 좋아한다")
         assert isinstance(mem_id, int)
         assert mem_id > 0
 
@@ -118,7 +118,7 @@ class TestSaveMemory:
 class TestSearch:
     @pytest.mark.asyncio
     async def test_search_returns_memory_records(self, ltm):
-        await ltm.save_memory("사용자는 RPG 게임을 좋아한다", category="preference")
+        await ltm.save_memory("민성은 RPG 게임을 좋아한다", category="preference")
         results = await ltm.search("게임", top_k=5)
         assert isinstance(results, list)
         assert all(isinstance(r, MemoryRecord) for r in results)
@@ -178,8 +178,8 @@ class TestTemporalDecay:
 
 class TestUserProfile:
     def test_set_and_get(self, ltm):
-        ltm.set_profile("name", "사용자")
-        assert ltm.get_profile("name") == "사용자"
+        ltm.set_profile("name", "민성")
+        assert ltm.get_profile("name") == "민성"
 
     def test_update_existing(self, ltm):
         ltm.set_profile("hobby", "게임")

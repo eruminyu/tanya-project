@@ -283,7 +283,7 @@ class TestFasterWhisperConfiguration:
 
 
 class TestFasterWhisperInitialPrompt:
-    """T-047: 고정 어휘 힌트로 인식률을 올린다."""
+    """일반 대화는 힌트 없이 시작하고 명시된 인식 힌트만 전달한다."""
 
     def _provider(self, **kwargs):
         from core.providers.faster_whisper_provider import FasterWhisperProvider
@@ -311,10 +311,11 @@ class TestFasterWhisperInitialPrompt:
             await provider.transcribe(b"audio")
         assert model.transcribe.call_args.kwargs["initial_prompt"] is None
 
-    def test_default_prompt_covers_tutorial_grammar(self):
-        """제한 문법 문장이 힌트에 없으면 그 문장은 계속 틀린다."""
+    def test_default_prompt_is_empty_and_environment_can_override(self, monkeypatch):
+        """개인 대화에 튜토리얼 문장을 주입하지 않고 명시 설정은 보존한다."""
         from config.settings import Settings
 
-        prompt = Settings().stt_initial_prompt
-        for phrase in ["체험 시작할게", "이 일정으로 등록해줘", "지금 잊어줘", "건너뛸게"]:
-            assert phrase in prompt
+        monkeypatch.delenv("STT_INITIAL_PROMPT", raising=False)
+        assert Settings(_env_file=None).stt_initial_prompt == ""
+        monkeypatch.setenv("STT_INITIAL_PROMPT", "키리안, 옵시디언")
+        assert Settings(_env_file=None).stt_initial_prompt == "키리안, 옵시디언"

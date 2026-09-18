@@ -13,7 +13,7 @@ export interface ClientSettings {
   live2dOffsetY: number;
 }
 
-export const CLIENT_SETTINGS_STORAGE_KEY = "tanya.clientSettings.v1";
+export const CLIENT_SETTINGS_STORAGE_KEY = "kirian.clientSettings.v1";
 
 export const DEFAULT_CLIENT_SETTINGS: ClientSettings = {
   lipSyncSensitivity: 4.5,

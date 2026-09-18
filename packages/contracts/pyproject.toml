@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kirian-contracts"
+version = "0.1.0"
+description = "Validation for Kirian's shared rearchitecture wire contract"
+requires-python = ">=3.10"
+dependencies = ["jsonschema==4.26.0"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+
+[tool.setuptools]
+packages = ["kirian_contracts", "kirian_contracts.schema"]
+include-package-data = true
+
+[tool.setuptools.package-dir]
+kirian_contracts = "python/kirian_contracts"
+"kirian_contracts.schema" = "schema"
+
+[tool.setuptools.package-data]
+"kirian_contracts.schema" = ["protocol.v1.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

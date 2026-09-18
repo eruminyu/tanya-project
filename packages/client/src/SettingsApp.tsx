@@ -73,7 +73,7 @@ export function SettingsApp() {
   }
 
   return <main className="settings-window">
-    <header className="settings-titlebar"><div><strong>타냐 설정</strong><span>일상 경험과 연결을 관리해</span></div><button onClick={() => void getCurrentWindow().close()} aria-label="설정 닫기">×</button></header>
+    <header className="settings-titlebar"><div><strong>키리안 설정</strong><span>일상 경험과 연결을 관리해</span></div><button onClick={() => void getCurrentWindow().close()} aria-label="설정 닫기">×</button></header>
     <div className="settings-content">
       <section><h2>외형과 위치</h2><Toggle label="항상 위에 표시" checked={settings.alwaysOnTop} onChange={(value) => update("alwaysOnTop", value)} /><Toggle label="전체 화면 앱에서 자동 숨김" checked={settings.autoHideFullscreen} onChange={(value) => update("autoHideFullscreen", value)} /><Toggle label="가까운 마우스 시선 추적" checked={settings.gazeTracking} onChange={(value) => update("gazeTracking", value)} />
         <Live2DFramingControls
@@ -91,7 +91,7 @@ export function SettingsApp() {
         <label className="range-row">입 움직임 부드러움 <output>{Math.round(client.lipSyncSmoothing * 100)}%</output><input type="range" min="0" max="1" step="0.05" value={client.lipSyncSmoothing} onChange={(event) => updateClient("lipSyncSmoothing", Number(event.target.value))} /></label>
       </section>
       <section><h2>단축키</h2><label className="text-row">상호작용<input value={settings.interactionShortcut} readOnly /></label><label className="text-row">PTT<input value={settings.pttShortcut} readOnly /></label></section>
-      <section><h2>선제 제안과 방해 금지</h2><Toggle label="타냐의 선제 제안" checked={settings.proactiveSuggestions} onChange={(value) => update("proactiveSuggestions", value)} /><Toggle label="방해 금지" checked={settings.dndEnabled} onChange={(value) => update("dndEnabled", value)} /></section>
+      <section><h2>선제 제안과 방해 금지</h2><Toggle label="키리안의 선제 제안" checked={settings.proactiveSuggestions} onChange={(value) => update("proactiveSuggestions", value)} /><Toggle label="방해 금지" checked={settings.dndEnabled} onChange={(value) => update("dndEnabled", value)} /></section>
       <details><summary>Brain 연결 및 진단</summary>
         <BrainConnectionPanel
           url={settings.brainUrl}

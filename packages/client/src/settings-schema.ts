@@ -24,9 +24,9 @@ export interface SettingsChangedPayload {
   clientSettings: ClientSettings;
 }
 
-export const APP_SETTINGS_STORAGE_KEY = "tanya.appSettings.v1";
-export const SETTINGS_CHANGED_EVENT = "tanya://settings-changed";
-export const BRAIN_RECONNECT_EVENT = "tanya://brain-reconnect";
+export const APP_SETTINGS_STORAGE_KEY = "kirian.appSettings.v1";
+export const SETTINGS_CHANGED_EVENT = "kirian://settings-changed";
+export const BRAIN_RECONNECT_EVENT = "kirian://brain-reconnect";
 const DEFAULT_LLM: LlmRoleSettings = { provider: "Brain 기본값", model: "", endpoint: "" };
 export const DEFAULT_APP_SETTINGS: AppSettings = {
   alwaysOnTop: true,
@@ -99,10 +99,10 @@ export function createSettingsChangedPayload(
 }
 
 /** 통합 이전에 쓰던 별도 저장소 키. 값 승계 후 제거한다. */
-export const LEGACY_BRAIN_URL_STORAGE_KEY = "tanya.brainUrl";
+export const LEGACY_BRAIN_URL_STORAGE_KEY = "kirian.brainUrl";
 
 /**
- * 옛 `tanya.brainUrl` 키에 남은 사용자 주소를 새 설정 계약으로 승계한다.
+ * 옛 `kirian.brainUrl` 키에 남은 사용자 주소를 새 설정 계약으로 승계한다.
  * 새 설정에 이미 사용자가 지정한 주소가 있으면 그쪽을 우선한다.
  */
 export function mergeLegacyBrainUrl(settings: AppSettings, legacyValue: string | null): AppSettings {

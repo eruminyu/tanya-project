@@ -8,9 +8,9 @@ Ollama의 Modelfile 생성 + `ollama create` subprocess 호출로
 
 사용 예:
     python -m finetune.llm.register \\
-        --gguf_path finetune_data/gguf/tanya_20260319.gguf \\
-        --model_name tanya-v2 \\
-        --system_prompt "너는 타냐야..."
+        --gguf_path finetune_data/gguf/kirian_20260319.gguf \\
+        --model_name kirian-v2 \\
+        --system_prompt "너는 키리안이야..."
 """
 from __future__ import annotations
 
@@ -59,7 +59,7 @@ class OllamaRegistrar:
 
         Args:
             gguf_path: GGUF 모델 파일 경로
-            system_prompt: 타냐 시스템 프롬프트
+            system_prompt: 키리안 시스템 프롬프트
             model_name: 등록할 모델 이름
             output_dir: Modelfile 저장 디렉토리
 
@@ -86,7 +86,7 @@ PARAMETER num_ctx 4096
 
         Args:
             modelfile_path: Modelfile 경로
-            model_name: 등록할 모델 이름 (예: tanya-v2)
+            model_name: 등록할 모델 이름 (예: kirian-v2)
 
         Returns:
             성공 여부
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="GGUF → Ollama 모델 등록")
     parser.add_argument("--gguf_path", required=True, help="GGUF 파일 경로")
-    parser.add_argument("--model_name", required=True, help="등록할 모델 이름 (예: tanya-v2)")
+    parser.add_argument("--model_name", required=True, help="등록할 모델 이름 (예: kirian-v2)")
     parser.add_argument("--system_prompt", default="", help="시스템 프롬프트")
     parser.add_argument("--ollama_url", default="http://localhost:11434")
     parser.add_argument("--output_dir", default="finetune_data/modelfiles")
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     success = reg.register(modelfile, model_name=args.model_name)
     if success:
         print(f"등록 완료: {args.model_name}")
-        print(f"→ .env에서 LOCAL_LLM_MODEL={args.model_name} 으로 변경 후 타냐 재시작")
+        print(f"→ .env에서 LOCAL_LLM_MODEL={args.model_name} 으로 변경 후 키리안 재시작")
     else:
         print("등록 실패. 로그를 확인해주세요.")
         raise SystemExit(1)

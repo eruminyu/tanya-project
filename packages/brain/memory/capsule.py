@@ -30,7 +30,7 @@ from memory.store import MemoryCapsuleIndexStore
 logger = logging.getLogger(__name__)
 
 _ALLOWED_MINUTES = frozenset({10, 20, 30})
-_DOC_TYPE = "tanya_public_memory_capsule_v1"
+_DOC_TYPE = "kirian_public_memory_capsule_v1"
 _SOURCE_TYPE = "explicit_choice"
 _SOURCE_LABEL = "준비 시간 선택"
 _RECALL_QUERY = "일정 전에 준비하는 데 어느 정도 시간을 선호하나요"

@@ -190,7 +190,7 @@ class TestOllamaRegistrar:
     def test_list_models_returns_names(self):
         from finetune.llm.register import OllamaRegistrar
         reg = OllamaRegistrar(ollama_url="http://localhost:11434")
-        payload = json.dumps({"models": [{"name": "qwen2.5:7b"}, {"name": "tanya-v1"}]}).encode()
+        payload = json.dumps({"models": [{"name": "qwen2.5:7b"}, {"name": "kirian-v1"}]}).encode()
         with patch("urllib.request.urlopen") as mock_open:
             mock_resp = MagicMock()
             mock_resp.__enter__ = lambda s: s
@@ -199,7 +199,7 @@ class TestOllamaRegistrar:
             mock_open.return_value = mock_resp
             models = reg.list_models()
             assert "qwen2.5:7b" in models
-            assert "tanya-v1" in models
+            assert "kirian-v1" in models
 
     def test_list_models_returns_empty_on_error(self):
         from finetune.llm.register import OllamaRegistrar
@@ -211,17 +211,17 @@ class TestOllamaRegistrar:
         """Modelfile에 FROM, SYSTEM 지시어 포함 여부."""
         from finetune.llm.register import OllamaRegistrar
         reg = OllamaRegistrar()
-        gguf_path = str(tmp_path / "tanya.gguf")
+        gguf_path = str(tmp_path / "kirian.gguf")
         modelfile_path = reg.create_modelfile(
             gguf_path=gguf_path,
-            system_prompt="너는 타냐야.",
-            model_name="tanya-v1",
+            system_prompt="너는 키리안이야.",
+            model_name="kirian-v1",
             output_dir=str(tmp_path),
         )
         content = Path(modelfile_path).read_text(encoding="utf-8")
         assert "FROM" in content
         assert "SYSTEM" in content
-        assert "타냐" in content
+        assert "키리안" in content
 
     def test_register_calls_ollama_create(self, tmp_path):
         from finetune.llm.register import OllamaRegistrar
@@ -230,7 +230,7 @@ class TestOllamaRegistrar:
         modelfile.write_text("FROM ./test.gguf\n")
         with patch("subprocess.run") as mock_run:
             mock_run.return_value = MagicMock(returncode=0)
-            result = reg.register(str(modelfile), model_name="tanya-v1")
+            result = reg.register(str(modelfile), model_name="kirian-v1")
             assert result is True
             assert mock_run.called
 
@@ -241,7 +241,7 @@ class TestOllamaRegistrar:
         modelfile.write_text("FROM ./test.gguf\n")
         with patch("subprocess.run") as mock_run:
             mock_run.return_value = MagicMock(returncode=1, stderr=b"error")
-            result = reg.register(str(modelfile), model_name="tanya-v1")
+            result = reg.register(str(modelfile), model_name="kirian-v1")
             assert result is False
 
 
@@ -254,10 +254,10 @@ class TestFineTuneEvaluator:
         ev = FineTuneEvaluator(
             ollama_url="http://localhost:11434",
             before_model="qwen2.5:7b",
-            after_model="tanya-v1",
+            after_model="kirian-v1",
         )
         before_resp = ["짧아."] * 3
-        after_resp = ["이것은 훨씬 더 길고 상세한 응답이야. 타냐 페르소나로 잘 대답하고 있어!"] * 3
+        after_resp = ["이것은 훨씬 더 길고 상세한 응답이야. 키리안 페르소나로 잘 대답하고 있어!"] * 3
         score = ev.score_responses(before_resp, after_resp)
         assert score["after_avg_length"] > score["before_avg_length"]
 
@@ -266,7 +266,7 @@ class TestFineTuneEvaluator:
         ev = FineTuneEvaluator(
             ollama_url="http://localhost:11434",
             before_model="qwen2.5:7b",
-            after_model="tanya-v1",
+            after_model="kirian-v1",
         )
         before_resp = ["동일한 길이의 응답."] * 3
         after_resp = ["동일한 길이의 응답."] * 3
@@ -278,11 +278,11 @@ class TestFineTuneEvaluator:
         ev = FineTuneEvaluator(
             ollama_url="http://localhost:11434",
             before_model="qwen2.5:7b",
-            after_model="tanya-v1",
+            after_model="kirian-v1",
         )
         result = EvalResult(
             before_model="qwen2.5:7b",
-            after_model="tanya-v1",
+            after_model="kirian-v1",
             prompts=["안녕?"],
             before_responses=["안녕하세요."],
             after_responses=["안녕! 자기야~"],
@@ -293,7 +293,7 @@ class TestFineTuneEvaluator:
         assert Path(output_path).exists()
         data = json.loads(Path(output_path).read_text(encoding="utf-8"))
         assert data["before_model"] == "qwen2.5:7b"
-        assert data["after_model"] == "tanya-v1"
+        assert data["after_model"] == "kirian-v1"
 
     def test_run_prompts_uses_ollama(self):
         """Ollama HTTP 호출 mock — 두 모델 응답 수집."""
@@ -301,7 +301,7 @@ class TestFineTuneEvaluator:
         ev = FineTuneEvaluator(
             ollama_url="http://localhost:11434",
             before_model="qwen2.5:7b",
-            after_model="tanya-v1",
+            after_model="kirian-v1",
         )
         prompts = ["안녕?", "뭐해?"]
 
@@ -316,4 +316,4 @@ class TestFineTuneEvaluator:
     def test_default_prompts_exist(self):
         from finetune.llm.eval import FineTuneEvaluator, DEFAULT_EVAL_PROMPTS
         assert len(DEFAULT_EVAL_PROMPTS) >= 5
-        assert any("타냐" in p or "안녕" in p for p in DEFAULT_EVAL_PROMPTS)
+        assert any("키리안" in p or "안녕" in p for p in DEFAULT_EVAL_PROMPTS)

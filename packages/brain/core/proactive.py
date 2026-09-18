@@ -1,6 +1,6 @@
 """Phase 9-A: 자발적 말걸기 — TriggerRule ABC + ProactiveTriggerScheduler.
 
-타냐가 사용자의 호출 없이 스스로 먼저 말을 거는 기능의 핵심 구조.
+키리안이 사용자의 호출 없이 스스로 먼저 말을 거는 기능의 핵심 구조.
 - TriggerContext: 규칙 평가에 필요한 상황 정보
 - TriggerRule ABC: 개별 트리거 규칙 인터페이스
 - ProactiveTriggerScheduler: 규칙 평가 + 발화 생성 + WebSocket 전송
@@ -114,7 +114,7 @@ class _SessionState:
 
 
 class ProactiveTriggerScheduler:
-    """등록된 TriggerRule들을 주기적으로 평가해 타냐의 자발적 발화를 생성한다.
+    """등록된 TriggerRule들을 주기적으로 평가해 키리안의 자발적 발화를 생성한다.
 
     발동 정책:
     - WebSocket send_fn이 등록된(연결된) 상태에서만 발동
@@ -400,7 +400,7 @@ class ProactiveTriggerScheduler:
     def _get_total_conversations(self, session_key: str = "") -> int:
         """MemoryStore에서 제품 전체 누적 대화 수를 조회한다.
 
-        AchievementRule은 원래 타냐와 나눈 전체 누적 마일스톤을 축하한다.
+        AchievementRule은 원래 키리안과 나눈 전체 누적 마일스톤을 축하한다.
         현재 Orchestrator 저장 계약도 모든 채널을 ``session_key='default'``로
         기록하므로 proactive transport session으로 필터링하면 항상 0이 된다.
         ``session_key``는 다른 proactive 상태 격리에만 쓰고 이 집계는 전역이다.

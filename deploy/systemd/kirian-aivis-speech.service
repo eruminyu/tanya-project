@@ -1,0 +1,32 @@
+[Unit]
+Description=Kirian AivisSpeech Engine service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=kirian
+Group=kirian
+WorkingDirectory=/home/kirian/tts/aivis/runtime/Linux-x64
+Environment=XDG_DATA_HOME=/home/kirian/tts/aivis/data
+ExecStart=/home/kirian/tts/aivis/runtime/Linux-x64/run --host 127.0.0.1 --port 10101 --no-use_gpu --disable_sentry --disable_mutable_api --output_log_utf8
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGINT
+UMask=0077
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+ReadWritePaths=/home/kirian/tts/aivis/data
+
+[Install]
+WantedBy=multi-user.target

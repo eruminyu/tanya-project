@@ -7,7 +7,7 @@ const statusText = { running: "실행 중", waiting: "승인 대기", completed:
 export function AgentDock({ state, googleWrite, onApproveGoogle, onCancelGoogle, onClose }: AgentDockProps) {
   return <section className="agent-dock" aria-label="Agent Dock">
     <header className="agent-dock-header"><div><strong>Agent Dock</strong><span>현재 작업 하나만 표시해요</span></div><button type="button" onClick={onClose} aria-label="Agent Dock 닫기">×</button></header>
-    {googleWrite.status !== "idle" ? <GoogleWriteCard state={googleWrite} onApprove={onApproveGoogle} onCancel={onCancelGoogle} /> : !state.activity ? <div className="agent-dock-empty"><span className="utility-symbol" aria-hidden="true">◇</span><strong>진행 중인 작업이 없어</strong><p>타냐가 도구를 사용하거나 확인이 필요한 작업을 시작하면 여기에 과정과 결과를 보여줄게.</p></div> : <div className="agent-activity">
+    {googleWrite.status !== "idle" ? <GoogleWriteCard state={googleWrite} onApprove={onApproveGoogle} onCancel={onCancelGoogle} /> : !state.activity ? <div className="agent-dock-empty"><span className="utility-symbol" aria-hidden="true">◇</span><strong>진행 중인 작업이 없어</strong><p>키리안이 도구를 사용하거나 확인이 필요한 작업을 시작하면 여기에 과정과 결과를 보여줄게.</p></div> : <div className="agent-activity">
       <div className={`agent-status ${state.activity.status}`}>{statusText[state.activity.status]}</div><h2>{state.activity.title}</h2>
       <ol className="agent-timeline"><li className="done"><span />요청을 확인했어요</li><li className={state.activity.status}><span />{state.activity.summary}</li></ol>
       {state.activity.sources.length > 0 && <div className="source-chips" aria-label="출처">{state.activity.sources.map((source) => <span key={source}>{source}</span>)}</div>}

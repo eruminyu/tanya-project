@@ -1,0 +1,5 @@
+# Install the shared repository package separately: python -m pip install -e packages/contracts
+fastapi==0.135.1
+uvicorn[standard]==0.41.0
+httpx==0.28.1
+jsonschema==4.26.0

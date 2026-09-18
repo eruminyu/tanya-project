@@ -171,9 +171,9 @@ function ExplanationSummary({
 }
 
 function headingFor(state: TutorialState): string {
-  if (!state.flowId) return "허락부터 확인하는 Tanya 체험";
+  if (!state.flowId) return "허락부터 확인하는 Kirian 체험";
   if (!state.snapshot) return "체험 상태 확인";
-  return PHASE_HEADINGS[state.snapshot.phase] ?? "Tanya 체험";
+  return PHASE_HEADINGS[state.snapshot.phase] ?? "Kirian 체험";
 }
 
 function statusFor(state: TutorialState, connected: boolean, secureSession: boolean): string {

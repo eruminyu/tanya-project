@@ -44,8 +44,8 @@ class TestOrchestratorPersona:
     """페르소나 로딩 테스트."""
 
     _PRIVATE_RELATIONSHIP_TERMS = (
-        "테스트사용자",
-        "예시별명",
+        "민성",
+        "세리안",
         "자기야",
         "여보야",
         "연인",
@@ -55,7 +55,7 @@ class TestOrchestratorPersona:
         with patch("core.orchestrator.LLMManager"):
             orchestrator = Orchestrator()
             # persona.yaml이 존재하면 프롬프트가 비어있지 않아야 함
-            assert "타냐" in orchestrator.persona_prompt
+            assert "키리안" in orchestrator.persona_prompt
 
     def test_persona_is_safe_for_first_time_public_visitors(self):
         with patch("core.orchestrator.LLMManager"):
@@ -94,7 +94,7 @@ class TestOrchestratorFlow:
     async def test_text_message_flow(self):
         with patch("core.orchestrator.LLMManager") as MockLLM:
             mock_llm = MockLLM.return_value
-            mock_llm.chat = AsyncMock(return_value="안녕 사용자~ ❤️")
+            mock_llm.chat = AsyncMock(return_value="안녕 민성~ ❤️")
             mock_llm.analyze_image = AsyncMock()
 
             with patch("core.orchestrator.generate_tts_base64", new_callable=AsyncMock) as mock_tts:
@@ -106,7 +106,7 @@ class TestOrchestratorFlow:
                 response = await orchestrator.handle_message({"content": "안녕!"})
 
                 assert response is not None
-                assert response.content == "안녕 사용자~ ❤️"
+                assert response.content == "안녕 민성~ ❤️"
                 assert response.audio == "fake_audio_base64"
                 assert response.emotion.type == EmotionType.NEUTRAL
 

@@ -396,8 +396,8 @@ describe("Brain 재연결 정책", () => {
 
 describe("Brain 연결 계약", () => {
   it("HTTP 주소를 WebSocket 주소로 변환한다", () => {
-    expect(toWebSocketUrl("http://192.168.10.20:8098/"))
-      .toBe("ws://192.168.10.20:8098/ws/webchat");
+    expect(toWebSocketUrl("http://<lan-host>:8098/"))
+      .toBe("ws://<lan-host>:8098/ws/webchat");
   });
 
   it("HTTPS 주소는 WSS로 변환한다", () => {
@@ -406,13 +406,13 @@ describe("Brain 연결 계약", () => {
   });
 
   it("오디오 모드에서는 WebSocket 쿼리를 추가한다", () => {
-    expect(toWebSocketUrl("http://192.168.10.20:8098", true))
-      .toBe("ws://192.168.10.20:8098/ws/webchat?audio=1&proactive=1");
+    expect(toWebSocketUrl("http://<lan-host>:8098", true))
+      .toBe("ws://<lan-host>:8098/ws/webchat?audio=1&proactive=1");
   });
 
   it("방해 금지 상태에서는 선제 제안을 요청하지 않는다", () => {
-    expect(toWebSocketUrl("http://192.168.10.20:8098", true, false))
-      .toBe("ws://192.168.10.20:8098/ws/webchat?audio=1&proactive=0");
+    expect(toWebSocketUrl("http://<lan-host>:8098", true, false))
+      .toBe("ws://<lan-host>:8098/ws/webchat?audio=1&proactive=0");
   });
 
   it("탭 세션 ID를 기존 옵션과 함께 안전하게 인코딩한다", () => {

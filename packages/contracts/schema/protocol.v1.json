@@ -1,0 +1,2352 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:kirian:protocol:rearchitecture:v1",
+  "title": "ProtocolMessage",
+  "description": "New protocol; incompatible with legacy wire V2. Scope and endpoint claims require authenticated host bindings. action.receipt has no conversational lifetime.",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/SessionReadyMessage"
+    },
+    {
+      "$ref": "#/definitions/InputFinishedMessage"
+    },
+    {
+      "$ref": "#/definitions/InputTranscriptMessage"
+    },
+    {
+      "$ref": "#/definitions/TurnStartMessage"
+    },
+    {
+      "$ref": "#/definitions/ResponseDeltaMessage"
+    },
+    {
+      "$ref": "#/definitions/ResponseCompletedMessage"
+    },
+    {
+      "$ref": "#/definitions/SpeechRequestMessage"
+    },
+    {
+      "$ref": "#/definitions/SpeechChunkMessage"
+    },
+    {
+      "$ref": "#/definitions/SpeechFinishedMessage"
+    },
+    {
+      "$ref": "#/definitions/PlaybackStateMessage"
+    },
+    {
+      "$ref": "#/definitions/TurnCancelMessage"
+    },
+    {
+      "$ref": "#/definitions/TurnEndedMessage"
+    },
+    {
+      "$ref": "#/definitions/SessionClosedMessage"
+    },
+    {
+      "$ref": "#/definitions/ModelDefault_changedMessage"
+    },
+    {
+      "$ref": "#/definitions/ActionDraftMessage"
+    },
+    {
+      "$ref": "#/definitions/ActionApproveMessage"
+    },
+    {
+      "$ref": "#/definitions/ActionReceiptMessage"
+    },
+    {
+      "$ref": "#/definitions/ContextInvalidatedMessage"
+    },
+    {
+      "$ref": "#/definitions/ToolContextMessage"
+    },
+    {
+      "$ref": "#/definitions/ToolOffersMessage"
+    },
+    {
+      "$ref": "#/definitions/ToolProposedMessage"
+    },
+    {
+      "$ref": "#/definitions/ToolResolvedMessage"
+    }
+  ],
+  "definitions": {
+    "Identity": {
+      "title": "Identity",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "personal",
+            "public_demo"
+          ]
+        },
+        "principal_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        }
+      },
+      "required": [
+        "instance_id",
+        "mode",
+        "principal_id"
+      ]
+    },
+    "Scope": {
+      "title": "Scope",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "personal",
+            "public_demo"
+          ]
+        },
+        "principal_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "connection_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "connection_epoch": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "instance_id",
+        "mode",
+        "principal_id",
+        "session_id",
+        "connection_id",
+        "connection_epoch"
+      ]
+    },
+    "ModelRef": {
+      "title": "ModelRef",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "endpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        }
+      },
+      "required": [
+        "provider_id",
+        "model_id",
+        "endpoint_id"
+      ]
+    },
+    "ModelSelection": {
+      "title": "ModelSelection",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "$ref": "#/definitions/ModelRef"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "request",
+            "conversation",
+            "saved_default",
+            "initial_local"
+          ]
+        }
+      },
+      "required": [
+        "model",
+        "source"
+      ]
+    },
+    "Endpoint": {
+      "title": "Endpoint",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "endpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "provider_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "boundary": {
+          "type": "string",
+          "enum": [
+            "local",
+            "private_lan",
+            "cloud"
+          ]
+        },
+        "approved": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "endpoint_id",
+        "provider_id",
+        "boundary",
+        "approved"
+      ]
+    },
+    "SourceRef": {
+      "title": "SourceRef",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "source_id",
+        "revision"
+      ]
+    },
+    "SourceRecord": {
+      "title": "SourceRecord",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "identity": {
+          "$ref": "#/definitions/Identity"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "screen",
+            "note",
+            "calendar",
+            "conversation",
+            "memory",
+            "index",
+            "tool_result"
+          ]
+        },
+        "boundary": {
+          "type": "string",
+          "enum": [
+            "local",
+            "private_lan",
+            "cloud"
+          ]
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "parents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SourceRef"
+          },
+          "maxItems": 128
+        }
+      },
+      "required": [
+        "source_id",
+        "revision",
+        "identity",
+        "kind",
+        "boundary",
+        "deleted",
+        "parents"
+      ]
+    },
+    "ContextItem": {
+      "title": "ContextItem",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32768
+        }
+      },
+      "required": [
+        "source_id",
+        "revision",
+        "text"
+      ]
+    },
+    "ActionPayload": {
+      "title": "ActionPayload",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tool_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "operation": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "account_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "arguments_json": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32768
+        }
+      },
+      "required": [
+        "tool_id",
+        "operation",
+        "account_id",
+        "target",
+        "arguments_json"
+      ]
+    },
+    "ActionDraft": {
+      "title": "ActionDraft",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "draft_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "identity": {
+          "$ref": "#/definitions/Identity"
+        },
+        "executor_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "action": {
+          "$ref": "#/definitions/ActionPayload"
+        },
+        "payload_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "expires_at_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "draft_id",
+        "revision",
+        "identity",
+        "executor_id",
+        "action",
+        "payload_sha256",
+        "expires_at_ms"
+      ]
+    },
+    "Approval": {
+      "title": "Approval",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "draft_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "draft_revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "identity": {
+          "$ref": "#/definitions/Identity"
+        },
+        "executor_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "payload_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "execution_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "expires_at_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "approval_id",
+        "draft_id",
+        "draft_revision",
+        "identity",
+        "executor_id",
+        "payload_sha256",
+        "execution_id",
+        "expires_at_ms"
+      ]
+    },
+    "ExecutionReceipt": {
+      "title": "ExecutionReceipt",
+      "oneOf": [
+        {
+          "title": "SucceededReceipt",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "execution_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "draft_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "draft_revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "identity": {
+              "$ref": "#/definitions/Identity"
+            },
+            "executor_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "payload_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+            },
+            "status": {
+              "const": "succeeded"
+            },
+            "provider_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "provider_operation_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "error_code": {
+              "type": "null"
+            },
+            "recorded_at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "execution_id",
+            "draft_id",
+            "draft_revision",
+            "identity",
+            "executor_id",
+            "payload_sha256",
+            "status",
+            "provider_id",
+            "provider_operation_id",
+            "error_code",
+            "recorded_at_ms"
+          ]
+        },
+        {
+          "title": "FailedReceipt",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "execution_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "draft_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "draft_revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "identity": {
+              "$ref": "#/definitions/Identity"
+            },
+            "executor_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "payload_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+            },
+            "status": {
+              "const": "failed"
+            },
+            "provider_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "provider_operation_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "error_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "recorded_at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "execution_id",
+            "draft_id",
+            "draft_revision",
+            "identity",
+            "executor_id",
+            "payload_sha256",
+            "status",
+            "provider_id",
+            "provider_operation_id",
+            "error_code",
+            "recorded_at_ms"
+          ]
+        },
+        {
+          "title": "UnknownReceipt",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "execution_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "draft_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "draft_revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "identity": {
+              "$ref": "#/definitions/Identity"
+            },
+            "executor_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "payload_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+            },
+            "status": {
+              "const": "unknown"
+            },
+            "provider_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "provider_operation_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "error_code": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "recorded_at_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "execution_id",
+            "draft_id",
+            "draft_revision",
+            "identity",
+            "executor_id",
+            "payload_sha256",
+            "status",
+            "provider_id",
+            "provider_operation_id",
+            "error_code",
+            "recorded_at_ms"
+          ]
+        }
+      ]
+    },
+    "SessionReadyMessage": {
+      "title": "SessionReadyMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "session.ready"
+        },
+        "turn_id": {
+          "type": "null"
+        },
+        "intent_id": {
+          "type": "null"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "SessionReadyPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "client_kind": {
+              "type": "string",
+              "enum": [
+                "electron",
+                "web",
+                "android"
+              ]
+            },
+            "resume": {
+              "type": "string",
+              "enum": [
+                "new_session",
+                "turns_cancelled"
+              ]
+            },
+            "capabilities": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "text",
+                  "audio_input",
+                  "audio_output",
+                  "screen",
+                  "local_actions"
+                ]
+              },
+              "maxItems": 5
+            }
+          },
+          "required": [
+            "client_kind",
+            "resume",
+            "capabilities"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "InputFinishedMessage": {
+      "title": "InputFinishedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "input.finished"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "InputFinishedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "input_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "text",
+                "audio"
+              ]
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 32768
+            }
+          },
+          "required": [
+            "input_id",
+            "kind",
+            "text"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "InputTranscriptMessage": {
+      "title": "InputTranscriptMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "input.transcript"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "TranscriptPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "input_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32768
+            },
+            "final": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "input_id",
+            "text",
+            "final"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "TurnStartMessage": {
+      "title": "TurnStartMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "turn.start"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "TurnStartPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "selection": {
+              "$ref": "#/definitions/ModelSelection"
+            },
+            "context": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ContextItem"
+              },
+              "maxItems": 128
+            },
+            "speech": {
+              "type": "boolean",
+              "description": "Client will close sentence submission with speech.finished; omission is false for legacy clients."
+            },
+            "routing_candidates": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/definitions/ModelRef"
+              }
+            },
+            "external_tools": {
+              "type": "boolean",
+              "description": "Host opt-in for this turn; omission is OFF. Tool offers confer no execution authority."
+            }
+          },
+          "required": [
+            "selection",
+            "context"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ResponseDeltaMessage": {
+      "title": "ResponseDeltaMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "response.delta"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ResponseDeltaPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            "actual_model": {
+              "$ref": "#/definitions/ModelRef"
+            },
+            "routing_reason": {
+              "$ref": "#/definitions/RoutingReason"
+            }
+          },
+          "required": [
+            "text",
+            "actual_model"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ResponseCompletedMessage": {
+      "title": "ResponseCompletedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "response.completed"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ResponseCompletedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "actual_model": {
+              "$ref": "#/definitions/ModelRef"
+            },
+            "routing_reason": {
+              "$ref": "#/definitions/RoutingReason"
+            }
+          },
+          "required": [
+            "actual_model"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "SpeechRequestMessage": {
+      "title": "SpeechRequestMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "speech.request"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "SpeechRequestPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sentence_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "sentence_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8192
+            },
+            "model": {
+              "$ref": "#/definitions/ModelRef"
+            }
+          },
+          "required": [
+            "sentence_id",
+            "sentence_index",
+            "text",
+            "model"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "SpeechChunkMessage": {
+      "title": "SpeechChunkMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "speech.chunk"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "SpeechChunkPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sentence_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "sentence_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "codec": {
+              "type": "string",
+              "enum": [
+                "pcm_s16le",
+                "wav",
+                "mp3"
+              ]
+            },
+            "sample_rate_hz": {
+              "type": "integer",
+              "minimum": 8000,
+              "maximum": 192000
+            },
+            "audio_base64": {
+              "type": "string",
+              "minLength": 4,
+              "maxLength": 1398104,
+              "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?(?![\\s\\S])"
+            },
+            "final": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "sentence_id",
+            "sentence_index",
+            "codec",
+            "sample_rate_hz",
+            "audio_base64",
+            "final"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "PlaybackStateMessage": {
+      "title": "PlaybackStateMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "playback.state"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "PlaybackStatePayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sentence_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "queued",
+                "playing",
+                "completed",
+                "cancelled",
+                "failed"
+              ]
+            }
+          },
+          "required": [
+            "sentence_id",
+            "state"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "TurnCancelMessage": {
+      "title": "TurnCancelMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "turn.cancel"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "TurnCancelPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string",
+              "enum": [
+                "user",
+                "barge_in",
+                "superseded",
+                "disconnect",
+                "shutdown"
+              ]
+            }
+          },
+          "required": [
+            "reason"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "TurnEndedMessage": {
+      "title": "TurnEndedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "turn.ended"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "TurnEndedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "completed",
+                "cancelled",
+                "failed"
+              ]
+            },
+            "error_code": {
+              "type": "string",
+              "enum": [
+                "provider_unavailable",
+                "provider_error",
+                "model_mismatch",
+                "incomplete_response",
+                "empty_response",
+                "response_limit",
+                "model_not_allowed",
+                "context_blocked",
+                "invalid_request",
+                "session_limit",
+                "turn_timeout",
+                "speech_unavailable",
+                "speech_error",
+                "playback_failed",
+                "source_changed",
+                "storage_unavailable",
+                "unsupported_model",
+                "routing_changed",
+                "routing_limit",
+                "routing_no_candidate",
+                "routing_duplicate_call",
+                "persistence_unavailable"
+              ]
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "if": {
+            "properties": {
+              "error_code": {}
+            },
+            "required": [
+              "error_code"
+            ]
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "failed"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "SessionClosedMessage": {
+      "title": "SessionClosedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "session.closed"
+        },
+        "turn_id": {
+          "type": "null"
+        },
+        "intent_id": {
+          "type": "null"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "SessionClosedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string",
+              "enum": [
+                "disconnect",
+                "shutdown",
+                "expired"
+              ]
+            }
+          },
+          "required": [
+            "reason"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ModelDefault_changedMessage": {
+      "title": "ModelDefault_changedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "model.default_changed"
+        },
+        "turn_id": {
+          "type": "null"
+        },
+        "intent_id": {
+          "type": "null"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ModelDefaultChangedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "model": {
+              "$ref": "#/definitions/ModelRef"
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "model",
+            "revision"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ActionDraftMessage": {
+      "title": "ActionDraftMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "action.draft"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ActionDraftPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "draft": {
+              "$ref": "#/definitions/ActionDraft"
+            }
+          },
+          "required": [
+            "draft"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ActionApproveMessage": {
+      "title": "ActionApproveMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "action.approve"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ActionApprovePayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "approval": {
+              "$ref": "#/definitions/Approval"
+            }
+          },
+          "required": [
+            "approval"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ActionReceiptMessage": {
+      "title": "ActionReceiptMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "action.receipt"
+        },
+        "turn_id": {
+          "type": "null"
+        },
+        "intent_id": {
+          "type": "null"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ActionReceiptPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "receipt": {
+              "$ref": "#/definitions/ExecutionReceipt"
+            }
+          },
+          "required": [
+            "receipt"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ContextInvalidatedMessage": {
+      "title": "ContextInvalidatedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "context.invalidated"
+        },
+        "turn_id": {
+          "type": "null"
+        },
+        "intent_id": {
+          "type": "null"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ContextInvalidatedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "reason": {
+              "type": "string",
+              "enum": [
+                "updated",
+                "deleted"
+              ]
+            }
+          },
+          "required": [
+            "source_id",
+            "revision",
+            "reason"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "SpeechFinishedMessage": {
+      "title": "SpeechFinishedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "speech.finished"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "const": 0
+        },
+        "payload": {
+          "title": "SpeechFinishedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sentence_count": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            }
+          },
+          "required": [
+            "sentence_count"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "RoutingReason": {
+      "type": "string",
+      "enum": [
+        "automatic_budget",
+        "request_fixed",
+        "conversation_fixed",
+        "saved_default",
+        "initial_local"
+      ]
+    },
+    "ToolOffer": {
+      "title": "ToolOffer",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "offer_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "input_schema_json": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 8192
+        },
+        "provider_kind": {
+          "enum": [
+            "mcp",
+            "google_calendar"
+          ]
+        }
+      },
+      "required": [
+        "offer_id",
+        "display_name",
+        "description",
+        "input_schema_json"
+      ]
+    },
+    "ToolContextMessage": {
+      "title": "ToolContextMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "tool.context"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ToolContextPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "context_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            }
+          },
+          "required": [
+            "context_id"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ToolOffersMessage": {
+      "title": "ToolOffersMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "tool.offers"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ToolOffersPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "context_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "offers": {
+              "type": "array",
+              "maxItems": 16,
+              "items": {
+                "$ref": "#/definitions/ToolOffer"
+              }
+            }
+          },
+          "required": [
+            "context_id",
+            "offers"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ToolProposedMessage": {
+      "title": "ToolProposedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "tool.proposed"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ToolProposedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "provider_kind": {
+              "enum": [
+                "mcp",
+                "google_calendar"
+              ]
+            },
+            "proposal_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "offer_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "arguments_json": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 16384
+            },
+            "actual_model": {
+              "$ref": "#/definitions/ModelRef"
+            },
+            "routing_reason": {
+              "$ref": "#/definitions/RoutingReason"
+            },
+            "source_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "$ref": "#/definitions/SourceRef"
+              }
+            }
+          },
+          "required": [
+            "provider_kind",
+            "proposal_id",
+            "offer_id",
+            "arguments_json",
+            "actual_model",
+            "source_refs"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    },
+    "ToolResolvedMessage": {
+      "title": "ToolResolvedMessage",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "kirian.rearchitecture.v1"
+        },
+        "message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "kind": {
+          "const": "tool.resolved"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "intent_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "payload": {
+          "title": "ToolResolvedPayload",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "proposal_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
+            },
+            "state": {
+              "enum": [
+                "succeeded",
+                "failed",
+                "unknown",
+                "unavailable"
+              ]
+            },
+            "source_ref": {
+              "$ref": "#/definitions/SourceRef"
+            }
+          },
+          "required": [
+            "proposal_id",
+            "state"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "message_id",
+        "request_id",
+        "scope",
+        "kind",
+        "turn_id",
+        "intent_id",
+        "sequence",
+        "payload"
+      ]
+    }
+  }
+}

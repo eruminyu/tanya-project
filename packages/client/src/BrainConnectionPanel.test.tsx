@@ -8,7 +8,7 @@ const noop = () => undefined;
 function render(overrides: Partial<Parameters<typeof BrainConnectionPanel>[0]> = {}) {
   return renderToStaticMarkup(
     <BrainConnectionPanel
-      url="http://192.168.10.20:8098"
+      url="http://<lan-host>:8098"
       busy={false}
       result={null}
       canReconnect

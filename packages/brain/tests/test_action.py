@@ -32,7 +32,7 @@ class TestIntentClassifier:
         self.clf = IntentClassifier()
 
     def test_chat_intent_plain_text(self):
-        intent = self.clf.classify("안녕 타냐!")
+        intent = self.clf.classify("안녕 키리안!")
         assert intent.name == "chat"
 
     def test_unknown_falls_back_to_chat(self):

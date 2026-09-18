@@ -44,7 +44,7 @@ function stateEvent(
 
 function approvalEvent(operationId = OPERATION_ID, requestId = REQUEST_ID): TutorialBrainEvent {
   const fields = {
-    title: "Tanya 해커톤 준비 점검",
+    title: "Kirian 해커톤 준비 점검",
     startAt: "2026-09-03T21:10:00+09:00",
     endAt: "2026-09-03T21:40:00+09:00",
     timeZone: "Asia/Seoul",
@@ -147,7 +147,7 @@ function receiptEvent(operationId = OPERATION_ID, forgotten = false, withAnswerA
         providerId: "calendar-resource-1",
         status: "succeeded",
         sentFields: forgotten ? null : {
-          title: "Tanya 해커톤 준비 점검",
+          title: "Kirian 해커톤 준비 점검",
           startAt: "2026-09-03T21:10:00+09:00",
           endAt: "2026-09-03T21:40:00+09:00",
           timeZone: "Asia/Seoul",
@@ -578,7 +578,7 @@ describe("통합 튜토리얼 reducer", () => {
   });
 
   it("flow 저장소 key는 승인 token을 암시하지 않는 단일 capability key다", () => {
-    expect(TUTORIAL_FLOW_STORAGE_KEY).toBe("tanya.tutorial.flow-id");
+    expect(TUTORIAL_FLOW_STORAGE_KEY).toBe("kirian.tutorial.flow-id");
     expect(TUTORIAL_FLOW_STORAGE_KEY).not.toMatch(/token|approval/i);
   });
 

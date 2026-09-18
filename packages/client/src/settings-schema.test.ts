@@ -48,7 +48,7 @@ describe("Settings Mode 저장 스키마", () => {
     expect(parseAppSettingsPayload({ brainUrl: "https://brain.local/" }).brainUrl).toBe("https://brain.local");
   });
 
-  it("옛 tanya.brainUrl 키에 남은 사용자 주소를 잃지 않고 승계한다", () => {
+  it("옛 kirian.brainUrl 키에 남은 사용자 주소를 잃지 않고 승계한다", () => {
     const merged = mergeLegacyBrainUrl(DEFAULT_APP_SETTINGS, "http://old-brain.local:8098/");
     expect(merged.brainUrl).toBe("http://old-brain.local:8098");
   });

@@ -1,4 +1,4 @@
-"""Phase 7-A: FineTuneCollector TDD 테스트."""
+﻿"""Phase 7-A: FineTuneCollector TDD 테스트."""
 import sqlite3
 import pytest
 
@@ -73,7 +73,7 @@ class FakeStore:
 class TestFineTuneCollectorCollect:
     def test_collect_returns_candidate_rows(self):
         store = FakeStore()
-        store.insert("test:main", "안녕", "안녕 데모 사용자!", quality_score=0.7, is_candidate=1)
+        store.insert("test:main", "안녕", "안녕 세리안!", quality_score=0.7, is_candidate=1)
         store.insert("test:main", "hello", "hi!", quality_score=0.3, is_candidate=1)
 
         collector = FineTuneCollector(store)

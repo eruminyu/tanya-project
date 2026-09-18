@@ -57,7 +57,7 @@ async def _default_summarize(turns: list[ConversationTurn]) -> str:
     lines = []
     for t in turns:
         lines.append(f"User: {t.user_message}")
-        lines.append(f"Tanya: {t.assistant_message}")
+        lines.append(f"Kirian: {t.assistant_message}")
     return "이전 대화 요약:\n" + "\n".join(lines)
 
 

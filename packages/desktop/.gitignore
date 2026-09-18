@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dist-electron/
+release/
+release-upgrade-test/
+.test-output/
+test-results/
+playwright-report/
+!packaging/brain.spec

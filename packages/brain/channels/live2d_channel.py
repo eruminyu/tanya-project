@@ -1,6 +1,6 @@
 """Phase 6-B: Live2DChannel — Open-LLM-VTuber 호환 WebSocket 채널.
 
-Open-LLM-VTuber 웹 클라이언트가 타냐 서버에 직접 연결할 수 있도록
+Open-LLM-VTuber 웹 클라이언트가 키리안 서버에 직접 연결할 수 있도록
 프로토콜 변환 레이어를 제공한다.
 
 Open-LLM-VTuber 프로토콜:
@@ -29,7 +29,7 @@ from core.orchestrator import Orchestrator
 class Live2DChannel(Channel):
     """Open-LLM-VTuber 클라이언트 전용 호환 채널.
 
-    타냐 Orchestrator 응답을 Open-LLM-VTuber 프로토콜 메시지 시퀀스로 변환한다.
+    키리안 Orchestrator 응답을 Open-LLM-VTuber 프로토콜 메시지 시퀀스로 변환한다.
     """
 
     def __init__(self, orchestrator: Orchestrator, session_key: str = "") -> None:
@@ -74,12 +74,12 @@ class Live2DChannel(Channel):
         }))
 
         # Orchestrator 호출 — 레거시 포맷으로 전달
-        tanya_response = await self._orch.handle_message({"message": text})
+        kirian_response = await self._orch.handle_message({"message": text})
 
-        if tanya_response is None:
+        if kirian_response is None:
             await websocket.send_text(json.dumps({
                 "type": "error",
-                "message": "No response from Tanya.",
+                "message": "No response from Kirian.",
             }, ensure_ascii=False))
             await websocket.send_text(json.dumps({
                 "type": "control",
@@ -90,18 +90,18 @@ class Live2DChannel(Channel):
         # full-text 전송
         await websocket.send_text(json.dumps({
             "type": "full-text",
-            "text": tanya_response.content,
+            "text": kirian_response.content,
         }, ensure_ascii=False))
 
         # audio 전송 (있을 경우 — 빈 문자열이면 생략)
-        if tanya_response.audio:
-            emotion_name = tanya_response.emotion.type.value
+        if kirian_response.audio:
+            emotion_name = kirian_response.emotion.type.value
             await websocket.send_text(json.dumps({
                 "type": "audio",
-                "audio": tanya_response.audio,
+                "audio": kirian_response.audio,
                 "display_text": {
-                    "text": tanya_response.content,
-                    "name": "Tanya",
+                    "text": kirian_response.content,
+                    "name": "Kirian",
                 },
                 "actions": {
                     "expressions": [emotion_name],

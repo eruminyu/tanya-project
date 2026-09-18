@@ -26,7 +26,7 @@ class TestSkillBase:
             enabled = True
 
             async def execute(self, payload: dict) -> dict:
-                return {"message": f"안녕, {payload.get('name', '사용자')}!"}
+                return {"message": f"안녕, {payload.get('name', '민성')}!"}
 
         skill = GreetSkill()
         assert skill.name == "greet"
@@ -189,14 +189,14 @@ class TestOrchestratorMemoryInjection:
                     # 장기 기억 mock
                     mock_ltm = MagicMock()
                     mock_ltm.search = AsyncMock(return_value=[
-                        MagicMock(content="사용자는 게임을 좋아한다", relevance_score=0.9)
+                        MagicMock(content="민성은 게임을 좋아한다", relevance_score=0.9)
                     ])
                     orchestrator._long_term = mock_ltm
 
                     await orchestrator.handle_message({"content": "게임 추천해줘"})
 
                     assert len(captured_prompts) > 0
-                    assert "사용자는 게임을 좋아한다" in captured_prompts[-1]
+                    assert "민성은 게임을 좋아한다" in captured_prompts[-1]
 
     @pytest.mark.asyncio
     async def test_long_term_disabled_no_injection(self):

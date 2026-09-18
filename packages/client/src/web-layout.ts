@@ -42,3 +42,4 @@ export function isNarrowViewport(
     return false;
   }
 }
+

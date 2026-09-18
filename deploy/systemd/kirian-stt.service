@@ -1,0 +1,39 @@
+[Unit]
+Description=Kirian isolated faster-whisper STT
+After=network.target
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=kirian
+Group=kirian
+WorkingDirectory=/home/kirian/voice
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=HF_HUB_OFFLINE=1
+Environment=CUDA_VISIBLE_DEVICES=0
+Environment=STT_MODEL_DIR=/home/kirian/.cache/kirian-stt-comparison-20260911/kirian-medium-08e178d48790749d25932bbc082711ddcfdfbc4f
+Environment=LD_LIBRARY_PATH=/home/kirian/.venvs/kirian-stt/lib/python3.12/site-packages/nvidia/cublas/lib:/home/kirian/.venvs/kirian-stt/lib/python3.12/site-packages/nvidia/cudnn/lib
+ExecStart=/home/kirian/.venvs/kirian-stt/bin/python -m uvicorn stt_service:app --app-dir /home/kirian/voice --host 127.0.0.1 --port 18098 --workers 1 --no-access-log --timeout-graceful-shutdown 20
+ExecStartPost=/usr/bin/python3 -I -B /home/kirian/voice/service_readiness.py --kind stt --pid $MAINPID --port 18098 --timeout 90
+TimeoutStartSec=120
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=30
+KillSignal=SIGINT
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

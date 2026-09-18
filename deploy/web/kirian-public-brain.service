@@ -1,0 +1,39 @@
+[Unit]
+Description=Kirian public demo Brain (stateless, loopback only)
+After=network.target ollama.service kirian-qwen3-tts.service
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=kirian
+Group=kirian
+WorkingDirectory=/home/kirian/kirian-web/current/brain
+EnvironmentFile=/home/kirian/kirian-web/brain.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONPATH=/home/kirian/kirian-web/current/brain
+# Visitor conversations and tool results live only in this tmpfs directory, recreated on every start.
+RuntimeDirectory=kirian-public-brain
+RuntimeDirectoryMode=0700
+Environment=KIRIAN_V1_DATA_DIR=/run/kirian-public-brain
+ExecStart=/home/kirian/.venvs/kirian-public-brain/bin/python -X utf8 -m uvicorn rearchitecture.app:create_app --factory --host 127.0.0.1 --port 8099 --workers 1 --no-access-log --log-level warning --timeout-graceful-shutdown 20
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=30
+KillSignal=SIGINT
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

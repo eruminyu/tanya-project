@@ -18,7 +18,7 @@ function action(overrides: Partial<TutorialReceiptGoogleAction> = {}): TutorialR
     providerId: "provider-abc",
     status: "succeeded",
     sentFields: {
-      title: "Tanya 해커톤 준비 점검",
+      title: "Kirian 해커톤 준비 점검",
       startAt: "2026-09-07T15:00:00+09:00",
       endAt: "2026-09-07T16:00:00+09:00",
       timeZone: "Asia/Seoul",
@@ -152,7 +152,7 @@ describe("ICS 생성", () => {
   it("UID는 서버 값이 아니라 로컬에서 만든다", () => {
     const uid = /UID:(.+)/.exec(ics)?.[1] ?? "";
     expect(uid).not.toContain("provider-abc");
-    expect(uid).toContain("@tanya.local");
+    expect(uid).toContain("@kirian.local");
   });
 
   it("제목의 개행 주입이 새 property가 되지 않는다", () => {
@@ -185,7 +185,7 @@ describe("Google 링크", () => {
 
   it("한글 제목을 안전하게 인코딩한다", () => {
     expect(url).not.toContain(" ");
-    expect(decodeURIComponent(new URL(url).searchParams.get("text") ?? "")).toBe("Tanya 해커톤 준비 점검");
+    expect(decodeURIComponent(new URL(url).searchParams.get("text") ?? "")).toBe("Kirian 해커톤 준비 점검");
   });
 
   it("Google 도메인만 가리킨다", () => {
@@ -206,6 +206,6 @@ describe("사용자 안내", () => {
   });
 
   it("파일명에 식별자를 넣지 않는다", () => {
-    expect(icsFileName()).toBe("tanya-demo-event.ics");
+    expect(icsFileName()).toBe("kirian-demo-event.ics");
   });
 });

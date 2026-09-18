@@ -332,7 +332,7 @@ def _context_websocket(messages):
 class TestScheduleContextMessage:
     @pytest.mark.asyncio
     async def test_context_message_updates_scheduler_without_replying(self):
-        """일정 스냅샷은 대화가 아니다. 타냐가 대답하면 안 된다."""
+        """일정 스냅샷은 대화가 아니다. 키리안이 대답하면 안 된다."""
         from channels.webchat import WebChatChannel
 
         scheduler = _make_scheduler()

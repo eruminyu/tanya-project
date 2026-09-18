@@ -125,25 +125,25 @@ class TestTokenValidator:
         self.validator = TokenValidator(secret_key="test-secret-key")
 
     def test_generate_returns_string(self):
-        token = self.validator.generate({"user": "tanya"})
+        token = self.validator.generate({"user": "kirian"})
         assert isinstance(token, str)
         assert len(token) > 0
 
     def test_validate_valid_token(self):
-        payload = {"user": "tanya", "channel": "tauri"}
+        payload = {"user": "kirian", "channel": "tauri"}
         token = self.validator.generate(payload)
         result = self.validator.validate(token)
         assert result is not None
-        assert result["user"] == "tanya"
+        assert result["user"] == "kirian"
         assert result["channel"] == "tauri"
 
     def test_validate_expired_token(self):
-        token = self.validator.generate({"user": "tanya"}, expires_in=-1)
+        token = self.validator.generate({"user": "kirian"}, expires_in=-1)
         result = self.validator.validate(token)
         assert result is None
 
     def test_validate_tampered_token(self):
-        token = self.validator.generate({"user": "tanya"})
+        token = self.validator.generate({"user": "kirian"})
         # 서명 변조
         parts = token.split(".")
         tampered = parts[0] + "." + parts[1] + ".invalidsignature"
@@ -155,7 +155,7 @@ class TestTokenValidator:
         assert result is None
 
     def test_different_secret_fails(self):
-        token = self.validator.generate({"user": "tanya"})
+        token = self.validator.generate({"user": "kirian"})
         other_validator = TokenValidator(secret_key="different-secret")
         result = other_validator.validate(token)
         assert result is None

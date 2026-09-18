@@ -1,7 +1,7 @@
 import { FormEvent, useCallback, useEffect, useMemo, useReducer, useRef, useState, type PointerEvent } from "react";
 import { connectionStatusText } from "./brain";
 import { Live2DStage } from "./Live2DStage";
-import { latestTanyaMessage, shouldCollapseWhisper } from "./whisper";
+import { latestKirianMessage, shouldCollapseWhisper } from "./whisper";
 import { initialUtilityState, reduceUtilityState, type UtilityPanelKind } from "./utility-panel";
 import { UtilityPanel, type UtilityDataState } from "./UtilityPanel";
 import { googleCapability, googleRuntime } from "./google-integration";
@@ -664,7 +664,7 @@ export function App() {
     if (operationId) dispatchTutorial({ type: "operation-requested", operation: { id: operationId, kind: "receipt" } });
   }, [canUseTutorial, sendTutorialAction, tauriRuntime, tutorial.busy, tutorial.error, tutorial.flowId, tutorial.needsResume, tutorial.operation?.kind, tutorial.receipt, tutorial.snapshot?.phase]);
 
-  const latestAnswer = latestTanyaMessage(messages);
+  const latestAnswer = latestKirianMessage(messages);
   const collapsedAnswer = latestAnswer && shouldCollapseWhisper(latestAnswer.text) && !answerExpanded;
 
   return (
@@ -716,9 +716,9 @@ export function App() {
         />
         {voiceSession.state === "listening" && <VoiceListeningIndicator />}
         {!conversationOpen && companionState.interaction !== "click-through" && (
-          <nav className="presence-bar" aria-label="타냐 빠른 메뉴" onClick={(event) => event.stopPropagation()}>
+          <nav className="presence-bar" aria-label="키리안 빠른 메뉴" onClick={(event) => event.stopPropagation()}>
             <button type="button" onClick={() => void changeChatPanelOpen(true)} aria-label="대화 열기">대화</button>
-            {tauriRuntime && <button type="button" onClick={() => void lockCompanion()} aria-label="타냐 잠그기">잠금</button>}
+            {tauriRuntime && <button type="button" onClick={() => void lockCompanion()} aria-label="키리안 잠그기">잠금</button>}
             {tauriRuntime && <button type="button" aria-label="더보기" aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>•••</button>}
           </nav>
         )}
@@ -747,10 +747,10 @@ export function App() {
 
       {tauriRuntime && agentDock.open && <div className="agent-dock-layer"><AgentDock state={agentDock} googleWrite={googleWrite} onApproveGoogle={() => void approveGoogleWrite()} onCancelGoogle={cancelGoogleWrite} onClose={() => void closeAgentDock()} /></div>}
 
-      {conversationOpen && <section className="chat-panel" aria-label="타냐와 대화">
+      {conversationOpen && <section className="chat-panel" aria-label="키리안과 대화">
         <header className="whisper-header">
           <div>
-            <strong>타냐</strong>
+            <strong>키리안</strong>
             <span>{connection === "connected" ? "듣고 있어" : connectionStatusText(connection, retryDelay)}</span>
             {!tauriRuntime && <span className="web-demo-boundary">{WEB_DEMO_BOUNDARY}</span>}
           </div>
@@ -784,7 +784,7 @@ export function App() {
           />
         </div> : historyOpen ? <div className="messages history" aria-label="전체 대화 기록">
           {messages.map((message) => <div key={message.id} className={`bubble ${message.role}`}>
-            {message.role === "tanya" && message.route && <span className="llm-route-badge">{describeLlmRoute(message.route, tauriRuntime ? "tauri" : "web")}</span>}
+            {message.role === "kirian" && message.route && <span className="llm-route-badge">{describeLlmRoute(message.route, tauriRuntime ? "tauri" : "web")}</span>}
             {message.text}
           </div>)}
         </div> : <div className="messages latest" aria-live="polite">
@@ -799,7 +799,7 @@ export function App() {
               </p>
             </div>
           )}
-          {latestAnswer && <div className={`bubble tanya latest-answer ${collapsedAnswer ? "collapsed" : ""}`}>
+          {latestAnswer && <div className={`bubble kirian latest-answer ${collapsedAnswer ? "collapsed" : ""}`}>
             {latestAnswer.route && <span className="llm-route-badge">{describeLlmRoute(latestAnswer.route, tauriRuntime ? "tauri" : "web")}</span>}
             {latestAnswer.text}
           </div>}

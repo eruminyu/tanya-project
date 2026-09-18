@@ -1,4 +1,4 @@
-const WEBCHAT_SESSION_STORAGE_KEY = "tanya.webchatSessionId";
+const WEBCHAT_SESSION_STORAGE_KEY = "kirian.webchatSessionId";
 const WEBCHAT_SESSION_ID_PATTERN = /^[a-zA-Z0-9_-]{16,128}$/;
 const SECURE_WEBCHAT_SESSION_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 

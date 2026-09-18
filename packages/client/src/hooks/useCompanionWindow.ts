@@ -164,7 +164,7 @@ export function useCompanionWindow(): {
     setShortcutError("");
     try {
       if (!tauriRuntime) {
-        window.open(`${window.location.pathname}?window=settings`, "tanya-settings", "width=760,height=760");
+        window.open(`${window.location.pathname}?window=settings`, "kirian-settings", "width=760,height=760");
         return;
       }
       const existing = await WebviewWindow.getByLabel("settings");
@@ -174,7 +174,7 @@ export function useCompanionWindow(): {
       }
       const settingsWindow = new WebviewWindow("settings", {
         url: "?window=settings",
-        title: "타냐 설정",
+        title: "키리안 설정",
         width: 760,
         height: 760,
         minWidth: 620,

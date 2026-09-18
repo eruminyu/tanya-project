@@ -1,6 +1,6 @@
 """Phase 6-B: Open-LLM-VTuber 호환 WebSocket 라우터.
 
-/ws/live2d 엔드포인트를 통해 Open-LLM-VTuber 웹 클라이언트를 타냐 서버에 연결한다.
+/ws/live2d 엔드포인트를 통해 Open-LLM-VTuber 웹 클라이언트를 키리안 서버에 연결한다.
 """
 import uuid
 
